@@ -187,28 +187,26 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
             
-            <div class="form-row">
-                <div class="form-group">
-                    <span class="icon">👤</span>
-                    <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}">
-                    @error('first_name')
-                        <div class="validation-error">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-                <div class="form-group">
-                    <span class="icon">👤</span>
-                    <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}">
-                    @error('last_name')
-                        <div class="validation-error">{{ $message }}</div>
-                    @enderror
-                </div>
+            <div class="form-group">
+                <span class="icon">👤</span>
+                <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}">
+                @error('first_name')
+                    <div class="validation-error">{{ $message }}</div>
+                @enderror
             </div>
-            
+
             <div class="form-group">
                 <span class="icon">👤</span>
                 <input type="text" name="middle_name" placeholder="Middle Name" value="{{ old('middle_name') }}">
                 @error('middle_name')
+                    <div class="validation-error">{{ $message }}</div>
+                @enderror
+            </div>
+            
+            <div class="form-group">
+                <span class="icon">👤</span>
+                <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}">
+                @error('last_name')
                     <div class="validation-error">{{ $message }}</div>
                 @enderror
             </div>

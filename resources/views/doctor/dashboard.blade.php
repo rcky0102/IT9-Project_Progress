@@ -770,13 +770,6 @@
                         <span>Schedule</span>
                     </a>
                 </nav>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="sidebar-item text-danger" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
             </aside>
 
             <!-- Main Content -->
