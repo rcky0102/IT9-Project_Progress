@@ -182,31 +182,33 @@
         <a href="{{ url('/') }}" class="close-button">×</a>
         
         <div class="avatar"></div>
-        <div class="form-title">Create Account</div>
+        <div class="form-title">Create Patient Account</div>
         
         <form method="POST" action="{{ route('register') }}">
             @csrf
             
-            <div class="form-group">
-                <span class="icon">👤</span>
-                <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}">
-                @error('first_name')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <span class="icon">👤</span>
-                <input type="text" name="middle_name" placeholder="Middle Name" value="{{ old('middle_name') }}">
-                @error('middle_name')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
+            <div class="form-row">
+                <div class="form-group">
+                    <span class="icon">👤</span>
+                    <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}">
+                    @error('first_name')
+                        <div class="validation-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <span class="icon">👤</span>
+                    <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}">
+                    @error('last_name')
+                        <div class="validation-error">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
             
             <div class="form-group">
                 <span class="icon">👤</span>
-                <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}">
-                @error('last_name')
+                <input type="text" name="middle_name" placeholder="Middle Name" value="{{ old('middle_name') }}">
+                @error('middle_name')
                     <div class="validation-error">{{ $message }}</div>
                 @enderror
             </div>
@@ -230,18 +232,6 @@
             <div class="form-group">
                 <span class="icon">🔒</span>
                 <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-            </div>
-            
-            <div class="form-group">
-                <span class="icon">👥</span>
-                <select name="role" required>
-                    <option value="">Select Role</option>
-                    <option value="patient" {{ old('role') == 'patient' ? 'selected' : '' }}>Patient</option>
-                    <option value="doctor" {{ old('role') == 'doctor' ? 'selected' : '' }}>Doctor</option>
-                </select>
-                @error('role')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
             </div>
             
             <button type="submit" class="register-button">Register</button>

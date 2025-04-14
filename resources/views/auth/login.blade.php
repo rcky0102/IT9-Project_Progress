@@ -216,18 +216,6 @@
                 @enderror
             </div>
             
-            <div class="form-group">
-                <span class="icon">👤</span>
-                <select name="role" required>
-                    <option value="">Login as...</option>
-                    <option value="patient" {{ old('role') == 'patient' ? 'selected' : '' }}>Patient</option>
-                    <option value="doctor" {{ old('role') == 'doctor' ? 'selected' : '' }}>Doctor</option>
-                </select>
-                @error('role')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
-            </div>
-            
             <div class="form-options">
                 <label class="remember-me">
                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
