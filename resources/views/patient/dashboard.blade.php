@@ -670,7 +670,7 @@
                         <i class="fas fa-chart-line"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('patient.appointments') }}" class="sidebar-item">
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
                     </a>

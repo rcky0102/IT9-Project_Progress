@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Patient\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -56,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/dashboard', function () {
         return view('patient.dashboard');
     })->name('patient.dashboard');
+
+    Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
     
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
