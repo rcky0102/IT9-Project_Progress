@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +13,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
+        // Create admin user
+        User::create([
+            'first_name' => 'Admin',
+            'middle_name' => null, // or provide a middle name if needed
+            'last_name' => 'User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        
+        // If you have a test user
+        User::create([
+            'first_name' => 'Test',
+            'middle_name' => null, // or provide a middle name if needed
+            'last_name' => 'User',
             'email' => 'test@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'patient',
+        ]);
+        
+        $this->call([
+            DoctorSeeder::class,
+            AppointmentTypeSeeder::class,
         ]);
     }
 }

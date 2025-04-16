@@ -826,10 +826,9 @@
                 <div class="welcome-card">
                     <h1>Appointments</h1>
                     <p>Manage your upcoming appointments and schedule new ones.</p>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Schedule New Appointment
-                    </button>
+                    <a href="{{ route('appointments.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Schedule New Appointment
+                    </a>
                 </div>
 
                 <!-- Dashboard Cards -->

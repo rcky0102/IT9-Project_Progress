@@ -2,24 +2,32 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Http\Middleware\RoleMiddleware;
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Policies\AppointmentPolicy;
+use App\Policies\PatientPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
-class AppServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
      */
-    public function register(): void
-    {
-        //
-    }
+    protected $policies = [
+        Appointment::class => AppointmentPolicy::class,
+        Patient::class => PatientPolicy::class,
+    ];
 
     /**
-     * Bootstrap any application services.
+     * Register any authentication / authorization services.
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+
+        // Define any additional gates here if needed
     }
 }

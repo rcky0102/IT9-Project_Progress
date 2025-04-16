@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Patient\AppointmentController;
+use App\Http\Controllers\ApmtController;
+use App\Http\Controllers\PatientController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -59,6 +61,26 @@ Route::middleware('auth')->group(function () {
     })->name('patient.dashboard');
 
     Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
+    
+    // Patient profile routes
+    Route::prefix('patient')->name('patient.')->group(function () {
+        Route::resource('profile', PatientController::class)->except(['destroy']);
+    });
+    
+    // Appointment scheduling routes
+    Route::get('/appointments/create', [ApmtController::class, 'create'])->name('appointments.create');
+    Route::post('/appointments', [ApmtController::class, 'store'])->name('appointments.store');
+    Route::get('/appointments/{appointment}', [ApmtController::class, 'show'])->name('appointments.show');
+    Route::post('/appointments/{appointment}/cancel', [ApmtController::class, 'cancel'])->name('appointments.cancel');
+    Route::post('/appointments/{appointment}/reschedule', [ApmtController::class, 'reschedule'])->name('appointments.reschedule');
+    
+    // AJAX routes for appointment scheduling
+    Route::get('/appointments/available-dates', [ApmtController::class, 'getAvailableDates'])->name('appointments.available-dates');
+    Route::get('/appointments/available-time-slots', [ApmtController::class, 'getAvailableTimeSlots'])->name('appointments.available-time-slots');
+    
+    // Doctor listing routes (for patients to view)
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
     
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

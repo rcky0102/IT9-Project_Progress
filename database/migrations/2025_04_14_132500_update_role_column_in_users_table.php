@@ -5,37 +5,64 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class UpdateRoleColumnInUsersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        // First, check the current column type
-        $columnType = DB::connection()->getDoctrineColumn('users', 'role')->getType()->getName();
-        
-        if ($columnType === 'string') {
-            // If it's a string (VARCHAR), make sure it's long enough
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('role', 50)->change();
-            });
+        // First, check if the column exists
+        if (Schema::hasColumn('users', 'role')) {
+            // Get the current column type
+            $columnType = DB::getSchemaBuilder()->getColumnType('users', 'role');
+            
+            // If it's not an enum, modify it
+            if ($columnType !== 'enum') {
+                // Create a backup of existing data
+                $users = DB::table('users')->select('id', 'role')->get();
+                
+                // Drop the existing column
+                Schema::table('users', function (Blueprint $table) {
+                    $table->dropColumn('role');
+                });
+                
+                // Add the new enum column
+                Schema::table('users', function (Blueprint $table) {
+                    $table->enum('role', ['admin', 'patient', 'doctor'])->default('patient');
+                });
+                
+                // Restore data with appropriate mapping
+                foreach ($users as $user) {
+                    $role = 'patient'; // Default
+                    
+                    // Map existing values to new enum values
+                    if (!empty($user->role)) {
+                        if (strtolower($user->role) === 'admin') {
+                            $role = 'admin';
+                        } elseif (strtolower($user->role) === 'doctor') {
+                            $role = 'doctor';
+                        }
+                    }
+                    
+                    DB::table('users')
+                        ->where('id', $user->id)
+                        ->update(['role' => $role]);
+                }
+            }
         } else {
-            // If it's an ENUM, modify it to include 'admin'
-            DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('patient', 'doctor', 'admin') NOT NULL");
+            // If the column doesn't exist, add it
+            Schema::table('users', function (Blueprint $table) {
+                $table->enum('role', ['admin', 'patient', 'doctor'])->default('patient');
+            });
         }
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        // Revert to original state if needed
-        // This depends on what the original state was
+        // No need to revert as we're just ensuring the column is of the right type
     }
-}
+};
