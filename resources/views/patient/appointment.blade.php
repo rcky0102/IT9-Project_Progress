@@ -751,6 +751,441 @@
                 font-size: 24px;
             }
         }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary: #004258;
+            --primary-light: #5a7d8c;
+            --primary-dark: #00354a;
+            --accent: rgba(90, 125, 140, 0.7);
+            --text: #333;
+            --text-light: #777;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #3498db;
+            --border-radius: 24px;
+            --border-radius-sm: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background-color: var(--primary-light);
+            opacity: 0.1;
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .welcome-card h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .welcome-card p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-title {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .modal-description {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 66, 88, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            font-size: 14px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 66, 88, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            font-size: 14px;
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 66, 88, 0.1);
+        }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-input:checked {
+            border-color: var(--primary);
+        }
+
+        .radio-input:checked::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        .radio-label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Date Picker */
+        .date-picker-wrapper {
+            position: relative;
+        }
+
+        .date-picker-input {
+            width: 100%;
+            padding: 10px 12px;
+            padding-right: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .date-picker-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        /* Calendar Popup (simplified) */
+        .calendar-popup {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            background-color: white;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow);
+            width: 300px;
+            z-index: 10;
+            display: none;
+        }
+
+        .calendar-popup.show {
+            display: block;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .calendar-title {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text);
+            border-radius: 50%;
+        }
+
+        .calendar-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 10px;
+        }
+
+        .calendar-weekday {
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 12px;
+            padding: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .calendar-day:hover {
+            background-color: rgba(0, 66, 88, 0.05);
+        }
+
+        .calendar-day.today {
+            border: 1px solid var(--primary);
+            font-weight: bold;
+        }
+
+        .calendar-day.selected {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar-day.disabled {
+            color: var(--text-light);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 576px) {
+            .modal {
+                width: 95%;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .modal-footer .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -826,11 +1261,292 @@
                 <div class="welcome-card">
                     <h1>Appointments</h1>
                     <p>Manage your upcoming appointments and schedule new ones.</p>
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" id="openModalBtn">
                         <i class="fas fa-plus"></i>
                         Schedule New Appointment
                     </button>
                 </div>
+
+
+                    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="appointmentModal">
+        <div class="modal">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h2 class="modal-title">Schedule New Appointment</h2>
+                <p class="modal-description">Fill in the details below to schedule your appointment with one of our healthcare providers.</p>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="appointmentForm">
+                    <!-- Appointment Type -->
+                    <div class="form-group">
+                        <label for="appointmentType" class="form-label">Appointment Type</label>
+                        <select id="appointmentType" class="form-select" required>
+                            <option value="" selected disabled>Select appointment type</option>
+                            <option value="general-checkup">General Checkup</option>
+                            <option value="follow-up">Follow-up Consultation</option>
+                            <option value="dental">Dental Cleaning</option>
+                            <option value="specialist">Specialist Consultation</option>
+                            <option value="vaccination">Vaccination</option>
+                            <option value="physical-therapy">Physical Therapy</option>
+                        </select>
+                    </div>
+
+                    <!-- Doctor Selection -->
+                    <div class="form-group">
+                        <label for="doctor" class="form-label">Select Doctor</label>
+                        <select id="doctor" class="form-select" required>
+                            <option value="" selected disabled>Choose a healthcare provider</option>
+                            <option value="dr-johnson">Dr. Sarah Johnson - General Medicine</option>
+                            <option value="dr-chen">Dr. Michael Chen - Cardiology</option>
+                            <option value="dr-rodriguez">Dr. Emily Rodriguez - Dentistry</option>
+                            <option value="dr-patel">Dr. Raj Patel - Pediatrics</option>
+                            <option value="dr-williams">Dr. James Williams - Orthopedics</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Selection -->
+                    <div class="form-group">
+                        <label for="date" class="form-label">Appointment Date</label>
+                        <div class="date-picker-wrapper">
+                            <input type="text" id="date" class="date-picker-input" placeholder="Select a date" readonly required>
+                            <i class="fas fa-calendar-alt date-picker-icon"></i>
+                            
+                            <!-- Calendar Popup (simplified) -->
+                            <div class="calendar-popup" id="calendarPopup">
+                                <div class="calendar-header">
+                                    <span class="calendar-title">April 2025</span>
+                                    <div class="calendar-nav">
+                                        <button type="button" class="calendar-nav-btn">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="calendar-nav-btn">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="calendar-grid">
+                                    <!-- Weekdays -->
+                                    <div class="calendar-weekday">Sun</div>
+                                    <div class="calendar-weekday">Mon</div>
+                                    <div class="calendar-weekday">Tue</div>
+                                    <div class="calendar-weekday">Wed</div>
+                                    <div class="calendar-weekday">Thu</div>
+                                    <div class="calendar-weekday">Fri</div>
+                                    <div class="calendar-weekday">Sat</div>
+                                    
+                                    <!-- Days (simplified) -->
+                                    <div class="calendar-day disabled">30</div>
+                                    <div class="calendar-day disabled">31</div>
+                                    <div class="calendar-day">1</div>
+                                    <div class="calendar-day">2</div>
+                                    <div class="calendar-day">3</div>
+                                    <div class="calendar-day">4</div>
+                                    <div class="calendar-day disabled">5</div>
+                                    
+                                    <div class="calendar-day disabled">6</div>
+                                    <div class="calendar-day">7</div>
+                                    <div class="calendar-day">8</div>
+                                    <div class="calendar-day">9</div>
+                                    <div class="calendar-day">10</div>
+                                    <div class="calendar-day">11</div>
+                                    <div class="calendar-day disabled">12</div>
+                                    
+                                    <div class="calendar-day disabled">13</div>
+                                    <div class="calendar-day">14</div>
+                                    <div class="calendar-day">15</div>
+                                    <div class="calendar-day">16</div>
+                                    <div class="calendar-day">17</div>
+                                    <div class="calendar-day">18</div>
+                                    <div class="calendar-day disabled">19</div>
+                                    
+                                    <div class="calendar-day disabled">20</div>
+                                    <div class="calendar-day today">21</div>
+                                    <div class="calendar-day">22</div>
+                                    <div class="calendar-day">23</div>
+                                    <div class="calendar-day selected">24</div>
+                                    <div class="calendar-day">25</div>
+                                    <div class="calendar-day disabled">26</div>
+                                    
+                                    <div class="calendar-day disabled">27</div>
+                                    <div class="calendar-day">28</div>
+                                    <div class="calendar-day">29</div>
+                                    <div class="calendar-day">30</div>
+                                    <div class="calendar-day">1</div>
+                                    <div class="calendar-day">2</div>
+                                    <div class="calendar-day disabled">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Selection -->
+                    <div class="form-group">
+                        <label for="time" class="form-label">Preferred Time</label>
+                        <select id="time" class="form-select" required>
+                            <option value="" selected disabled>Select a time slot</option>
+                            <option value="9:00">9:00 AM</option>
+                            <option value="9:30">9:30 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="1:00">1:00 PM</option>
+                            <option value="1:30">1:30 PM</option>
+                            <option value="2:00">2:00 PM</option>
+                            <option value="2:30">2:30 PM</option>
+                            <option value="3:00">3:00 PM</option>
+                            <option value="3:30">3:30 PM</option>
+                            <option value="4:00">4:00 PM</option>
+                            <option value="4:30">4:30 PM</option>
+                        </select>
+                    </div>
+
+                    <!-- Appointment Mode -->
+                    <div class="form-group">
+                        <label class="form-label">Appointment Mode</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="inPerson" name="appointmentMode" value="in-person" class="radio-input" checked>
+                                <label for="inPerson" class="radio-label">In-Person</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="virtual" name="appointmentMode" value="virtual" class="radio-input">
+                                <label for="virtual" class="radio-label">Virtual</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insurance Information -->
+                    <div class="form-group">
+                        <label for="insurance" class="form-label">Insurance Provider</label>
+                        <input type="text" id="insurance" class="form-control" placeholder="Enter your insurance provider">
+                    </div>
+
+                    <!-- Reason for Visit -->
+                    <div class="form-group">
+                        <label for="reason" class="form-label">Reason for Visit</label>
+                        <textarea id="reason" class="form-textarea" placeholder="Please describe your symptoms or reason for the appointment" required></textarea>
+                    </div>
+
+                    <!-- Additional Notes -->
+                    <div class="form-group">
+                        <label for="notes" class="form-label">Additional Notes (Optional)</label>
+                        <textarea id="notes" class="form-textarea" placeholder="Any additional information you'd like to share"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="scheduleBtn">Schedule Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal functionality
+            const modal = document.getElementById('appointmentModal');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const scheduleBtn = document.getElementById('scheduleBtn');
+            const appointmentForm = document.getElementById('appointmentForm');
+
+            // Date picker functionality
+            const dateInput = document.getElementById('date');
+            const calendarPopup = document.getElementById('calendarPopup');
+            const calendarDays = document.querySelectorAll('.calendar-day:not(.disabled)');
+
+            // Open modal
+            openModalBtn.addEventListener('click', function() {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            });
+
+            // Close modal
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+
+            cancelBtn.addEventListener('click', closeModal);
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Handle form submission
+            scheduleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Check form validity
+                const isValid = validateForm();
+                
+                if (isValid) {
+                    // Here you would typically send the form data to your server
+                    alert('Appointment scheduled successfully!');
+                    closeModal();
+                }
+            });
+
+            // Toggle calendar popup
+            dateInput.addEventListener('click', function(e) {
+                e.stopPropagation();
+                calendarPopup.classList.toggle('show');
+            });
+
+            // Close calendar when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dateInput.contains(e.target) && !calendarPopup.contains(e.target)) {
+                    calendarPopup.classList.remove('show');
+                }
+            });
+
+            // Select date from calendar
+            calendarDays.forEach(day => {
+                day.addEventListener('click', function() {
+                    // Remove selected class from all days
+                    calendarDays.forEach(d => d.classList.remove('selected'));
+                    
+                    // Add selected class to clicked day
+                    this.classList.add('selected');
+                    
+                    // Update input value
+                    const month = 'April'; // This would be dynamic in a real implementation
+                    const day = this.textContent;
+                    const year = '2025'; // This would be dynamic in a real implementation
+                    dateInput.value = `${month} ${day}, ${year}`;
+                    
+                    // Close calendar popup
+                    calendarPopup.classList.remove('show');
+                });
+            });
+
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                const requiredFields = appointmentForm.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value) {
+                        isValid = false;
+                        field.classList.add('error');
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+                
+                return isValid;
+            }
+        });
+    </script>
 
                 <!-- Dashboard Cards -->
                 <div class="dashboard-cards">
