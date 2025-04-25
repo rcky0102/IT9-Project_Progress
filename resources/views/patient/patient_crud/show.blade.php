@@ -76,6 +76,22 @@
 
             <!-- Main Content -->
             <main class="main-content">
+
+                @if(session('success'))
+                <div id="flash-message" class="flash-message">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const flash = document.getElementById('flash-message');
+                    if (flash) {
+                        setTimeout(() => flash.remove(), 3500);
+                    }
+                });
+            </script>
+
                 <!-- Welcome Card -->
                 <div class="welcome-card">
                     <div class="flex-between">
