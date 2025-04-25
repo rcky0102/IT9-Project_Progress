@@ -44,6 +44,24 @@
         </header>
 
         <div class="main-container">
+
+         @if(session('success'))
+                <div id="flash-message" class="flash-message">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const flash = document.getElementById('flash-message');
+                    if (flash) {
+                        setTimeout(() => flash.remove(), 3500);
+                    }
+                });
+            </script>
+            
+
+
             <!-- Sidebar -->
             <aside class="sidebar">
                 <nav class="sidebar-nav">
@@ -170,7 +188,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="appointment-details.html?id=1" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
+                                            <a href="#" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
                                             <a href="edit-appointment.html?id=1" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
                                             <a href="#" class="dropdown-item"><i class="fas fa-video"></i> Join Virtual</a>
                                             <a href="#" class="dropdown-item text-danger"><i class="fas fa-times-circle"></i> Cancel Appointment</a>
@@ -253,7 +271,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="{{ url('appointment-details?id=' . $appointment->id) }}" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
+                                            <a href="{{ route('patient.patient_crud.show', $appointment->id) }}" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
                                             <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
                                             <a href="#" class="dropdown-item text-danger"><i class="fas fa-times-circle"></i> Cancel Appointment</a>
                                         </div>

@@ -62,6 +62,12 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/patient/patient_crud/create', [AppointmentController::class, 'create'])->name('patient.patient_crud.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
+    Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
+    Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('patient.appointment.update');
+
+
+
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         // Admin dashboard

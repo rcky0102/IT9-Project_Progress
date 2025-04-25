@@ -32,7 +32,6 @@ class AppointmentController extends Controller
             'notes' => 'nullable|string',
         ]);
     
-        // Convert to correct format (Y-m-d)
         $formattedDate = Carbon::parse($validated['date'])->format('Y-m-d');
     
         Appointment::create([
@@ -44,8 +43,24 @@ class AppointmentController extends Controller
             'notes' => $validated['notes'] ?? null,
         ]);
     
-        return redirect()->back()->with('success', 'Appointment successfully scheduled!');
+        return redirect()->route('patient.appointments')->with('success', 'Appointment successfully scheduled!');
     }
+
+    public function edit($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        return view('patient.patient_crud.edit', compact('appointment'));
+    }
+
+    public function show($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        return view('patient.patient_crud.show', compact('appointment'));
+    }
+    
+
+
+
 
 
 }
