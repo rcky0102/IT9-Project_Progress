@@ -105,7 +105,7 @@
                 </div>
 
                 <!-- Dashboard Cards -->
-                <div class="dashboard-cards">
+                <div class="dashboard-cards">                
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Upcoming</h3>
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="card-value">3</div>
+                            <div class="card-value">{{ $appointmentsCount }}</div>
                             <div class="card-label">Scheduled appointments</div>
                         </div>
                     </div>
@@ -162,75 +162,6 @@
                     <!-- List View Tab -->
                     <div id="list-view" class="tab-content active">
                         <div class="appointments-list">
-                            <!-- Appointment Item 1 -->
-                            <div class="appointment-item">
-                                <div class="appointment-date">
-                                    <div class="appointment-date-day">24</div>
-                                    <div class="appointment-date-month">Mar</div>
-                                </div>
-                                <div class="appointment-details">
-                                    <div class="appointment-title-wrapper">
-                                        <div class="appointment-title">General Checkup</div>
-                                        <span class="appointment-badge badge-confirmed">Confirmed</span>
-                                    </div>
-                                    <div class="appointment-info">
-                                        <span><i class="fas fa-clock"></i> 10:00 AM</span>
-                                        <span><i class="fas fa-user-md"></i> Dr. Sarah Johnson</span>
-                                    </div>
-                                </div>
-                                <div class="appointment-actions">
-                                    <button class="btn btn-outline">Reschedule</button>
-                                    <button class="btn-icon-sm">
-                                        <i class="fas fa-video"></i>
-                                    </button>
-                                    <div class="dropdown">
-                                        <button class="btn-ghost btn-icon-sm dropdown-toggle">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
-                                            <a href="edit-appointment.html?id=1" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
-                                            <a href="#" class="dropdown-item"><i class="fas fa-video"></i> Join Virtual</a>
-                                            <a href="#" class="dropdown-item text-danger"><i class="fas fa-times-circle"></i> Cancel Appointment</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Appointment Item 2 -->
-                            <div class="appointment-item">
-                                <div class="appointment-date">
-                                    <div class="appointment-date-day">30</div>
-                                    <div class="appointment-date-month">Mar</div>
-                                </div>
-                                <div class="appointment-details">
-                                    <div class="appointment-title-wrapper">
-                                        <div class="appointment-title">Follow-up Consultation</div>
-                                        <span class="appointment-badge badge-confirmed">Confirmed</span>
-                                    </div>
-                                    <div class="appointment-info">
-                                        <span><i class="fas fa-clock"></i> 2:30 PM</span>
-                                        <span><i class="fas fa-user-md"></i> Dr. Michael Chen</span>
-                                    </div>
-                                </div>
-                                <div class="appointment-actions">
-                                    <button class="btn btn-outline">Reschedule</button>
-                                    <button class="btn-icon-sm">
-                                        <i class="fas fa-video"></i>
-                                    </button>
-                                    <div class="dropdown">
-                                        <button class="btn-ghost btn-icon-sm dropdown-toggle">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="appointment-details.html?id=2" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
-                                            <a href="edit-appointment.html?id=2" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
-                                            <a href="#" class="dropdown-item"><i class="fas fa-video"></i> Join Virtual</a>
-                                            <a href="#" class="dropdown-item text-danger"><i class="fas fa-times-circle"></i> Cancel Appointment</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- Appointment Item 3 -->
                             @foreach ($appointments as $appointment)
@@ -273,7 +204,23 @@
                                         <div class="dropdown-menu">
                                             <a href="{{ route('patient.patient_crud.show', $appointment->id) }}" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
                                             <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
-                                            <a href="#" class="dropdown-item text-danger"><i class="fas fa-times-circle"></i> Cancel Appointment</a>
+                                            
+                                            <!-- Cancel Appointment Link with Confirmation -->
+                                            <a href="#" class="dropdown-item text-danger"
+                                                onclick="event.preventDefault(); 
+                                                        if (confirm('Are you sure you want to cancel this appointment?')) {
+                                                            document.getElementById('cancel-appointment-form-{{ $appointment->id }}').submit();
+                                                        }">
+                                                <i class="fas fa-times-circle"></i> Cancel Appointment
+                                            </a>
+
+                                            <!-- Hidden Delete Form with UNIQUE ID -->
+                                            <form id="cancel-appointment-form-{{ $appointment->id }}" action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+
+
                                         </div>
                                     </div>
                                 </div>

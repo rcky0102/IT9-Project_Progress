@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
     Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
-
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 
 
     // Admin routes

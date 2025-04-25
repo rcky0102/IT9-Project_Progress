@@ -13,7 +13,9 @@ class AppointmentController extends Controller
 {
     $appointments = Appointment::orderBy('appointment_date', 'asc')->get();
 
-    return view('patient.appointment', compact('appointments'));
+    $appointmentsCount = $appointments->count();
+
+    return view('patient.appointment', compact('appointments', 'appointmentsCount'));
 }
 
     public function create()
@@ -91,6 +93,18 @@ class AppointmentController extends Controller
         return redirect()->route('patient.patient_crud.show', $appointment->id)
                          ->with('success', 'Appointment updated successfully!');
     }
+
+    public function destroy($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+
+        return redirect()->route('patient.appointments')
+                        ->with('success', 'Appointment cancelled successfully!');
+    }
+
+
+    
     
 
 
