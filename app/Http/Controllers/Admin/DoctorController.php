@@ -35,7 +35,7 @@ class DoctorController extends Controller
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'role' => 'doctor', // Always create as doctor
+            'role' => 'doctor', 
             'password' => Hash::make($request->password),
         ]);
 

@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
     
+    Route::get('/patient/patient_crud/create', [AppointmentController::class, 'create'])->name('patient.patient_crud.create');
+    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         // Admin dashboard
