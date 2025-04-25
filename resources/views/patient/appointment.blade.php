@@ -215,19 +215,35 @@
                             </div>
 
                             <!-- Appointment Item 3 -->
+                            @foreach ($appointments as $appointment)
+                            @php
+                                $day = \Carbon\Carbon::parse($appointment->appointment_date)->format('d');
+                                $month = \Carbon\Carbon::parse($appointment->appointment_date)->format('M');
+                                $time = \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A');
+                        
+                                // Optional: Map values if you want full names
+                                $doctorNames = [
+                                    'dr-johnson' => 'Dr. Sarah Johnson',
+                                    'dr-chen' => 'Dr. Michael Chen',
+                                    'dr-rodriguez' => 'Dr. Emily Rodriguez',
+                                    'dr-patel' => 'Dr. Raj Patel',
+                                    'dr-williams' => 'Dr. James Williams',
+                                ];
+                            @endphp
+                        
                             <div class="appointment-item">
                                 <div class="appointment-date">
-                                    <div class="appointment-date-day">05</div>
-                                    <div class="appointment-date-month">Apr</div>
+                                    <div class="appointment-date-day">{{ $day }}</div>
+                                    <div class="appointment-date-month">{{ $month }}</div>
                                 </div>
                                 <div class="appointment-details">
                                     <div class="appointment-title-wrapper">
-                                        <div class="appointment-title">Dental Cleaning</div>
+                                        <div class="appointment-title">{{ ucfirst(str_replace('-', ' ', $appointment->appointment_type)) }}</div>
                                         <span class="appointment-badge badge-pending">Pending</span>
                                     </div>
                                     <div class="appointment-info">
-                                        <span><i class="fas fa-clock"></i> 9:15 AM</span>
-                                        <span><i class="fas fa-user-md"></i> Dr. Emily Rodriguez</span>
+                                        <span><i class="fas fa-clock"></i> {{ $time }}</span>
+                                        <span><i class="fas fa-user-md"></i> {{ $doctorNames[$appointment->doctor] ?? $appointment->doctor }}</span>
                                     </div>
                                 </div>
                                 <div class="appointment-actions">
@@ -237,15 +253,15 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="appointment-details.html?id=3" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
-                                            <a href="edit-appointment.html?id=3" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
+                                            <a href="{{ url('appointment-details?id=' . $appointment->id) }}" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
+                                            <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
                                             <a href="#" class="dropdown-item text-danger"><i class="fas fa-times-circle"></i> Cancel Appointment</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        @endforeach
+                        
 
                     <!-- Calendar View Tab -->
                     <div id="calendar-view" class="tab-content">

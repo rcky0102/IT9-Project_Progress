@@ -51,7 +51,7 @@
                         <i class="fas fa-chart-line"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="index.html" class="sidebar-item active">
+                    <a href="{{ route('patient.appointments') }}" class="sidebar-item active">
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
                     </a>
@@ -223,7 +223,7 @@
 
                         <!-- Form Actions -->
                         <div class="form-actions">
-                            <a href="index.html" class="btn btn-outline">Cancel</a>
+                            <a href="{{ route('patient.appointments') }}" class="btn btn-outline">Cancel</a>
                             <button type="submit" class="btn btn-primary">Schedule Appointment</button>
                         </div>
                     </form>

@@ -9,10 +9,12 @@ use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function index()
-    {
-        return view('patient.appointment');
-    }
+ public function index()
+{
+    $appointments = Appointment::orderBy('appointment_date', 'asc')->get();
+
+    return view('patient.appointment', compact('appointments'));
+}
 
     public function create()
     {
@@ -44,4 +46,6 @@ class AppointmentController extends Controller
     
         return redirect()->back()->with('success', 'Appointment successfully scheduled!');
     }
+
+
 }
