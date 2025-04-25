@@ -265,7 +265,7 @@
                                     </div>
                                 </div>
                                 <div class="appointment-actions">
-                                    <button class="btn btn-outline">Confirm</button>
+                                    {{-- <button class="btn btn-outline">Confirm</button> --}}
                                     <div class="dropdown">
                                         <button class="btn-ghost btn-icon-sm dropdown-toggle">
                                             <i class="fas fa-ellipsis-v"></i>

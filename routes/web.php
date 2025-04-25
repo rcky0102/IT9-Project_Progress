@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
-    Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('patient.appointment.update');
+    Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
 
 
 
