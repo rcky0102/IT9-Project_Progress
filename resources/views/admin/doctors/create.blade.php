@@ -5,143 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Doctor Account</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* You can reuse the styles from your admin dashboard */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
+    <link rel="stylesheet" href="{{ asset('css/admin-doctor.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/admin-doctor-create.css')}}">
 
-        :root {
-            --primary: #004258;
-            --primary-light: #5a7d8c;
-            --primary-dark: #00354a;
-            --accent: rgba(90, 125, 140, 0.7);
-            --text: #333;
-            --text-light: #777;
-            --danger: #e74c3c;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --info: #3498db;
-            --border-radius: 24px;
-            --border-radius-sm: 12px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            background-color: #f5f5f5;
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Form Styles */
-        .form-container {
-            max-width: 800px;
-            margin: 30px auto;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 30px;
-        }
-
-        .form-title {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--text);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: var(--border-radius-sm);
-            font-size: 16px;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(0, 66, 88, 0.1);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(0, 66, 88, 0.05);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .validation-error {
-            color: var(--danger);
-            font-size: 14px;
-            margin-top: 5px;
-        }
-    </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Include your header and sidebar here -->
+        
+        <header class="dashboard-header">
+            <a href="{{ route('admin.dashboard') }}" class="logo">MediCare Clinic</a>
+            <div class="header-actions">
+                <button class="btn-icon notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">5</span>
+                </button>
+                <div class="dropdown">
+                    <button class="avatar-btn">
+                        <div class="avatar">
+                            <span class="avatar-fallback">{{ substr(Auth::user()->first_name, 0, 1) }}{{ substr(Auth::user()->last_name, 0, 1) }}</span>
+                        </div>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <p class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</p>
+                            <p class="user-email">{{ Auth::user()->email }}</p>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                        <a href="{{ route('admin.settings.index') }}" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <form action="{{ route('logout') }}" method="POST" class="dropdown-item text-danger">
+                            @csrf
+                            <button type="submit" style="background: none; border: none; color: inherit; padding: 0; font: inherit; cursor: pointer; display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="{{ route('admin.dashboard') }}" class="sidebar-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="{{ route('admin.users.index') }}" class="sidebar-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                    <a href="{{ route('admin.doctors.index') }}" class="sidebar-item active">
+                        <i class="fas fa-user-md"></i>
+                        <span>Doctors</span>
+                    </a>
+                    <a href="{{ route('admin.appointments.index') }}" class="sidebar-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Appointments</span>
+                    </a>
+                    <a href="{{ route('admin.services.index') }}" class="sidebar-item">
+                        <i class="fas fa-file-medical"></i>
+                        <span>Services</span>
+                    </a>
+                    <a href="{{ route('admin.billing.index') }}" class="sidebar-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Billing</span>
+                    </a>
+                    <a href="{{ route('admin.reports.index') }}" class="sidebar-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="{{ route('admin.settings.index') }}" class="sidebar-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="sidebar-item text-danger" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </aside>
         
         <main class="main-content">
             <div class="form-container">
@@ -177,12 +125,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="specialization" class="form-label">Specialization </label>
-                        <input type="text" id="specialization" name="specialization" class="form-input" value="{{ old('specialization') }}">
-                        @error('specialization')
+                        <label for="specialization_id" class="form-label">Specialization</label>
+                        <select id="specialization_id" name="specialization_id" class="form-input">
+                            <option value="">Select Specialization</option>
+                            @foreach($specializations as $specialization)
+                                <option value="{{ $specialization->id }}" {{ old('specialization_id') == $specialization->id ? 'selected' : '' }}>
+                                    {{ $specialization->specialization_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('specialization_id')
                             <div class="validation-error">{{ $message }}</div>
                         @enderror
                     </div>
+                    
                     
                     <div class="form-group">
                         <label for="email" class="form-label">Email Address</label>

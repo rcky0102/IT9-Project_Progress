@@ -164,118 +164,32 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Department</th>
-                                    {{-- <th>Doctors Count</th> --}}
                                     <th>Description</th>
-                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>General Medicine</td>
-                                    <td>Internal Medicine</td>
-                                    <td>8</td>
-                                    <td>Primary healthcare and general medical services</td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="specializations-edit.html?id=1" class="btn-icon edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-icon delete-btn" data-id="1">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cardiology</td>
-                                    <td>Internal Medicine</td>
-                                    <td>5</td>
-                                    <td>Diagnosis and treatment of heart conditions</td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="specializations-edit.html?id=2" class="btn-icon edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-icon delete-btn" data-id="2">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Dentistry</td>
-                                    <td>Dental Care</td>
-                                    <td>6</td>
-                                    <td>Oral health and dental procedures</td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="specializations-edit.html?id=3" class="btn-icon edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-icon delete-btn" data-id="3">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Pediatrics</td>
-                                    <td>Child Health</td>
-                                    <td>7</td>
-                                    <td>Medical care for infants, children, and adolescents</td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="specializations-edit.html?id=4" class="btn-icon edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-icon delete-btn" data-id="4">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Orthopedics</td>
-                                    <td>Surgery</td>
-                                    <td>4</td>
-                                    <td>Treatment of musculoskeletal system</td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="specializations-edit.html?id=5" class="btn-icon edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-icon delete-btn" data-id="5">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Neurology</td>
-                                    <td>Neuroscience</td>
-                                    <td>3</td>
-                                    <td>Diagnosis and treatment of nervous system disorders</td>
-                                    <td><span class="badge badge-warning">Inactive</span></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="specializations-edit.html?id=6" class="btn-icon edit-btn">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn-icon delete-btn" data-id="6">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach($specializations as $specialization)
+                                    <tr>
+                                        <td>{{ $specialization->specialization_name }}</td>
+                                        <td>{{ $specialization->department->department_name }}</td>
+                                        <td>{{ $specialization->description }}</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="#" class="btn-icon edit-btn">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button class="btn-icon delete-btn" data-id="{{ $specialization->id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
+                    
 
                     <!-- Pagination -->
                     <div class="pagination">
