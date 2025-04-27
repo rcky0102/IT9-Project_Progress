@@ -5,7 +5,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\Settings\DepartmentController;
+use App\Http\Controllers\Admin\Settings\SpecializationController;
 use App\Http\Controllers\Patient\AppointmentController;
+
+use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -71,6 +75,7 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+
         // Admin dashboard
         Route::get('/dashboard', function () {
             if (Auth::user()->role !== 'admin') {
@@ -79,9 +84,6 @@ Route::middleware('auth')->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
-
-        Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
-        
         // Users management
         Route::get('/users', function () {
             if (Auth::user()->role !== 'admin') {
@@ -172,5 +174,27 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.settings.index');
         })->name('settings.index');
+
+
+
+
+
+
+
+        Route::prefix('settings')->name('settings.')->group(function () {
+
+            Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
+
+                Route::get('/settings/departments', [DepartmentController::class, 'index'])->name('departments.index');;
+                Route::get('/settings/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+                Route::post('/settings/departments', [DepartmentController::class, 'store'])->name('departments.store');
+
+                Route::get('/settings/specializations', [SpecializationController::class, 'index'])->name('specializations.index');;
+                Route::get('/settings/specializations/create', [SpecializationController::class, 'create'])->name('specializations.create');
+                Route::post('/settings/specializations', [SpecializationController::class, 'store'])->name('specializations.store');
+        
+        });
     });
+
 });
+        
