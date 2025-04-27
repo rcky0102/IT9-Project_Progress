@@ -46,7 +46,7 @@
             <!-- Admin Sidebar -->
             <aside class="sidebar">
                 <nav class="sidebar-nav">
-                    <a href="admin-dashboard.html" class="sidebar-item">
+                    <a href="{{ route('dashboard') }}" class="sidebar-item">
                         <i class="fas fa-chart-line"></i>
                         <span>Dashboard</span>
                     </a>

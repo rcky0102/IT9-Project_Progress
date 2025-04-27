@@ -103,10 +103,19 @@
                 </div>
                 
                 @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
+                    <div id="flash-message" class="flash-message">
+                        <i class="fas fa-check-circle"></i> {{ session('success') }}
                     </div>
                 @endif
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const flash = document.getElementById('flash-message');
+                        if (flash) {
+                            setTimeout(() => flash.remove(), 3500);
+                        }
+                    });
+                </script>
                 
                 <div class="filters-container">
                     <div class="search-box">
