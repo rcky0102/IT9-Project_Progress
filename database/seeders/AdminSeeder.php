@@ -17,13 +17,13 @@ class AdminSeeder extends Seeder
     public function run()
     {
         // First check if admin already exists to avoid duplicates
-        if (!User::where('email', 'admin@medicare.com')->exists()) {
+        if (!User::where('email', 'admin@gmail.com')->exists()) {
             User::create([
                 'first_name' => 'Admin',
                 'middle_name' => '',
                 'last_name' => 'User',
-                'email' => 'admin@medicare.com',
-                'password' => Hash::make('password'),
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make('123'),
                 'role' => 'admin',
             ]);
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Patient\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -77,6 +78,9 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.dashboard');
         })->name('dashboard');
+
+
+        Route::get('/admin/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
         
         // Users management
         Route::get('/users', function () {

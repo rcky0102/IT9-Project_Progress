@@ -175,6 +175,14 @@
                             <div class="validation-error">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="form-group">
+                        <label for="specialization" class="form-label">Specialization </label>
+                        <input type="text" id="specialization" name="specialization" class="form-input" value="{{ old('specialization') }}">
+                        @error('specialization')
+                            <div class="validation-error">{{ $message }}</div>
+                        @enderror
+                    </div>
                     
                     <div class="form-group">
                         <label for="email" class="form-label">Email Address</label>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,6 +29,7 @@ class DoctorController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'specialization' => 'required|string|max:255',
         ]);
 
         $user = User::create([
@@ -37,6 +39,11 @@ class DoctorController extends Controller
             'email' => $request->email,
             'role' => 'doctor', 
             'password' => Hash::make($request->password),
+        ]);
+
+        Doctor::create([
+            'user_id' => $user->id,
+            'specialization' => $request['specialization'],
         ]);
 
         return redirect()->route('admin.doctors.index')
