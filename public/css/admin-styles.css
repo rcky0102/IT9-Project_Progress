@@ -739,6 +739,60 @@
     .action-buttons {
       flex-direction: column;
     }
+
+    .form-section {
+      margin-bottom: 30px;
+      background-color: white;
+      border-radius: var(--border-radius-sm);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    .form-section-title {
+        color: var(--primary);
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .form-col {
+        flex: 1;
+        min-width: 250px;
+    }
+    
+    .required-field::after {
+        content: '*';
+        color: var(--danger);
+        margin-left: 5px;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+    
+    .form-text {
+        color: var(--text-light);
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+    
+    /* Ensure select[multiple] looks consistent */
+    select[multiple] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        min-height: 100px;
+    }
   }
   
 
