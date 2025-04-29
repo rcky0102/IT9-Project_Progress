@@ -85,6 +85,9 @@
                 <div class="card">
                     <form class="p-4" action="{{ route('appointments.store') }}" method="POST">
                         @csrf
+                        <!-- Hidden User ID Field -->
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    
                         <!-- Appointment Type -->
                         <div class="form-group">
                             <label for="appointmentType" class="form-label">Appointment Type</label>
@@ -98,7 +101,7 @@
                                 <option value="physical-therapy">Physical Therapy</option>
                             </select>
                         </div>
-
+                    
                         <!-- Doctor Selection -->
                         <div class="form-group">
                             <label for="doctor" class="form-label">Select Doctor</label>
@@ -111,16 +114,17 @@
                                 <option value="dr-williams">Dr. James Williams - Orthopedics</option>
                             </select>
                         </div>
-
+                    
                         <!-- Date Selection -->
                         <div class="form-group">
                             <label for="date" class="form-label">Appointment Date</label>
                             <div class="date-picker-wrapper">
                                 <input type="text" id="date" name="date" class="date-picker-input" placeholder="Select a date" readonly required>
                                 <i class="fas fa-calendar-alt date-picker-icon"></i>
-                                
-                                <!-- Calendar Popup (simplified) -->
+                                <!-- Calendar Popup -->
                                 <div class="calendar-popup" id="calendarPopup">
+                                    <!-- Calendar structure -->
+
                                     <div class="calendar-header">
                                         <span class="calendar-title">April 2025</span>
                                         <div class="calendar-nav">
@@ -186,12 +190,14 @@
                                 </div>
                             </div>
                         </div>
-
+                    
                         <!-- Time Selection -->
                         <div class="form-group">
                             <label for="time" class="form-label">Preferred Time</label>
                             <select id="time" name="time" class="form-select" required>
                                 <option value="" selected disabled>Select a time slot</option>
+                                <!-- Time options -->
+
                                 <option value="9:00">9:00 AM</option>
                                 <option value="9:30">9:30 AM</option>
                                 <option value="10:00">10:00 AM</option>
@@ -208,25 +214,26 @@
                                 <option value="4:30">4:30 PM</option>
                             </select>
                         </div>
-
+                    
                         <!-- Reason for Visit -->
                         <div class="form-group">
                             <label for="reason" class="form-label">Reason for Visit</label>
                             <textarea id="reason" name="reason" class="form-textarea" placeholder="Please describe your symptoms or reason for the appointment" required></textarea>
                         </div>
-
+                    
                         <!-- Additional Notes -->
                         <div class="form-group">
                             <label for="notes" class="form-label">Additional Notes (Optional)</label>
                             <textarea id="notes" name="notes" class="form-textarea" placeholder="Any additional information you'd like to share"></textarea>
                         </div>
-
+                    
                         <!-- Form Actions -->
                         <div class="form-actions">
                             <a href="{{ route('patient.appointments') }}" class="btn btn-outline">Cancel</a>
                             <button type="submit" class="btn btn-primary">Schedule Appointment</button>
                         </div>
                     </form>
+                    
                 </div>
             </main>
         </div>
