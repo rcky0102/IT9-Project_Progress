@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
 use App\Http\Controllers\Patient\AppointmentController;
@@ -185,6 +186,10 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 
+                Route::get('/settings/appointment_types', [AppointmentTypeController::class, 'index'])->name('appointment_types.index');;
+                Route::get('/settings/appointment_types/create', [AppointmentTypeController::class, 'create'])->name('appointment_types.create');
+                Route::post('/settings/appointment_types', [AppointmentTypeController::class, 'store'])->name('appointment_types.store');
+ 
                 Route::get('/settings/departments', [DepartmentController::class, 'index'])->name('departments.index');;
                 Route::get('/settings/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
                 Route::post('/settings/departments', [DepartmentController::class, 'store'])->name('departments.store');
@@ -193,7 +198,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/settings/specializations/create', [SpecializationController::class, 'create'])->name('specializations.create');
                 Route::post('/settings/specializations', [SpecializationController::class, 'store'])->name('specializations.store');
         
-        });
+        });  
     });
 
 });

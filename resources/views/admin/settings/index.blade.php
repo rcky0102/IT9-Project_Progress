@@ -101,7 +101,7 @@
                         <i class="fas fa-user-shield"></i>
                         <span>User Permissions</span>
                     </a>
-                    <a href="#" class="settings-nav-item">
+                    <a href="{{ route('admin.settings.appointment_types.index')}}" class="settings-nav-item">
                         <i class="fas fa-list-alt"></i>
                         <span>Appointment Types</span>
                     </a>

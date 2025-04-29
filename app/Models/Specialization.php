@@ -19,4 +19,10 @@ class Specialization extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function appointmentTypes()
+    {
+        return $this->belongsToMany(AppointmentType::class);
+    }
+
 }
