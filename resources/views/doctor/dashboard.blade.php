@@ -765,7 +765,7 @@
                         <i class="fas fa-pills"></i>
                         <span>Prescriptions</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('doctor.schedules') }}" class="sidebar-item">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Schedule</span>
                     </a>

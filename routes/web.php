@@ -8,8 +8,9 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
+use App\Http\Controllers\Doctor\ScheduleController;
 use App\Http\Controllers\Patient\AppointmentController;
-
+use App\Models\Appointment;
 use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -56,10 +57,18 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('login')->with('error', 'Role not defined.');
     })->name('dashboard');
 
+
+    /* doctor's route */
     Route::get('/doctor/dashboard', function () {
         return view('doctor.dashboard');
     })->name('doctor.dashboard');
 
+    Route::get('/doctor/schedules', [ScheduleController::class, 'index'])->name('doctor.schedules');
+    Route::get('/doctor/schedule-create', [ScheduleController::class, 'create'])->name('doctor.schedule-create');
+    Route::post('/doctor/schedules', [ScheduleController::class, 'store'])->name('doctor.schedule-store');
+
+
+    /* patient's route */
     Route::get('/patient/dashboard', function () {
         return view('patient.dashboard');
     })->name('patient.dashboard');
