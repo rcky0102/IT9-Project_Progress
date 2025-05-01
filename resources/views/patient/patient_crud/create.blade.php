@@ -105,109 +105,28 @@
                             <label for="doctor" class="form-label">Select Doctor</label>
                             <select id="doctor" name="doctor" class="form-select" required>
                                 <option value="" selected disabled>Select a doctor</option>
-                            </select>
-                            
+                            </select>   
+                            <div id="doctor-availability" class="mt-3">
+                                <!-- Availability details will be inserted here -->
+                            </div>
+                              
                         </div>
+
+                        
                     
-                        <!-- Date Selection -->
+                      <!-- Date Selection -->
                         <div class="form-group">
                             <label for="date" class="form-label">Appointment Date</label>
-                            <div class="date-picker-wrapper">
-                                <input type="text" id="date" name="date" class="date-picker-input" placeholder="Select a date" readonly required>
-                                <i class="fas fa-calendar-alt date-picker-icon"></i>
-                                <!-- Calendar Popup -->
-                                <div class="calendar-popup" id="calendarPopup">
-                                    <!-- Calendar structure -->
-
-                                    <div class="calendar-header">
-                                        <span class="calendar-title">April 2025</span>
-                                        <div class="calendar-nav">
-                                            <button type="button" class="calendar-nav-btn">
-                                                <i class="fas fa-chevron-left"></i>
-                                            </button>
-                                            <button type="button" class="calendar-nav-btn">
-                                                <i class="fas fa-chevron-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="calendar-grid">
-                                        <!-- Weekdays -->
-                                        <div class="calendar-weekday">Sun</div>
-                                        <div class="calendar-weekday">Mon</div>
-                                        <div class="calendar-weekday">Tue</div>
-                                        <div class="calendar-weekday">Wed</div>
-                                        <div class="calendar-weekday">Thu</div>
-                                        <div class="calendar-weekday">Fri</div>
-                                        <div class="calendar-weekday">Sat</div>
-                                        
-                                        <!-- Days (simplified) -->
-                                        <div class="calendar-day disabled">30</div>
-                                        <div class="calendar-day disabled">31</div>
-                                        <div class="calendar-day">1</div>
-                                        <div class="calendar-day">2</div>
-                                        <div class="calendar-day">3</div>
-                                        <div class="calendar-day">4</div>
-                                        <div class="calendar-day disabled">5</div>
-                                        
-                                        <div class="calendar-day disabled">6</div>
-                                        <div class="calendar-day">7</div>
-                                        <div class="calendar-day">8</div>
-                                        <div class="calendar-day">9</div>
-                                        <div class="calendar-day">10</div>
-                                        <div class="calendar-day">11</div>
-                                        <div class="calendar-day disabled">12</div>
-                                        
-                                        <div class="calendar-day disabled">13</div>
-                                        <div class="calendar-day">14</div>
-                                        <div class="calendar-day">15</div>
-                                        <div class="calendar-day">16</div>
-                                        <div class="calendar-day">17</div>
-                                        <div class="calendar-day">18</div>
-                                        <div class="calendar-day disabled">19</div>
-                                        
-                                        <div class="calendar-day disabled">20</div>
-                                        <div class="calendar-day today">21</div>
-                                        <div class="calendar-day">22</div>
-                                        <div class="calendar-day">23</div>
-                                        <div class="calendar-day selected">24</div>
-                                        <div class="calendar-day">25</div>
-                                        <div class="calendar-day disabled">26</div>
-                                        
-                                        <div class="calendar-day disabled">27</div>
-                                        <div class="calendar-day">28</div>
-                                        <div class="calendar-day">29</div>
-                                        <div class="calendar-day">30</div>
-                                        <div class="calendar-day">1</div>
-                                        <div class="calendar-day">2</div>
-                                        <div class="calendar-day">3</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="date" id="date" name="date" class="form-control" required>
                         </div>
+
                     
-                        <!-- Time Selection -->
-                        <div class="form-group">
-                            <label for="time" class="form-label">Preferred Time</label>
-                            <select id="time" name="time" class="form-select" required>
-                                <option value="" selected disabled>Select a time slot</option>
-                                <!-- Time options -->
+                      <!-- Time Selection -->
+                            <div class="form-group">
+                                <label for="time" class="form-label">Preferred Time</label>
+                                <input type="time" id="time" name="time" class="form-control" required>
+                            </div>
 
-                                <option value="9:00">9:00 AM</option>
-                                <option value="9:30">9:30 AM</option>
-                                <option value="10:00">10:00 AM</option>
-                                <option value="10:30">10:30 AM</option>
-                                <option value="11:00">11:00 AM</option>
-                                <option value="11:30">11:30 AM</option>
-                                <option value="1:00">1:00 PM</option>
-                                <option value="1:30">1:30 PM</option>
-                                <option value="2:00">2:00 PM</option>
-                                <option value="2:30">2:30 PM</option>
-                                <option value="3:00">3:00 PM</option>
-                                <option value="3:30">3:30 PM</option>
-                                <option value="4:00">4:00 PM</option>
-                                <option value="4:30">4:30 PM</option>
-                            </select>
-                        </div>
                     
                         <!-- Reason for Visit -->
                         <div class="form-group">
@@ -316,8 +235,8 @@
                     const fullName = `${doctor.user?.first_name ?? ''} ${doctor.user?.middle_name ?? ''} ${doctor.user?.last_name ?? ''}`.trim();
 
                     const specialization = doctor.specialization?.specialization_name || '';
-const option = new Option(`Dr. ${fullName} - ${specialization}`, doctor.id);
-doctorSelect.appendChild(option);
+                    const option = new Option(`Dr. ${fullName} - ${specialization}`, doctor.id);
+                    doctorSelect.appendChild(option);
 
                 });
             })
@@ -326,6 +245,42 @@ doctorSelect.appendChild(option);
             });
     });
         });
+
+        document.getElementById('doctor').addEventListener('change', function () {
+        const doctorId = this.value;
+        const availabilityDiv = document.getElementById('doctor-availability');
+        availabilityDiv.innerHTML = 'Loading availability...';
+
+        fetch(`/doctor/${doctorId}/availability`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    availabilityDiv.innerHTML = '<p class="text-red-600">No availability found for this doctor.</p>';
+                    return;
+                }
+
+                let html = '<h4 class="font-semibold mb-2">Availability:</h4><ul class="list-disc pl-6">';
+                data.forEach(slot => {
+                    html += `<li>
+                        <strong>${slot.name}</strong> - ${slot.day}: 
+                        ${formatTime(slot.start_time)} - ${formatTime(slot.end_time)} 
+                        (${slot.status})
+                    </li>`;
+                });
+                html += '</ul>';
+                availabilityDiv.innerHTML = html;
+            })
+            .catch(() => {
+                availabilityDiv.innerHTML = '<p class="text-red-600">Failed to load availability.</p>';
+            });
+    });
+
+    function formatTime(timeStr) {
+        const [hour, minute, second] = timeStr.split(':');
+        const date = new Date();
+        date.setHours(hour, minute);
+        return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    }
     </script>
 </body>
 </html>

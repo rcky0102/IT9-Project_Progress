@@ -76,10 +76,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
    
     Route::get('/get-doctors/{appointmentType}', [AppointmentController::class, 'getDoctorsByType']);
+    Route::get('/doctor/{doctorId}/availability', [AppointmentController::class, 'getDoctorAvailability']);
+
 
     
     Route::get('/patient/patient_crud/create', [AppointmentController::class, 'create'])->name('patient.patient_crud.create');
-    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::post('patient/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
     Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');

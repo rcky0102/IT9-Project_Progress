@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\AppointmentType;
 use App\Models\Doctor;
+use App\Models\Availability;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +19,25 @@ class AppointmentController extends Controller
         $appointments = Appointment::where('user_id', Auth::id())
             ->orderBy('appointment_date', 'asc')
             ->get();
-
+    
+        // Count the number of appointments
         $appointmentsCount = $appointments->count();
-
-        return view('patient.appointments', compact('appointments', 'appointmentsCount'));
+    
+        // Retrieve doctors with the related user model to get the full name
+        $doctorNames = Doctor::with('user')  // Eager load the user relationship
+            ->get()
+            ->mapWithKeys(function ($doctor) {
+                // Dynamically create full_name using the user's name attributes
+                return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
+            });
+    
+        return view('patient.appointments', compact('appointments', 'appointmentsCount', 'doctorNames'));
     }
+    
+    
+    
+    
+    
 
     public function create()
     {
@@ -65,6 +80,14 @@ class AppointmentController extends Controller
             ->get();
     
         return response()->json($doctors);
+    }
+    
+
+    public function getDoctorAvailability($doctorId)
+    {
+        $availabilities = Availability::where('doctor_id', $doctorId)->get();
+    
+        return response()->json($availabilities);
     }
     
 

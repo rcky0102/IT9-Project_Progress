@@ -192,8 +192,10 @@
                                     </div>
                                     <div class="appointment-info">
                                         <span><i class="fas fa-clock"></i> {{ $time }}</span>
-                                        <span><i class="fas fa-user-md"></i> {{ $doctorNames[$appointment->doctor] ?? $appointment->doctor }}</span>
+                                        <span><i class="fas fa-user-md"></i> {{ $doctorNames[$appointment->doctor_id] ?? $appointment->doctor_id }}</span>
                                     </div>
+                                    
+                                    
                                 </div>
                                 <div class="appointment-actions">
                                     {{-- <button class="btn btn-outline">Confirm</button> --}}

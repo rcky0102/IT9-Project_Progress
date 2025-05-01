@@ -30,8 +30,8 @@ class ScheduleController extends Controller
 {
     $request->validate([
         'availability-name' => 'required|string|max:255',
-        'effective-from' => 'required|date',
-        'effective-to' => 'nullable|date|after_or_equal:effective-from',
+        // 'effective-from' => 'required|date',
+        // 'effective-to' => 'nullable|date|after_or_equal:effective-from',
     ]);
     
     // Get the authenticated doctor
