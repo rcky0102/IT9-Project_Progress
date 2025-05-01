@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\AppointmentType;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
 {
@@ -18,39 +21,54 @@ class AppointmentController extends Controller
 
         $appointmentsCount = $appointments->count();
 
-        return view('patient.appointment', compact('appointments', 'appointmentsCount'));
+        return view('patient.appointments', compact('appointments', 'appointmentsCount'));
     }
 
     public function create()
     {
-        return view('patient.patient_crud.create');
+        $appointmentTypes = AppointmentType::with('specializations')->get();
+        return view('patient.patient_crud.create', compact('appointmentTypes'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'appointmentType' => 'required|string',
-            'doctor' => 'required|string',
-            'date' => 'required|string',
+            'appointmentType' => 'required|exists:appointment_types,id',
+            'doctor' => 'required|exists:doctors,id',
+            'date' => 'required|date',
             'time' => 'required',
             'reason' => 'required|string',
             'notes' => 'nullable|string',
         ]);
-
-        $formattedDate = Carbon::parse($validated['date'])->format('Y-m-d');
-
+        
         Appointment::create([
-            'user_id' => Auth::id(), // Store the user_id
-            'appointment_type' => $validated['appointmentType'],
-            'doctor' => $validated['doctor'],
-            'appointment_date' => $formattedDate,
+            'user_id' => Auth::id(),
+            'appointment_type_id' => $validated['appointmentType'],
+            'doctor_id' => $validated['doctor'],
+            'appointment_date' => Carbon::parse($validated['date'])->format('Y-m-d'),
             'appointment_time' => $validated['time'],
             'reason' => $validated['reason'],
             'notes' => $validated['notes'] ?? null,
         ]);
-
+        
+    
         return redirect()->route('patient.appointments')->with('success', 'Appointment successfully scheduled!');
     }
+
+    public function getDoctorsByType($appointmentTypeId)
+    {
+        $type = AppointmentType::with('specializations')->findOrFail($appointmentTypeId);
+        $specializationIds = $type->specializations->pluck('id');
+    
+        $doctors = Doctor::with(['user', 'specialization']) 
+            ->whereIn('specialization_id', $specializationIds)
+            ->get();
+    
+        return response()->json($doctors);
+    }
+    
+
+    
 
     public function show($id)
     {

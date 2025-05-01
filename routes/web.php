@@ -74,6 +74,9 @@ Route::middleware('auth')->group(function () {
     })->name('patient.dashboard');
 
     Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
+   
+    Route::get('/get-doctors/{appointmentType}', [AppointmentController::class, 'getDoctorsByType']);
+
     
     Route::get('/patient/patient_crud/create', [AppointmentController::class, 'create'])->name('patient.patient_crud.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');

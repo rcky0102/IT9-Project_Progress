@@ -93,26 +93,20 @@
                             <label for="appointmentType" class="form-label">Appointment Type</label>
                             <select id="appointmentType" name="appointmentType" class="form-select" required>
                                 <option value="" selected disabled>Select appointment type</option>
-                                <option value="general-checkup">General Checkup</option>
-                                <option value="follow-up">Follow-up Consultation</option>
-                                <option value="dental">Dental Cleaning</option>
-                                <option value="specialist">Specialist Consultation</option>
-                                <option value="vaccination">Vaccination</option>
-                                <option value="physical-therapy">Physical Therapy</option>
+                                @foreach ($appointmentTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endforeach
                             </select>
+                            
                         </div>
                     
                         <!-- Doctor Selection -->
                         <div class="form-group">
                             <label for="doctor" class="form-label">Select Doctor</label>
                             <select id="doctor" name="doctor" class="form-select" required>
-                                <option value="" selected disabled>Choose a healthcare provider</option>
-                                <option value="dr-johnson">Dr. Sarah Johnson - General Medicine</option>
-                                <option value="dr-chen">Dr. Michael Chen - Cardiology</option>
-                                <option value="dr-rodriguez">Dr. Emily Rodriguez - Dentistry</option>
-                                <option value="dr-patel">Dr. Raj Patel - Pediatrics</option>
-                                <option value="dr-williams">Dr. James Williams - Orthopedics</option>
+                                <option value="" selected disabled>Select a doctor</option>
                             </select>
+                            
                         </div>
                     
                         <!-- Date Selection -->
@@ -240,6 +234,8 @@
     </div>
 
     <script>
+
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Date picker functionality
             const dateInput = document.getElementById('date');
@@ -304,6 +300,31 @@
                     menu.classList.remove('show');
                 });
             });
+
+            document.getElementById('appointmentType').addEventListener('change', function () {
+        const appointmentTypeId = this.value;
+        const doctorSelect = document.getElementById('doctor');
+
+        // Clear previous options
+        doctorSelect.innerHTML = '<option selected disabled>Loading...</option>';
+
+        fetch(`/get-doctors/${appointmentTypeId}`)
+            .then(response => response.json())
+            .then(doctors => {
+                doctorSelect.innerHTML = '<option selected disabled>Select a doctor</option>';
+                doctors.forEach(doctor => {
+                    const fullName = `${doctor.user?.first_name ?? ''} ${doctor.user?.middle_name ?? ''} ${doctor.user?.last_name ?? ''}`.trim();
+
+                    const specialization = doctor.specialization?.specialization_name || '';
+const option = new Option(`Dr. ${fullName} - ${specialization}`, doctor.id);
+doctorSelect.appendChild(option);
+
+                });
+            })
+            .catch(() => {
+                doctorSelect.innerHTML = '<option selected disabled>Error loading doctors</option>';
+            });
+    });
         });
     </script>
 </body>
