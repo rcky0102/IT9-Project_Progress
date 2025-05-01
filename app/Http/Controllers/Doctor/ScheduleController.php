@@ -55,8 +55,6 @@ class ScheduleController extends Controller
                     Availability::create([
                         'doctor_id' => $doctor->id, // Assign to the authenticated doctor
                         'name' => $request->input('availability-name'),
-                        'start_date' => $request->input('effective-from'),
-                        'end_date' => $request->input('effective-to'),
                         'day' => ucfirst($day),
                         'start_time' => $start,
                         'end_time' => $end,
@@ -69,6 +67,7 @@ class ScheduleController extends Controller
 
     return redirect()->route('doctor.schedules')->with('success', 'Availability created successfully.');
 }
+
 
     
 

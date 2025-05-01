@@ -226,7 +226,6 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Effective Period</th>
                                     <th>Working Days</th>
                                     <th>Hours</th>
                                     <th>Status</th>
@@ -237,15 +236,9 @@
                                 @foreach ($availabilities as $availability)
                                     <tr>
                                         <td>{{ $availability->name }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($availability->start_date)->format('M d, Y') }} - 
-                                            @if($availability->end_date)
-                                                {{ \Carbon\Carbon::parse($availability->end_date)->format('M d, Y') }}
-                                            @else
-                                                Indefinite
-                                            @endif
-                                        </td>
                                         <td>{{ $availability->day }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($availability->start_time)->format('g:i A') }} - 
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($availability->start_time)->format('g:i A') }} - 
                                             {{ \Carbon\Carbon::parse($availability->end_time)->format('g:i A') }}
                                         </td>
                                         <td>
@@ -271,6 +264,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        
                         
                     </div>
                 </div>

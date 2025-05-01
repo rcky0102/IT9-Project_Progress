@@ -117,7 +117,7 @@
                                    value="{{ old('availability-name') }}" required>
                         </div>
                     
-                        <div class="form-row d-flex gap-3">
+                        {{-- <div class="form-row d-flex gap-3">
                             <div class="form-group flex-fill">
                                 <label for="effective-from">Effective From*</label>
                                 <input type="date" id="effective-from" name="effective-from" class="form-control"
@@ -129,7 +129,7 @@
                                        value="{{ old('effective-to') }}">
                                 <small class="form-text">Leave blank for indefinite</small>
                             </div>
-                        </div>
+                        </div> --}}
                     
                         @php
                             $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];

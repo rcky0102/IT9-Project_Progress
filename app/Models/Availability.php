@@ -12,8 +12,6 @@ class Availability extends Model
     protected $fillable = [
         'doctor_id',
         'name',
-        'start_date',
-        'end_date',
         'day',
         'start_time',
         'end_time',
