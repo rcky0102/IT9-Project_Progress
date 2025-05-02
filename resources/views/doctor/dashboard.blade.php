@@ -761,7 +761,7 @@
                         <i class="fas fa-file-medical"></i>
                         <span>Medical Records</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('doctor.prescriptions') }}" class="sidebar-item">
                         <i class="fas fa-pills"></i>
                         <span>Prescriptions</span>
                     </a>

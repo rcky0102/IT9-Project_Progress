@@ -11,22 +11,13 @@ use App\Http\Controllers\Admin\Settings\SpecializationController;
 use App\Http\Controllers\Doctor\ScheduleController;
 use App\Http\Controllers\Doctor\DAppointmentController;
 use App\Http\Controllers\Doctor\PatientController;
+use App\Http\Controllers\Doctor\PrescriptionController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Models\Appointment;
 use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,6 +66,9 @@ Route::middleware('auth')->group(function () {
 
     /* Doctor-patients*/
     Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
+
+    /* Doctor-prescriptions*/
+    Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
     
 
 

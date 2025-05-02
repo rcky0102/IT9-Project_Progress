@@ -610,6 +610,33 @@ body {
     gap: 5px;
 }
 
+.appointment-badge {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-weight: 500;
+  }
+  
+  .badge-confirmed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success);
+  }
+  
+  .badge-pending {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: var(--warning);
+  }
+
+  .badge-completed {
+    background-color: #3b82f6; /* blue */
+    color: white;
+}
+  
+  .badge-cancelled {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--danger);
+  }
+
 .appointment-status {
     padding: 5px 10px;
     border-radius: 50px;
@@ -621,6 +648,7 @@ body {
     background-color: rgba(52, 152, 219, 0.1);
     color: var(--info);
 }
+
 
 .appointment-status.completed {
     background-color: rgba(46, 204, 113, 0.1);
@@ -2018,6 +2046,28 @@ input:checked + .slider:before {
       width: 100%;
     }
   }
+
+    .appointment-badge {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-weight: 500;
+  }
+  
+  .badge-confirmed {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success);
+  }
+  
+  .badge-pending {
+    background-color: rgba(243, 156, 18, 0.1);
+    color: var(--warning);
+  }
+
+  .badge-completed {
+    background-color: #3b82f6; /* blue */
+    color: white;
+}
   
 
 }
