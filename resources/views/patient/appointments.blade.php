@@ -169,15 +169,6 @@
                                 $day = \Carbon\Carbon::parse($appointment->appointment_date)->format('d');
                                 $month = \Carbon\Carbon::parse($appointment->appointment_date)->format('M');
                                 $time = \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A');
-                        
-                                // Optional: Map values if you want full names
-                                $doctorNames = [
-                                    'dr-johnson' => 'Dr. Sarah Johnson',
-                                    'dr-chen' => 'Dr. Michael Chen',
-                                    'dr-rodriguez' => 'Dr. Emily Rodriguez',
-                                    'dr-patel' => 'Dr. Raj Patel',
-                                    'dr-williams' => 'Dr. James Williams',
-                                ];
                             @endphp
                         
                             <div class="appointment-item">
@@ -187,47 +178,60 @@
                                 </div>
                                 <div class="appointment-details">
                                     <div class="appointment-title-wrapper">
-                                        <div class="appointment-title">{{ ucfirst(str_replace('-', ' ', $appointment->appointment_type)) }}</div>
-                                        <span class="appointment-badge badge-pending">Pending</span>
+                                        <div class="appointment-title">
+                                            {{ ucfirst(str_replace('-', ' ', optional($appointment->appointmentType)->name ?? 'Unknown Type')) }}
+                                        </div>
+                                        @php
+                                            $status = strtolower($appointment->status); 
+                                            $badgeClass = match ($status) {
+                                                'confirmed' => 'badge-confirmed',
+                                                'completed' => 'badge-completed',
+                                                'cancelled' => 'badge-cancelled',
+                                                default => 'badge-pending',
+                                            };
+                                        @endphp
+
+                                        <span class="appointment-badge {{ $badgeClass }}">
+                                            {{ ucfirst($status) }}
+                                        </span>
+
                                     </div>
                                     <div class="appointment-info">
                                         <span><i class="fas fa-clock"></i> {{ $time }}</span>
-                                        <span><i class="fas fa-user-md"></i> {{ $doctorNames[$appointment->doctor_id] ?? $appointment->doctor_id }}</span>
+                                        <span><i class="fas fa-user-md"></i> {{ $doctorNames[$appointment->doctor_id] ?? 'Unknown Doctor' }}</span>
                                     </div>
-                                    
-                                    
                                 </div>
                                 <div class="appointment-actions">
-                                    {{-- <button class="btn btn-outline">Confirm</button> --}}
                                     <div class="dropdown">
                                         <button class="btn-ghost btn-icon-sm dropdown-toggle">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="{{ route('patient.patient_crud.show', $appointment->id) }}" class="dropdown-item"><i class="fas fa-eye"></i> View Details</a>
-                                            <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Reschedule</a>
-                                            
-                                            <!-- Cancel Appointment Link with Confirmation -->
+                                            <a href="{{ route('patient.patient_crud.show', $appointment->id) }}" class="dropdown-item">
+                                                <i class="fas fa-eye"></i> View Details
+                                            </a>
+                                            <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item">
+                                                <i class="fas fa-calendar-alt"></i> Reschedule
+                                            </a>
                                             <a href="#" class="dropdown-item text-danger"
                                                 onclick="event.preventDefault(); 
-                                                        if (confirm('Are you sure you want to cancel this appointment?')) {
-                                                            document.getElementById('cancel-appointment-form-{{ $appointment->id }}').submit();
-                                                        }">
+                                                    if (confirm('Are you sure you want to cancel this appointment?')) {
+                                                        document.getElementById('cancel-appointment-form-{{ $appointment->id }}').submit();
+                                                    }">
                                                 <i class="fas fa-times-circle"></i> Cancel Appointment
                                             </a>
-
-                                            <!-- Hidden Delete Form with UNIQUE ID -->
-                                            <form id="cancel-appointment-form-{{ $appointment->id }}" action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display: none;">
+                                            <form id="cancel-appointment-form-{{ $appointment->id }}" 
+                                                  action="{{ route('appointments.destroy', $appointment->id) }}" 
+                                                  method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
-
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+                        
                         
 
                     <!-- Calendar View Tab -->

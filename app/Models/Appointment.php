@@ -9,12 +9,13 @@ class Appointment extends Model
 {
     protected $fillable = [
         'user_id',
-        'appointment_type_id',   // Added
-        'doctor_id',             // Added
+        'appointment_type_id',   
+        'doctor_id',             
         'appointment_date',
         'appointment_time',
         'reason',
         'notes',
+        'status',
     ];
 
     protected $dates = ['appointment_date', 'appointment_time'];

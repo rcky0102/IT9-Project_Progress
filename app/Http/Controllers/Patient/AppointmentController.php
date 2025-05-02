@@ -16,7 +16,8 @@ class AppointmentController extends Controller
 {
     public function index()
     {
-        $appointments = Appointment::where('user_id', Auth::id())
+        $appointments = Appointment::with('appointmentType') // Eager load appointment type
+            ->where('user_id', Auth::id())
             ->orderBy('appointment_date', 'asc')
             ->get();
     
@@ -24,19 +25,14 @@ class AppointmentController extends Controller
         $appointmentsCount = $appointments->count();
     
         // Retrieve doctors with the related user model to get the full name
-        $doctorNames = Doctor::with('user')  // Eager load the user relationship
+        $doctorNames = Doctor::with('user')
             ->get()
             ->mapWithKeys(function ($doctor) {
-                // Dynamically create full_name using the user's name attributes
                 return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
             });
     
         return view('patient.appointments', compact('appointments', 'appointmentsCount', 'doctorNames'));
     }
-    
-    
-    
-    
     
 
     public function create()
@@ -91,16 +87,16 @@ class AppointmentController extends Controller
     }
     
 
-    
-
     public function show($id)
     {
-        $appointment = Appointment::where('id', $id)
+        $appointment = Appointment::with(['appointmentType', 'doctor.user']) 
+            ->where('id', $id)
             ->where('user_id', Auth::id())
             ->firstOrFail();
-
+    
         return view('patient.patient_crud.show', compact('appointment'));
     }
+    
 
     public function edit($id)
     {

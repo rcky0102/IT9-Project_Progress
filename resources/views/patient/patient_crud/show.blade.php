@@ -113,7 +113,7 @@
                     <div class="p-6">
                         <div class="flex-between mb-6">
                             <div>
-                                <h2 class="text-2xl font-bold text-primary mb-2">{{ $appointment->appointment_type }}</h2>
+                                <h2 class="text-2xl font-bold text-primary mb-2">{{ $appointment->appointmentType->name ?? 'Unknown Type' }}</h2>
                                 <div class="flex-center gap-2">
                                     <span class="appointment-badge badge-confirmed">Confirmed</span>
                                 </div>
@@ -123,7 +123,7 @@
                                 <div class="appointment-date-month">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M') }}</div>
                             </div>
                         </div>
-
+                
                         <div class="details-grid">
                             <div>
                                 <h3 class="text-lg font-semibold mb-4 text-primary">Appointment Information</h3>
@@ -139,26 +139,23 @@
                                         <i class="fas fa-user-md text-primary"></i>
                                         <div>
                                             <p class="font-medium">Healthcare Provider</p>
-                                            <p class="text-light">{{ $appointment->doctor }}</p>
+                                            <p class="text-light">
+                                                {{ $appointment->doctor && $appointment->doctor->user 
+                                                    ? $appointment->doctor->user->first_name . ' ' . $appointment->doctor->user->middle_name . ' ' . $appointment->doctor->user->last_name 
+                                                    : 'Not Assigned' }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="detail-item">
                                         <i class="fas fa-map-marker-alt text-primary"></i>
                                         <div>
                                             <p class="font-medium">Location</p>
-                                            <p class="text-light">MediCare Clinic</p> <!-- Clinic location assumed as static -->
+                                            <p class="text-light">MediCare Clinic</p>
                                         </div>
                                     </div>
-                                    {{-- <div class="detail-item">
-                                        <i class="fas fa-video text-primary"></i>
-                                        <div>
-                                            <p class="font-medium">Appointment Mode</p>
-                                            <p class="text-light">{{ $appointment->appointment_mode ?? 'In-Person' }}</p> <!-- Default to 'In-Person' if not set -->
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
-
+                
                             <div>
                                 <h3 class="text-lg font-semibold mb-4 text-primary">Additional Information</h3>
                                 <div class="details-list">
@@ -173,7 +170,7 @@
                                 </div>
                             </div>
                         </div>
-
+                
                         <div class="mt-8 flex gap-4">
                             <button class="btn btn-outline">
                                 <i class="fas fa-calendar-plus"></i>
@@ -182,6 +179,7 @@
                         </div>
                     </div>
                 </div>
+                
             </main>
         </div>
     </div>

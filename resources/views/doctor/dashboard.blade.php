@@ -749,11 +749,11 @@
                         <i class="fas fa-chart-line"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('doctor.appointments') }}" class="sidebar-item">
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('doctor.patients') }}" class="sidebar-item">
                         <i class="fas fa-user"></i>
                         <span>Patients</span>
                     </a>
