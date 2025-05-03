@@ -8,6 +8,7 @@ use App\Models\Appointment;
 use App\Models\AppointmentType;
 use App\Models\Doctor;
 use App\Models\Availability;
+use App\Models\Patient;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,15 +17,16 @@ class AppointmentController extends Controller
 {
     public function index()
     {
-        $appointments = Appointment::with('appointmentType') // Eager load appointment type
-            ->where('user_id', Auth::id())
+        // Get the authenticated user's patient record
+        $patient = Patient::where('user_id', Auth::id())->first();
+    
+        $appointments = Appointment::with('appointmentType')
+            ->where('patient_id', $patient->id)
             ->orderBy('appointment_date', 'asc')
             ->get();
     
-        // Count the number of appointments
         $appointmentsCount = $appointments->count();
     
-        // Retrieve doctors with the related user model to get the full name
         $doctorNames = Doctor::with('user')
             ->get()
             ->mapWithKeys(function ($doctor) {

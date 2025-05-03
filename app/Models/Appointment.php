@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Appointment extends Model
 {
     protected $fillable = [
-        'user_id',
+        'patient_id',             // replaced 'user_id'
         'appointment_type_id',   
         'doctor_id',             
         'appointment_date',
@@ -20,9 +20,10 @@ class Appointment extends Model
 
     protected $dates = ['appointment_date', 'appointment_time'];
 
-    public function user()
+    // This replaces the previous user() relation
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
     }
 
     public function appointmentType()

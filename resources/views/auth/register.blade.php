@@ -187,55 +187,79 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
             
-            <div class="form-row">
-                <div class="form-group">
-                    <span class="icon">👤</span>
-                    <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}">
-                    @error('first_name')
-                        <div class="validation-error">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-                <div class="form-group">
-                    <span class="icon">👤</span>
-                    <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}">
-                    @error('last_name')
-                        <div class="validation-error">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            
             <div class="form-group">
                 <span class="icon">👤</span>
-                <input type="text" name="middle_name" placeholder="Middle Name" value="{{ old('middle_name') }}">
-                @error('middle_name')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
+                <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}">
+                @error('first_name') <div class="validation-error">{{ $message }}</div> @enderror
             </div>
-            
+
+             <div class="form-group">
+                <span class="icon">👤</span>
+                <input type="text" name="middle_name" placeholder="Middle Name" value="{{ old('middle_name') }}">
+                @error('middle_name') <div class="validation-error">{{ $message }}</div> @enderror
+            </div>
+    
+            <div class="form-group">
+                <span class="icon">👤</span>
+                <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}">
+                @error('last_name') <div class="validation-error">{{ $message }}</div> @enderror
+            </div>
+
+            <div class="form-group">
+                <span class="icon">📅</span>
+                <input type="date" name="birthdate" placeholder="Birthdate" required value="{{ old('birthdate') }}">
+                @error('birthdate') <div class="validation-error">{{ $message }}</div> @enderror
+            </div>
+        
+            <div class="form-group">
+                <span class="icon">⚧</span>
+                <select name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                </select>
+                @error('gender') <div class="validation-error">{{ $message }}</div> @enderror
+            </div>
+        
+            <div class="form-group">
+                <span class="icon">📞</span>
+                <input type="text" name="contact_number" placeholder="Contact Number" required value="{{ old('contact_number') }}">
+                @error('contact_number') <div class="validation-error">{{ $message }}</div> @enderror
+            </div>
+        
+            <div class="form-group">
+                <span class="icon">🏠</span>
+                <input type="text" name="address" placeholder="Address" required value="{{ old('address') }}">
+                @error('address') <div class="validation-error">{{ $message }}</div> @enderror
+            </div>
+        
+            {{-- <div class="form-group">
+                <span class="icon">🩺</span>
+                <textarea name="medical_history" placeholder="Medical History">{{ old('medical_history') }}</textarea>
+                @error('medical_history') <div class="validation-error">{{ $message }}</div> @enderror
+            </div> --}}
+        
             <div class="form-group">
                 <span class="icon">✉</span>
                 <input type="email" name="email" placeholder="Email" required value="{{ old('email') }}">
-                @error('email')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
+                @error('email') <div class="validation-error">{{ $message }}</div> @enderror
             </div>
-            
+        
             <div class="form-group">
                 <span class="icon">🔒</span>
                 <input type="password" name="password" placeholder="Password" required>
-                @error('password')
-                    <div class="validation-error">{{ $message }}</div>
-                @enderror
+                @error('password') <div class="validation-error">{{ $message }}</div> @enderror
             </div>
-            
+        
             <div class="form-group">
                 <span class="icon">🔒</span>
                 <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
             </div>
-            
+        
             <button type="submit" class="register-button">Register</button>
         </form>
+        
         
         <div class="login-link">
             <a href="{{ route('login') }}">Already have an account? Login here</a>
