@@ -21,7 +21,7 @@ class AppointmentController extends Controller
         $patient = Patient::where('user_id', Auth::id())->first();
     
         $appointments = Appointment::with('appointmentType')
-            ->where('patient_id', $patient->id)
+            ->where('patient_id', $patient->id) // Changed user_id to patient_id
             ->orderBy('appointment_date', 'asc')
             ->get();
     
@@ -54,8 +54,11 @@ class AppointmentController extends Controller
             'notes' => 'nullable|string',
         ]);
         
+        // Get the authenticated patient's ID
+        $patient = Patient::where('user_id', Auth::id())->first();
+
         Appointment::create([
-            'user_id' => Auth::id(),
+            'patient_id' => $patient->id, // Assign patient_id here
             'appointment_type_id' => $validated['appointmentType'],
             'doctor_id' => $validated['doctor'],
             'appointment_date' => Carbon::parse($validated['date'])->format('Y-m-d'),
@@ -64,7 +67,6 @@ class AppointmentController extends Controller
             'notes' => $validated['notes'] ?? null,
         ]);
         
-    
         return redirect()->route('patient.appointments')->with('success', 'Appointment successfully scheduled!');
     }
 
@@ -93,7 +95,7 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::with(['appointmentType', 'doctor.user']) 
             ->where('id', $id)
-            ->where('user_id', Auth::id())
+            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
             ->firstOrFail();
     
         return view('patient.patient_crud.show', compact('appointment'));
@@ -103,7 +105,7 @@ class AppointmentController extends Controller
     public function edit($id)
     {
         $appointment = Appointment::where('id', $id)
-            ->where('user_id', Auth::id())
+            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
             ->firstOrFail();
 
         return view('patient.patient_crud.edit', compact('appointment'));
@@ -121,7 +123,7 @@ class AppointmentController extends Controller
         ]);
 
         $appointment = Appointment::where('id', $id)
-            ->where('user_id', Auth::id())
+            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
             ->firstOrFail();
 
         $formattedDate = Carbon::parse($validated['date'])->format('Y-m-d');
@@ -142,7 +144,7 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         $appointment = Appointment::where('id', $id)
-            ->where('user_id', Auth::id())
+            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
             ->firstOrFail();
 
         $appointment->delete();
@@ -151,4 +153,3 @@ class AppointmentController extends Controller
                          ->with('success', 'Appointment cancelled successfully!');
     }
 }
-

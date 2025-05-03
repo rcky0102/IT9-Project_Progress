@@ -26,9 +26,19 @@ class Patient extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the appointments for the patient.
+     */
     public function appointments()
     {
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class, 'patient_id');
     }
 
+    /**
+     * Accessor for the patient's full name.
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->user->first_name . ' ' . $this->user->middle_name . ' ' . $this->user->last_name;
+    }
 }

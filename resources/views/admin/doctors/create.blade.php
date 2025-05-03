@@ -11,28 +11,26 @@
                 <form method="POST" action="{{ route('admin.doctors.store') }}">
                     @csrf
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="first_name" class="form-label">First Name</label>
-                            <input type="text" id="first_name" name="first_name" class="form-input" required value="{{ old('first_name') }}">
-                            @error('first_name')
-                                <div class="validation-error">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="last_name" class="form-label">Last Name</label>
-                            <input type="text" id="last_name" name="last_name" class="form-input" required value="{{ old('last_name') }}">
-                            @error('last_name')
-                                <div class="validation-error">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="form-group">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" id="first_name" name="first_name" class="form-input" required value="{{ old('first_name') }}">
+                        @error('first_name')
+                            <div class="validation-error">{{ $message }}</div>
+                        @enderror
                     </div>
                     
                     <div class="form-group">
                         <label for="middle_name" class="form-label">Middle Name (Optional)</label>
                         <input type="text" id="middle_name" name="middle_name" class="form-input" value="{{ old('middle_name') }}">
                         @error('middle_name')
+                            <div class="validation-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" class="form-input" required value="{{ old('last_name') }}">
+                        @error('last_name')
                             <div class="validation-error">{{ $message }}</div>
                         @enderror
                     </div>

@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Appointment extends Model
 {
     protected $fillable = [
-        'patient_id',             // replaced 'user_id'
+        'patient_id',             
         'appointment_type_id',   
         'doctor_id',             
         'appointment_date',
