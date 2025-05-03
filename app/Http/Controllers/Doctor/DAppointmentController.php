@@ -9,17 +9,15 @@ use Illuminate\Http\Request;
 
 class DAppointmentController extends Controller
 {
-
     public function index()
     {
-        $doctorId = Auth::user()->doctor->id; 
-    
-        $appointments = Appointment::with(['user', 'appointmentType'])
+        $doctorId = Auth::user()->doctor->id;
+
+        $appointments = Appointment::with(['patient.user', 'appointmentType'])
             ->where('doctor_id', $doctorId)
             ->orderBy('appointment_date', 'asc')
             ->get();
-    
+
         return view('doctor.appointments', compact('appointments'));
     }
-    
 }

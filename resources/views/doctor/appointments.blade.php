@@ -176,67 +176,68 @@
                 <div class="appointments-list">
 
                     @foreach($appointments as $appointment)
-                    <div class="appointment-item">
-                        <div class="appointment-date">
-                            <div class="appointment-date-day">{{ \Carbon\Carbon::parse($appointment->appointment_date)->day }}</div>
-                            <div class="appointment-date-month">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M') }}</div>
-                        </div>
-                    
-                        <div class="appointment-details">
-                            <div class="appointment-title">
-                                {{ $appointment->user->first_name }} {{ $appointment->user->last_name }} - {{ $appointment->appointmentType->name }}
-                            </div>
-                            <div class="appointment-info">
-                                <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</span>
-                                <span><i class="fas fa-phone"></i> {{ $appointment->user->contact_number ?? 'N/A' }}</span>
-                                <span><i class="fas fa-tag"></i> {{ $appointment->reason }}</span>
-                            </div>
-                        </div>
-                    
-                        @php
-                            $status = strtolower($appointment->status); 
-                            $badgeClass = match ($status) {
-                                'confirmed' => 'badge-confirmed',
-                                'completed' => 'badge-completed',
-                                'cancelled' => 'badge-cancelled',
-                                default => 'badge-pending',
-                            };
-                        @endphp
+    <div class="appointment-item">
+        <div class="appointment-date">
+            <div class="appointment-date-day">{{ \Carbon\Carbon::parse($appointment->appointment_date)->day }}</div>
+            <div class="appointment-date-month">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M') }}</div>
+        </div>
 
-                        <span class="appointment-badge {{ $badgeClass }}">
-                            {{ ucfirst($status) }}
-                        </span>
-                    
-                        <div class="appointment-actions">
-                            <a href="#" class="btn btn-outline">View Details</a>
-                            <div class="dropdown">
-                                <button class="btn-icon">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-edit"></i> Edit Appointment
-                                    </a>
-                                    <form action="#" method="POST">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-check"></i> Mark as Completed
-                                        </button>
-                                    </form>
-                                    <form action="#" method="POST">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-times"></i> Cancel Appointment
-                                        </button>
-                                    </form>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Send Reminder
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
+        <div class="appointment-details">
+            <div class="appointment-title">
+                {{ $appointment->patient->user->first_name }} {{ $appointment->patient->user->last_name }} - {{ $appointment->appointmentType->name }}
+            </div>
+            <div class="appointment-info">
+                <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</span>
+                <span><i class="fas fa-phone"></i> {{ $appointment->patient->contact_number ?? 'N/A' }}</span>
+                <span><i class="fas fa-tag"></i> {{ $appointment->reason }}</span>
+            </div>
+        </div>
+
+        @php
+            $status = strtolower($appointment->status); 
+            $badgeClass = match ($status) {
+                'confirmed' => 'badge-confirmed',
+                'completed' => 'badge-completed',
+                'cancelled' => 'badge-cancelled',
+                default => 'badge-pending',
+            };
+        @endphp
+
+        <span class="appointment-badge {{ $badgeClass }}">
+            {{ ucfirst($status) }}
+        </span>
+
+        <div class="appointment-actions">
+            <a href="#" class="btn btn-outline">View Details</a>
+            <div class="dropdown">
+                <button class="btn-icon">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-edit"></i> Edit Appointment
+                    </a>
+                    <form action="#" method="POST">
+                        @csrf @method('PATCH')
+                        <button type="submit" class="dropdown-item">
+                            <i class="fas fa-check"></i> Mark as Completed
+                        </button>
+                    </form>
+                    <form action="#" method="POST">
+                        @csrf @method('PATCH')
+                        <button type="submit" class="dropdown-item">
+                            <i class="fas fa-times"></i> Cancel Appointment
+                        </button>
+                    </form>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope"></i> Send Reminder
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+
                     
 
                     <div class="appointment-item">
