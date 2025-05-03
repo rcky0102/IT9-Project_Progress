@@ -1,83 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Availability | Medical Clinic</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/doctor-styles.css')}}">
-    <style>
-        .time-input {
-        padding: 5px 10px;
-        font-size: 14px;
-        width: 120px;
-        margin: 0 5px;
-    }
-    </style>
-</head>
-<body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <a href="index.html" class="logo">MediCare Clinic</a>
-            <div class="header-actions">
-                <button class="btn-icon notification-btn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <div class="dropdown">
-                    <button class="avatar-btn">
-                        <div class="avatar">
-                            <span class="avatar-fallback">DR</span>
-                        </div>
-                    </button>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-header">
-                            <p class="user-name">Dr. John Smith</p>
-                            <p class="user-email">john.smith@example.com</p>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item text-danger">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
+@extends('doctor.layout')
 
-        <div class="main-container">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <nav class="sidebar-nav">
-                    <a href="index.html" class="sidebar-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="appointments.html" class="sidebar-item">
-                        <i class="fas fa-calendar"></i>
-                        <span>Appointments</span>
-                    </a>
-                    <a href="patients.html" class="sidebar-item">
-                        <i class="fas fa-user"></i>
-                        <span>Patients</span>
-                    </a>
-                    <a href="medical-records.html" class="sidebar-item">
-                        <i class="fas fa-file-medical"></i>
-                        <span>Medical Records</span>
-                    </a>
-                    <a href="prescriptions.html" class="sidebar-item">
-                        <i class="fas fa-pills"></i>
-                        <span>Prescriptions</span>
-                    </a>
-                    <a href="schedule.html" class="sidebar-item active">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Schedule</span>
-                    </a>
-                </nav>
-            </aside>
+@section('title', 'Create Availability | Medical Clinic')
+
+@section('content')
 
             <!-- Main Content -->
             <main class="main-content">
@@ -263,53 +188,53 @@
             });
 
             // Add time slot functionality
-const addTimeSlotBtns = document.querySelectorAll('.add-time-slot-btn');
+            const addTimeSlotBtns = document.querySelectorAll('.add-time-slot-btn');
 
-addTimeSlotBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const day = this.getAttribute('data-day');
-        const slotsContainer = document.getElementById(`${day}-slots`);
+            addTimeSlotBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const day = this.getAttribute('data-day');
+                    const slotsContainer = document.getElementById(`${day}-slots`);
 
-        // Clone the first time slot
-        const firstSlot = slotsContainer.querySelector('.availability-time-slot');
-        const newSlot = firstSlot.cloneNode(true);
+                    // Clone the first time slot
+                    const firstSlot = slotsContainer.querySelector('.availability-time-slot');
+                    const newSlot = firstSlot.cloneNode(true);
 
-        // Reset input time values
-        const timeInputs = newSlot.querySelectorAll('input[type="time"]');
-        if (timeInputs.length >= 2) {
-            timeInputs[0].value = '09:00';
-            timeInputs[1].value = '17:00';
-        }
+                    // Reset input time values
+                    const timeInputs = newSlot.querySelectorAll('input[type="time"]');
+                    if (timeInputs.length >= 2) {
+                        timeInputs[0].value = '09:00';
+                        timeInputs[1].value = '17:00';
+                    }
 
-        // Add event listener to the remove button
-        const removeBtn = newSlot.querySelector('.remove-time-btn');
-        removeBtn.addEventListener('click', function() {
-            if (slotsContainer.querySelectorAll('.availability-time-slot').length > 1) {
-                this.closest('.availability-time-slot').remove();
-            }
-        });
+                    // Add event listener to the remove button
+                    const removeBtn = newSlot.querySelector('.remove-time-btn');
+                    removeBtn.addEventListener('click', function() {
+                        if (slotsContainer.querySelectorAll('.availability-time-slot').length > 1) {
+                            this.closest('.availability-time-slot').remove();
+                        }
+                    });
 
-        // Append the new slot
-        slotsContainer.appendChild(newSlot);
-    });
-});
+                    // Append the new slot
+                    slotsContainer.appendChild(newSlot);
+                });
+            });
 
-// Remove time slot functionality
-const removeTimeBtns = document.querySelectorAll('.remove-time-btn');
+            // Remove time slot functionality
+            const removeTimeBtns = document.querySelectorAll('.remove-time-btn');
 
-removeTimeBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const slot = this.closest('.availability-time-slot');
-        const slotsContainer = slot.parentElement;
+            removeTimeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const slot = this.closest('.availability-time-slot');
+                    const slotsContainer = slot.parentElement;
 
-        // Only remove if there's more than one slot
-        if (slotsContainer.querySelectorAll('.availability-time-slot').length > 1) {
-            slot.remove();
-        }
-    });
-});
+                    // Only remove if there's more than one slot
+                    if (slotsContainer.querySelectorAll('.availability-time-slot').length > 1) {
+                        slot.remove();
+                    }
+                });
+            });
 
         });
     </script>
-</body>
-</html>
+
+@endsection

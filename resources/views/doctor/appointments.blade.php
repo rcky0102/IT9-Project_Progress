@@ -1,75 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointments | Medical Clinic</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/doctor.css') }}">
-</head>
-<body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <a href="index.html" class="logo">MediCare Clinic</a>
-            <div class="header-actions">
-                <button class="btn-icon notification-btn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <div class="dropdown">
-                    <button class="avatar-btn">
-                        <div class="avatar">
-                            <span class="avatar-fallback">DR</span>
-                        </div>
-                    </button>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-header">
-                            <p class="user-name">Dr. John Smith</p>
-                            <p class="user-email">john.smith@example.com</p>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item text-danger">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
+@extends('doctor.layout')
 
-        <div class="main-container">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <nav class="sidebar-nav">
-                    <a href="index.html" class="sidebar-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="appointments.html" class="sidebar-item active">
-                        <i class="fas fa-calendar"></i>
-                        <span>Appointments</span>
-                    </a>
-                    <a href="patients.html" class="sidebar-item">
-                        <i class="fas fa-user"></i>
-                        <span>Patients</span>
-                    </a>
-                    <a href="medical-records.html" class="sidebar-item">
-                        <i class="fas fa-file-medical"></i>
-                        <span>Medical Records</span>
-                    </a>
-                    <a href="prescriptions.html" class="sidebar-item">
-                        <i class="fas fa-pills"></i>
-                        <span>Prescriptions</span>
-                    </a>
-                    <a href="schedule.html" class="sidebar-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Schedule</span>
-                    </a>
-                </nav>
-            </aside>
+@section('title', 'Appointments | Medical Clinic')
+
+@section('content')
 
             <!-- Main Content -->
             <main class="main-content">
@@ -176,67 +109,67 @@
                 <div class="appointments-list">
 
                     @foreach($appointments as $appointment)
-    <div class="appointment-item">
-        <div class="appointment-date">
-            <div class="appointment-date-day">{{ \Carbon\Carbon::parse($appointment->appointment_date)->day }}</div>
-            <div class="appointment-date-month">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M') }}</div>
-        </div>
+                        <div class="appointment-item">
+                            <div class="appointment-date">
+                                <div class="appointment-date-day">{{ \Carbon\Carbon::parse($appointment->appointment_date)->day }}</div>
+                                <div class="appointment-date-month">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M') }}</div>
+                            </div>
 
-        <div class="appointment-details">
-            <div class="appointment-title">
-                {{ $appointment->patient->user->first_name }} {{ $appointment->patient->user->last_name }} - {{ $appointment->appointmentType->name }}
-            </div>
-            <div class="appointment-info">
-                <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</span>
-                <span><i class="fas fa-phone"></i> {{ $appointment->patient->contact_number ?? 'N/A' }}</span>
-                <span><i class="fas fa-tag"></i> {{ $appointment->reason }}</span>
-            </div>
-        </div>
+                            <div class="appointment-details">
+                                <div class="appointment-title">
+                                    {{ $appointment->patient->user->first_name }} {{ $appointment->patient->user->last_name }} - {{ $appointment->appointmentType->name }}
+                                </div>
+                                <div class="appointment-info">
+                                    <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</span>
+                                    <span><i class="fas fa-phone"></i> {{ $appointment->patient->contact_number ?? 'N/A' }}</span>
+                                    <span><i class="fas fa-tag"></i> {{ $appointment->reason }}</span>
+                                </div>
+                            </div>
 
-        @php
-            $status = strtolower($appointment->status); 
-            $badgeClass = match ($status) {
-                'confirmed' => 'badge-confirmed',
-                'completed' => 'badge-completed',
-                'cancelled' => 'badge-cancelled',
-                default => 'badge-pending',
-            };
-        @endphp
+                            @php
+                                $status = strtolower($appointment->status); 
+                                $badgeClass = match ($status) {
+                                    'confirmed' => 'badge-confirmed',
+                                    'completed' => 'badge-completed',
+                                    'cancelled' => 'badge-cancelled',
+                                    default => 'badge-pending',
+                                };
+                            @endphp
 
-        <span class="appointment-badge {{ $badgeClass }}">
-            {{ ucfirst($status) }}
-        </span>
+                            <span class="appointment-badge {{ $badgeClass }}">
+                                {{ ucfirst($status) }}
+                            </span>
 
-        <div class="appointment-actions">
-            <a href="#" class="btn btn-outline">View Details</a>
-            <div class="dropdown">
-                <button class="btn-icon">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
-                <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-edit"></i> Edit Appointment
-                    </a>
-                    <form action="#" method="POST">
-                        @csrf @method('PATCH')
-                        <button type="submit" class="dropdown-item">
-                            <i class="fas fa-check"></i> Mark as Completed
-                        </button>
-                    </form>
-                    <form action="#" method="POST">
-                        @csrf @method('PATCH')
-                        <button type="submit" class="dropdown-item">
-                            <i class="fas fa-times"></i> Cancel Appointment
-                        </button>
-                    </form>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope"></i> Send Reminder
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-@endforeach
+                            <div class="appointment-actions">
+                                <a href="#" class="btn btn-outline">View Details</a>
+                                <div class="dropdown">
+                                    <button class="btn-icon">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-edit"></i> Edit Appointment
+                                        </a>
+                                        <form action="#" method="POST">
+                                            @csrf @method('PATCH')
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="fas fa-check"></i> Mark as Completed
+                                            </button>
+                                        </form>
+                                        <form action="#" method="POST">
+                                            @csrf @method('PATCH')
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="fas fa-times"></i> Cancel Appointment
+                                            </button>
+                                        </form>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-envelope"></i> Send Reminder
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
 
                     
 
@@ -430,5 +363,5 @@
             });
         });
     </script>
-</body>
-</html>
+
+@endsection
