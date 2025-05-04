@@ -13,6 +13,7 @@ use App\Http\Controllers\Doctor\DAppointmentController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\PrescriptionController;
 use App\Http\Controllers\Patient\AppointmentController;
+use App\Http\Controllers\Patient\MedicationController;
 use App\Models\Appointment;
 use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
@@ -72,24 +73,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctor/prescription-create', [PrescriptionController::class, 'create'])->name('doctor.prescription-create');
     Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescription-store');
 
+
     /* patient's route */
     Route::get('/patient/dashboard', function () {
         return view('patient.dashboard');
     })->name('patient.dashboard');
 
+
+    /* Patient-appointments */
     Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
-   
     Route::get('/get-doctors/{appointmentType}', [AppointmentController::class, 'getDoctorsByType']);
-    Route::get('/doctor/{doctorId}/availability', [AppointmentController::class, 'getDoctorAvailability']);
-
-
-    
+    Route::get('/doctor/{doctorId}/availability', [AppointmentController::class, 'getDoctorAvailability']); 
     Route::get('/patient/patient_crud/create', [AppointmentController::class, 'create'])->name('patient.patient_crud.create');
     Route::post('patient/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
     Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
+    /* Patient-medications */
+    Route::get('/patient/medications', [MedicationController::class, 'index'])->name('patient.medications');
+
 
 
     // Admin routes

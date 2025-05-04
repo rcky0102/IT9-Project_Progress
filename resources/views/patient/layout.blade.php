@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/patient-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient-styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
 </head>
 <body>
     <div class="app-container">
@@ -77,7 +78,7 @@
                         <i class="fas fa-file-medical"></i>
                         <span>Medical Records</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('patient.medications') }}" class="sidebar-item">
                         <i class="fas fa-pills"></i>
                         <span>Medications</span>
                     </a>
