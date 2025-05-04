@@ -69,8 +69,8 @@ Route::middleware('auth')->group(function () {
 
     /* Doctor-prescriptions*/
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
-    
-
+    Route::get('/doctor/prescription-create', [PrescriptionController::class, 'create'])->name('doctor.prescription-create');
+    Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescription-store');
 
     /* patient's route */
     Route::get('/patient/dashboard', function () {

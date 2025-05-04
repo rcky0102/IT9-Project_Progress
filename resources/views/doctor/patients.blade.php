@@ -94,25 +94,29 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($patients as $patient)
                             <tr>
                                 <td>
                                     <div class="patient-cell">
                                         <div class="patient-avatar">
-                                            <span class="avatar-fallback">EW</span>
+                                            <span class="avatar-fallback">
+                                                {{ strtoupper(substr($patient->user->first_name, 0, 1)) }}
+                                                {{ strtoupper(substr($patient->user->last_name, 0, 1)) }}
+                                            </span>
                                         </div>
-                                        <div>Emma Wilson</div>
+                                        <div>{{ $patient->user->first_name }} {{ $patient->user->last_name }}</div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="contact-cell">
-                                        <div>emma.wilson@example.com</div>
-                                        <div class="text-muted">+1 (555) 123-4567</div>
+                                        <div>{{ $patient->user->email }}</div>
+                                        <div class="text-muted">{{ $patient->contact_number }}</div>
                                     </div>
                                 </td>
-                                <td>42 / Female</td>
-                                <td>May 15, 2025</td>
+                                <td>{{ \Carbon\Carbon::parse($patient->birthdate)->age }} / {{ $patient->gender }}</td>
+                                <td>{{ \Carbon\Carbon::parse($patient->created_at)->format('F d, Y') }}</td>
                                 <td>
-                                    <span class="badge badge-outline">Hypertension</span>
+                                    <span class="badge badge-outline">{{ $patient->medical_history ?? 'N/A' }}</span>
                                 </td>
                                 <td>
                                     <span class="badge badge-outline-blue">Active</span>
@@ -142,6 +146,8 @@
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
+
                             <tr>
                                 <td>
                                     <div class="patient-cell">

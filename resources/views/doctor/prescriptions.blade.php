@@ -1,6 +1,6 @@
 @extends('doctor.layout')
 
-@section('title', 'Create Availability | Medical Clinic')
+@section('title', 'Prescriptions | Medical Clinic')
 
 @section('content')
 
@@ -11,10 +11,10 @@
                         <h1>Prescriptions</h1>
                         <p class="text-muted">Manage patient prescriptions</p>
                     </div>
-                    <button class="btn btn-primary">
+                    <a href="{{ route('doctor.prescription-create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i>
                         New Prescription
-                    </button>
+                    </a>                    
                 </div>
 
                 <!-- Filters -->
@@ -95,19 +95,25 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($prescriptions as $prescription)
                             <tr>
                                 <td>
                                     <div class="patient-cell">
                                         <div class="patient-avatar">
-                                            <span class="avatar-fallback">EW</span>
+                                            <span class="avatar-fallback">
+                                                {{ strtoupper(substr($prescription->appointment->patient->user->first_name, 0, 1)) }}
+                                                {{ strtoupper(substr($prescription->appointment->patient->user->last_name, 0, 1)) }}
+                                            </span>
                                         </div>
-                                        <div>Emma Wilson</div>
+                                        <div>
+                                            {{ $prescription->appointment->patient->full_name }}
+                                        </div>
                                     </div>
                                 </td>
-                                <td>Lisinopril</td>
-                                <td>10mg daily</td>
-                                <td>May 15, 2025</td>
-                                <td>Aug 15, 2025</td>
+                                <td>{{ $prescription->medication }}</td>
+                                <td>{{ $prescription->dosage }} - {{ ucfirst(str_replace('-', ' ', $prescription->frequency)) }}</td>
+                                <td>{{ \Carbon\Carbon::parse($prescription->start_date)->format('M d, Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($prescription->end_date)->format('M d, Y') }}</td>
                                 <td>
                                     <span class="badge badge-outline-blue">Active</span>
                                 </td>
@@ -136,6 +142,8 @@
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
+
                             <tr>
                                 <td>
                                     <div class="patient-cell">
@@ -263,68 +271,9 @@
                     </table>
                 </div>
 
-                <!-- Prescription Form -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">New Prescription</h3>
-                    </div>
-                    <div class="prescription-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="patient">Patient</label>
-                                <select id="patient" class="form-control">
-                                    <option value="">Select Patient</option>
-                                    <option value="emma-wilson">Emma Wilson</option>
-                                    <option value="james-brown">James Brown</option>
-                                    <option value="olivia-martinez">Olivia Martinez</option>
-                                    <option value="robert-johnson">Robert Johnson</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="medication">Medication</label>
-                                <input type="text" id="medication" class="form-control" placeholder="Enter medication name">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dosage">Dosage</label>
-                                <input type="text" id="dosage" class="form-control" placeholder="Enter dosage">
-                            </div>
-                            <div class="form-group">
-                                <label for="frequency">Frequency</label>
-                                <select id="frequency" class="form-control">
-                                    <option value="">Select Frequency</option>
-                                    <option value="daily">Once Daily</option>
-                                    <option value="twice-daily">Twice Daily</option>
-                                    <option value="three-times">Three Times Daily</option>
-                                    <option value="four-times">Four Times Daily</option>
-                                    <option value="as-needed">As Needed</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="start-date">Start Date</label>
-                                <input type="date" id="start-date" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="end-date">End Date</label>
-                                <input type="date" id="end-date" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="instructions">Special Instructions</label>
-                            <textarea id="instructions" class="form-control" rows="3" placeholder="Enter any special instructions"></textarea>
-                        </div>
-                        <div class="form-actions">
-                            <button class="btn btn-outline">Cancel</button>
-                            <button class="btn btn-primary">Save Prescription</button>
-                        </div>
-                    </div>
-                </div>
             </main>
-        </div>
-    </div>
+
+                
 
     <script>
         // Dropdown functionality
