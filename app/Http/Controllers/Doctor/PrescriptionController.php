@@ -12,9 +12,17 @@ class PrescriptionController extends Controller
 {
     public function index()
     {
-        $prescriptions = Prescription::with('appointment.patient.user')->get();
+        $doctor = Auth::user()->doctor;
+
+        $prescriptions = Prescription::with('appointment.patient.user')
+            ->whereHas('appointment', function ($query) use ($doctor) {
+                $query->where('doctor_id', $doctor->id);
+            })
+            ->get();
+
         return view('doctor.prescriptions', compact('prescriptions'));
     }
+    
 
     public function create()
     {
