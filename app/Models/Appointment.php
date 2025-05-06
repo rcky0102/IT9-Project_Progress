@@ -20,7 +20,6 @@ class Appointment extends Model
 
     protected $dates = ['appointment_date', 'appointment_time'];
 
-    // This replaces the previous user() relation
     public function patient()
     {
         return $this->belongsTo(Patient::class);

@@ -79,7 +79,8 @@ Route::middleware('auth')->group(function () {
     /* Doctor-medical-records*/
     Route::get('/doctor/medical-records', [MedicalRecordController::class, 'index'])->name('doctor.medical-records');
     Route::get('/doctor/medical-records-create', [MedicalRecordController::class, 'create'])->name('doctor.medical-records-create');
-
+    Route::post('/doctor/medical-records', [MedicalRecordController::class, 'store'])->name('doctor.medical-records-store');
+    
     /* Doctor-prescriptions*/
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
     Route::get('/doctor/prescription-create', [PrescriptionController::class, 'create'])->name('doctor.prescription-create');

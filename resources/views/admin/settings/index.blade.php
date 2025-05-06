@@ -14,28 +14,29 @@
     <div class="app-container">
         <!-- Header -->
         <header class="dashboard-header">
-            <a href="index.html" class="logo">MediCare Clinic</a>
+            <a href="{{ route('admin.dashboard') }}" class="logo">MediCare Clinic</a>
             <div class="header-actions">
                 <button class="btn-icon notification-btn">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">5</span>
                 </button>
                 <div class="dropdown">
-                    <button class="avatar-btn" id="avatarBtn">
+                    <button class="avatar-btn">
                         <div class="avatar">
-                            <span class="avatar-fallback">AD</span>
+                            <span class="avatar-fallback">{{ substr(Auth::user()->first_name, 0, 1) }}{{ substr(Auth::user()->last_name, 0, 1) }}</span>
                         </div>
                     </button>
-                    <div class="dropdown-menu" id="userDropdown">
+                    <div class="dropdown-menu">
                         <div class="dropdown-header">
-                            <p class="user-name">Admin User</p>
-                            <p class="user-email">admin@example.com</p>
+                            <p class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</p>
+                            <p class="user-email">{{ Auth::user()->email }}</p>
                         </div>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="{{ route('admin.settings.index') }}" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
                         <div class="dropdown-divider"></div>
-                        <form action="#" method="POST" class="dropdown-item text-danger">
+                        <form action="{{ route('logout') }}" method="POST" class="dropdown-item text-danger">
+                            @csrf
                             <button type="submit" style="background: none; border: none; color: inherit; padding: 0; font: inherit; cursor: pointer; display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </button>
@@ -82,13 +83,6 @@
                         <span>Settings</span>
                     </a>
                 </nav>
-                
-                <div class="sidebar-footer">
-                    <button class="sidebar-item text-danger" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </button>
-                </div>
             </aside>
 
             <!-- Settings Sidebar -->
