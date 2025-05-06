@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
@@ -8,12 +9,19 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
-use App\Http\Controllers\Doctor\ScheduleController;
+use App\Http\Controllers\Admin\Settings\RecordTypeController;
+
+
 use App\Http\Controllers\Doctor\DAppointmentController;
 use App\Http\Controllers\Doctor\PatientController;
+use App\Http\Controllers\Doctor\MedicalRecordController;
 use App\Http\Controllers\Doctor\PrescriptionController;
+use App\Http\Controllers\Doctor\ScheduleController;
+
+
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
+
 use App\Models\Appointment;
 use App\Models\Department;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +75,10 @@ Route::middleware('auth')->group(function () {
 
     /* Doctor-patients*/
     Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
+
+    /* Doctor-medical-records*/
+    Route::get('/doctor/medical-records', [MedicalRecordController::class, 'index'])->name('doctor.medical-records');
+    Route::get('/doctor/medical-records-create', [MedicalRecordController::class, 'create'])->name('doctor.medical-records-create');
 
     /* Doctor-prescriptions*/
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
@@ -200,7 +212,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-
+        // Route::get('admin/settings/record-types', [RecordTypeController::class, 'index'])->name('admin.settings.record-types');;
+        // Route::get('admin/settings/record-types/create', [RecordTypeController::class, 'create'])->name('record-types.create');
+        // Route::post('admin/settings/record-types', [RecordTypeController::class, 'store'])->name('record-types.store');
 
 
 
@@ -208,17 +222,21 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 
-                Route::get('/settings/appointment_types', [AppointmentTypeController::class, 'index'])->name('appointment_types.index');;
-                Route::get('/settings/appointment_types/create', [AppointmentTypeController::class, 'create'])->name('appointment_types.create');
-                Route::post('/settings/appointment_types', [AppointmentTypeController::class, 'store'])->name('appointment_types.store');
+                Route::get('/appointment_types', [AppointmentTypeController::class, 'index'])->name('appointment_types.index');;
+                Route::get('/appointment_types/create', [AppointmentTypeController::class, 'create'])->name('appointment_types.create');
+                Route::post('appointment_types', [AppointmentTypeController::class, 'store'])->name('appointment_types.store');
  
-                Route::get('/settings/departments', [DepartmentController::class, 'index'])->name('departments.index');;
-                Route::get('/settings/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
-                Route::post('/settings/departments', [DepartmentController::class, 'store'])->name('departments.store');
+                Route::get('/record-types', [RecordTypeController::class, 'index'])->name('record-types.index');;
+                Route::get('/record-types/create', [RecordTypeController::class, 'create'])->name('record-types.create');
+                Route::post('/record-types', [RecordTypeController::class, 'store'])->name('record-types.store');
 
-                Route::get('/settings/specializations', [SpecializationController::class, 'index'])->name('specializations.index');;
-                Route::get('/settings/specializations/create', [SpecializationController::class, 'create'])->name('specializations.create');
-                Route::post('/settings/specializations', [SpecializationController::class, 'store'])->name('specializations.store');
+                Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');;
+                Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+                Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
+
+                Route::get('/specializations', [SpecializationController::class, 'index'])->name('specializations.index');;
+                Route::get('/specializations/create', [SpecializationController::class, 'create'])->name('specializations.create');
+                Route::post('/specializations', [SpecializationController::class, 'store'])->name('specializations.store');
         
         });  
     });

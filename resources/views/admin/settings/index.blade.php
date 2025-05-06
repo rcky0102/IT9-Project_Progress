@@ -117,6 +117,10 @@
                         <i class="fas fa-stethoscope"></i>
                         <span>Doctor Specializations</span>
                     </a>
+                    <a href="{{ route('admin.settings.record-types.index')}}" class="settings-nav-item {{ request()->routeIs('admin.settings.record-types.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-medical-alt"></i>
+                        <span>Record Types</span>
+                    </a>
                     <a href="#" class="settings-nav-item {{ request()->is('admin/settings/email-templates') ? 'active' : '' }}">
                         <i class="fas fa-envelope"></i>
                         <span>Email Templates</span>

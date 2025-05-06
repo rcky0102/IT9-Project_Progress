@@ -1,0 +1,124 @@
+@extends('admin.settings.index')
+
+@section('title', 'Create Record Types | Admin Settings | Medical Clinic')
+
+@section('content')
+
+<main class="settings-content">
+    <div class="settings-section">
+        <div class="settings-header">
+            <h1>Create Record Type</h1>
+            <p>Add a new medical record type to the system</p>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form id="record-type-form" action="{{ route('admin.settings.record-types.store') }}" method="POST">
+                    @csrf
+                
+                    <div class="form-section">
+                        <h3 class="form-section-title">Basic Information</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="name" class="required-field">Record Type Name</label>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                    <small class="form-text">Enter the full name of the record type</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="form-actions">
+                        <a href="#" class="btn btn-outline">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Create Record Type</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Dropdown functionality
+const dropdownBtns = document.querySelectorAll('.dropdown .btn-icon, .dropdown .avatar-btn');
+
+dropdownBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const menu = this.nextElementSibling;
+        menu.classList.toggle('show');
+        
+        // Close other dropdowns
+        dropdownBtns.forEach(otherBtn => {
+            if (otherBtn !== btn) {
+                const otherMenu = otherBtn.nextElementSibling;
+                if (otherMenu) {
+                    otherMenu.classList.remove('show');
+                }
+            }
+        });
+    });
+});
+
+// Close dropdowns when clicking outside
+window.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+});
+
+// Add custom field
+let fieldCounter = 1;
+document.getElementById('add-field-btn').addEventListener('click', function() {
+    const container = document.getElementById('custom-fields-container');
+    const fieldRow = document.createElement('div');
+    fieldRow.className = 'custom-field-row';
+    fieldRow.style = 'display: flex; gap: 10px; margin-bottom: 10px;';
+    
+    fieldRow.innerHTML = `
+        <input type="text" name="custom_fields[${fieldCounter}][name]" class="form-control" placeholder="Field name" style="flex: 2;">
+        <select name="custom_fields[${fieldCounter}][type]" class="form-control" style="flex: 1;">
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+            <option value="select">Dropdown</option>
+            <option value="checkbox">Checkbox</option>
+        </select>
+        <button type="button" class="btn-icon delete-field-btn">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    container.appendChild(fieldRow);
+    fieldCounter++;
+    
+    // Add event listener to the delete button
+    fieldRow.querySelector('.delete-field-btn').addEventListener('click', function() {
+        fieldRow.remove();
+    });
+});
+
+// Delete custom field
+document.querySelectorAll('.delete-field-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        this.closest('.custom-field-row').remove();
+    });
+});
+
+// Form submission
+document.getElementById('record-type-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // In a real application, you would handle the form submission via AJAX
+    // For this example, we'll just redirect to the record types index page
+    alert('Record type created successfully!');
+    window.location.href = 'record-types.html';
+});
+});
+</script>
+
+@endsection

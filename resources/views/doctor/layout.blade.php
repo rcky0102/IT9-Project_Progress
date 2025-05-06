@@ -78,7 +78,7 @@
                         <i class="fas fa-user"></i>
                         <span>Patients</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('doctor.medical-records') }}" class="sidebar-item {{ request()->routeIs('doctor.medical-records') ? 'active' : '' }}">
                         <i class="fas fa-file-medical"></i>
                         <span>Medical Records</span>
                     </a>
