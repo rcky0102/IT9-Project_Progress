@@ -21,6 +21,7 @@ use App\Http\Controllers\Doctor\ScheduleController;
 
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
+use App\Http\Controllers\Patient\PMedicalRecordController;
 
 use App\Models\Appointment;
 use App\Models\Department;
@@ -106,6 +107,9 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-medications */
     Route::get('/patient/medications', [MedicationController::class, 'index'])->name('patient.medications');
+
+    /* Patient-medical-records */
+    Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
 
 
 

@@ -15,13 +15,13 @@ class MedicalRecordController extends Controller
     {
         $doctor = Auth::user()->doctor;
 
-        $records = MedicalRecord::with('appointment.patient.user', 'recordType')
+        $medicalRecords = MedicalRecord::with('appointment.patient.user', 'recordType')
             ->whereHas('appointment', function ($query) use ($doctor) {
                 $query->where('doctor_id', $doctor->id);
             })
             ->get();
 
-        return view('doctor.medical-records', compact('records'));
+        return view('doctor.medical-records', compact('medicalRecords'));
     }
 
     public function create()

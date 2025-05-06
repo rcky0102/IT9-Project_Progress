@@ -53,21 +53,24 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($medicalRecords as $record)
                 <tr>
                     <td>
                         <div class="patient-cell">
                             <div class="patient-avatar">
-                                <span class="avatar-fallback">EW</span>
+                                <span class="avatar-fallback">
+                                    {{ strtoupper(substr($record->appointment->patient->first_name, 0, 1) . substr($record->appointment->patient->last_name, 0, 1)) }}
+                                </span>
                             </div>
-                            <div>Emma Wilson</div>
+                            <div>{{ $record->appointment->patient->full_name }}</div>
                         </div>
                     </td>
-                    <td>Consultation</td>
-                    <td>May 15, 2025</td>
+                    <td>{{ $record->recordType->name }}</td>
+                    <td>{{ \Carbon\Carbon::parse($record->date)->format('F d, Y') }}</td>
                     <td>
-                        <span class="badge badge-outline">Hypertension</span>
+                        <span class="badge badge-outline">{{ $record->diagnosis }}</span>
                     </td>
-                    <td>Dr. John Smith</td>
+                    <td>{{ $record->appointment->doctor->full_name }}</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn-icon">
@@ -90,6 +93,8 @@
                         </div>
                     </td>
                 </tr>
+                @endforeach
+
                 <tr>
                     <td>
                         <div class="patient-cell">

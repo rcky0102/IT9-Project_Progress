@@ -74,7 +74,7 @@
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('patient.medical-records') }}" class="sidebar-item {{ request()->routeIs('patient.medical-records') ? 'active' : '' }}">
                         <i class="fas fa-file-medical"></i>
                         <span>Medical Records</span>
                     </a>
