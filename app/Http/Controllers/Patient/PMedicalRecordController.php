@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MedicalRecord;
 
@@ -11,26 +10,45 @@ class PMedicalRecordController extends Controller
 {
     public function index()
     {
-        // Retrieve the logged-in patient's data
-        $patient = Auth::user()->patient; // Ensure the user has an associated patient
+        $patient = Auth::user()->patient;
 
-        // Guard clause to handle missing patient
         if (!$patient) {
             abort(403, 'Unauthorized access - Patient profile not found.');
         }
 
-        // Retrieve the medical records for the authenticated patient
+        // Get all records grouped by year for the timeline
         $medicalRecords = MedicalRecord::with(['appointment.patient', 'appointment.doctor', 'recordType'])
             ->whereHas('appointment', function ($query) use ($patient) {
-                $query->where('patient_id', $patient->id); // Get only records for the current patient
+                $query->where('patient_id', $patient->id);
             })
-            ->orderByDesc('date') // Sort by date (most recent first)
+            ->orderByDesc('date')
             ->get()
             ->groupBy(function ($record) {
-                // Group records by year (for timeline display)
                 return \Carbon\Carbon::parse($record->date)->format('Y');
             });
 
-        return view('patient.medical-records', compact('medicalRecords'));
+        // Get the most recent record with vital signs for the health summary
+        $latestRecord = MedicalRecord::whereHas('appointment', function ($query) use ($patient) {
+                $query->where('patient_id', $patient->id);
+            })
+            ->whereNotNull('blood_pressure')
+            ->orWhereNotNull('heart_rate')
+            ->orWhereNotNull('temperature')
+            ->orWhereNotNull('respiratory_rate')
+            ->orderByDesc('date')
+            ->first();
+
+        // Fetch latest diagnoses (distinct and recent)
+        $latestDiagnoses = MedicalRecord::whereHas('appointment', function ($query) use ($patient) {
+            $query->where('patient_id', $patient->id);
+        })
+        ->whereNotNull('diagnosis')
+        ->orderByDesc('date')
+        ->limit(5)
+        ->pluck('diagnosis', 'date');
+
+
+        return view('patient.medical-records', compact('medicalRecords', 'latestRecord', 'latestDiagnoses'));
+
     }
 }

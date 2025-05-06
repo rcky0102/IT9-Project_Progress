@@ -33,7 +33,6 @@
 
             <div class="timeline-items">
                 @foreach($medicalRecords as $year => $records)
-
                     <div class="timeline-year">
                         <h3>{{ $year }}</h3>
                         <div class="timeline-items">
@@ -45,11 +44,12 @@
                                     </div>
                                     <div class="timeline-content">
                                         <div class="timeline-header">
-                                            <h4>{{ $medicalRecord->diagnosis }}</h4>
-                                            <span class="badge {{ Str::slug($medicalRecord->recordType->name, '-') }}">{{ optional($medicalRecord->recordType)->name }}</span>
+                                            <h4>{{ optional($medicalRecord->recordType)->name }}</h4>
+                                            <span class="badge {{ Str::slug(optional($medicalRecord->recordType)->name, '-') }}">{{ optional($medicalRecord->recordType)->name }}</span>
                                         </div>
                                         <div class="timeline-details">
-                                            <p>{{ $medicalRecord->notes }}</p>
+                                            <p><strong>Diagnosis:</strong> {{ $medicalRecord->diagnosis }}</p> <!-- Diagnosis added here -->
+                                            <p><strong>Notes:</strong> {{ $medicalRecord->notes }}</p> <!-- Existing notes section -->
                                             <div class="timeline-meta">
                                                 <span><i class="fas fa-user-md"></i> {{ optional($medicalRecord->appointment->doctor)->full_name ?? 'N/A' }}</span>
                                             </div>
@@ -64,9 +64,6 @@
                         </div>
                     </div>
                 @endforeach
-            
-
-        
 
         <div class="timeline-year">
             <h3>2024</h3>
@@ -146,70 +143,55 @@
         </div>
     </div>
 
-    <!-- Health Summary -->
-    <div class="health-summary">
-        <h3>Health Summary</h3>
-        <div class="summary-cards">
-            <div class="summary-card">
-                <div class="summary-icon">
-                    <i class="fas fa-heartbeat"></i>
-                </div>
-                <div class="summary-details">
-                    <h4>Vital Signs</h4>
-                    <ul class="summary-list">
-                        <li><span>Blood Pressure:</span> 120/80 mmHg</li>
-                        <li><span>Heart Rate:</span> 72 bpm</li>
-                        <li><span>Temperature:</span> 98.6°F</li>
-                        <li><span>Respiratory Rate:</span> 16 breaths/min</li>
-                    </ul>
-                    <div class="summary-date">Last updated: Mar 15, 2025</div>
-                </div>
+<!-- Health Summary -->
+<div class="health-summary">
+    <h3>Health Summary</h3>
+    <div class="summary-cards">
+        <div class="summary-card">
+            <div class="summary-icon">
+                <i class="fas fa-heartbeat"></i>
             </div>
-
-            <div class="summary-card">
-                <div class="summary-icon">
-                    <i class="fas fa-allergies"></i>
-                </div>
-                <div class="summary-details">
-                    <h4>Allergies</h4>
-                    <ul class="summary-list">
-                        <li>Penicillin</li>
-                        <li>Peanuts</li>
-                    </ul>
-                    <div class="summary-date">Last updated: Oct 05, 2024</div>
-                </div>
-            </div>
-
-            <div class="summary-card">
-                <div class="summary-icon">
-                    <i class="fas fa-syringe"></i>
-                </div>
-                <div class="summary-details">
-                    <h4>Immunizations</h4>
-                    <ul class="summary-list">
-                        <li><span>Influenza:</span> Sep 15, 2024</li>
-                        <li><span>Tetanus:</span> Jul 10, 2022</li>
-                        <li><span>COVID-19:</span> Jan 05, 2024</li>
-                    </ul>
-                    <div class="summary-date">Last updated: Sep 15, 2024</div>
-                </div>
-            </div>
-
-            <div class="summary-card">
-                <div class="summary-icon">
-                    <i class="fas fa-notes-medical"></i>
-                </div>
-                <div class="summary-details">
-                    <h4>Conditions</h4>
-                    <ul class="summary-list">
-                        <li>Hypertension (controlled)</li>
-                        <li>Seasonal allergies</li>
-                    </ul>
-                    <div class="summary-date">Last updated: Mar 15, 2025</div>
-                </div>
+            <div class="summary-details">
+                <h4>Vital Signs</h4>
+                @if($latestRecord)
+                <ul class="summary-list">
+                    <li><span>Blood Pressure:</span> {{ $latestRecord->blood_pressure ?? 'N/A' }} mmHg</li>
+                    <li><span>Heart Rate:</span> {{ $latestRecord->heart_rate ?? 'N/A' }} bpm</li>
+                    <li><span>Temperature:</span> {{ $latestRecord->temperature ?? 'N/A' }} °F</li>
+                    <li><span>Respiratory Rate:</span> {{ $latestRecord->respiratory_rate ?? 'N/A' }} breaths/min</li>
+                </ul>
+                <div class="summary-date">Last updated: {{ \Carbon\Carbon::parse($latestRecord->date)->format('M d, Y') }}</div>
+                @else
+                <p>No recent vital signs available.</p>
+                @endif
             </div>
         </div>
+
+        <div class="summary-card">
+            <div class="summary-icon">
+                <i class="fas fa-notes-medical"></i>
+            </div>
+            <div class="summary-details">
+                <h4>Conditions</h4>
+                @if($latestDiagnoses && $latestDiagnoses->count())
+                    <ul class="summary-list">
+                        @foreach($latestDiagnoses as $date => $diagnosis)
+                            <li>{{ $diagnosis }}</li>
+                        @endforeach
+                    </ul>
+                    <div class="summary-date">
+                        Last updated: {{ \Carbon\Carbon::parse($latestDiagnoses->keys()->first())->format('M d, Y') }}
+                    </div>
+                @else
+                    <p>No recent diagnoses found.</p>
+                @endif
+            </div>
+        </div>
+        
     </div>
+</div>
+
+
 </main>
 </div>
 </div>
