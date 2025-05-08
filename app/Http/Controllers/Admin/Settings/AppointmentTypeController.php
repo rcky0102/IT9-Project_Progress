@@ -25,12 +25,14 @@ class AppointmentTypeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'charge' => 'required|numeric|min:0', 
             'specialization_ids' => 'required|array',
             'specialization_ids.*' => 'exists:specializations,id',
         ]);
 
         $appointmentType = AppointmentType::create([
             'name' => $request->name,
+            'charge' => $request->charge, 
         ]);
 
         $appointmentType->specializations()->sync($request->specialization_ids);
@@ -38,4 +40,3 @@ class AppointmentTypeController extends Controller
         return redirect()->route('admin.settings.appointment_types.index')->with('success', 'Appointment type created successfully.');
     }
 }
-

@@ -9,14 +9,11 @@ class AppointmentType extends Model
 {
     use HasFactory;
 
-    // Optional: Specify fillable fields if using mass assignment
     protected $fillable = [
         'name',
+        'charge', 
     ];
 
-    /**
-     * The specializations that belong to the appointment type.
-     */
     public function specializations()
     {
         return $this->belongsToMany(Specialization::class, 'appointment_type_specialization');

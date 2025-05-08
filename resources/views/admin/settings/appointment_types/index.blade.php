@@ -35,6 +35,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Charge (₱)</th> 
                                     <th>Specializations</th>
                                     <th>Actions</th>
                                 </tr>
@@ -43,6 +44,7 @@
                                 @foreach($appointmenttypes as $appointmenttype)
                                     <tr>
                                         <td>{{ $appointmenttype->name }}</td>
+                                        <td>₱{{ number_format($appointmenttype->charge, 2) }}</td> 
                                         <td>
                                             @if($appointmenttype->specializations->isNotEmpty())
                                                 {{ $appointmenttype->specializations->pluck('specialization_name')->implode(', ') }}
@@ -65,6 +67,7 @@
                             </tbody>
                         </table>
                     </div>
+                    
 
                     <!-- Pagination -->
                     <div class="pagination">

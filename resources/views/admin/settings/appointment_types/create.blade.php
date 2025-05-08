@@ -25,6 +25,15 @@
                                                 <small class="form-text text-muted">Enter the full name of the specialization</small>
                                             </div>
                                         </div>
+                            
+                                        <div class="form-col">
+                                            <div class="form-group">
+                                                <label for="charge" class="required-field">Charge (₱)</label>
+                                                <input type="number" id="charge" name="charge" class="form-control" step="0.01" min="0" required>
+                                                <small class="form-text text-muted">Enter the price charged for this appointment type</small>
+                                            </div>
+                                        </div>
+                            
                                         <div class="form-col">
                                             <div class="form-group">
                                                 <label for="specialization_ids" class="required-field">Specializations</label>
@@ -36,71 +45,15 @@
                                                 <small class="form-text text-muted">Select one or more specializations related to this appointment type.</small>
                                             </div>
                                         </div>
-                                        
-                                    </div>
-                                    {{-- <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <textarea id="description" name="description" class="form-control" rows="3"></textarea>
-                                        <small class="form-text text-muted">Provide a brief description of the specialization's focus and services</small>
-                                    </div> --}}
-                                </div>
-
-                                {{-- <div class="form-section">
-                                    <h3 class="form-section-title">Qualification Requirements</h3>
-                                    <div class="form-group">
-                                        <label for="specialization-qualifications">Required Qualifications</label>
-                                        <textarea id="specialization-qualifications" name="qualifications" class="form-control" rows="3"></textarea>
-                                        <small class="form-text text-muted">List the qualifications required for doctors in this specialization</small>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="specialization-experience">Minimum Experience (Years)</label>
-                                                <input type="number" id="specialization-experience" name="experience" class="form-control" min="0" value="0">
-                                                <small class="form-text text-muted">Minimum years of experience required</small>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="specialization-certification">Certification Required</label>
-                                                <select id="specialization-certification" name="certification" class="form-control">
-                                                    <option value="yes">Yes</option>
-                                                    <option value="no">No</option>
-                                                </select>
-                                                <small class="form-text text-muted">Is specialized certification required?</small>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="form-section">
-                                    <h3 class="form-section-title">Additional Settings</h3>
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="specialization-status">Status</label>
-                                                <select id="specialization-status" name="status" class="form-control">
-                                                    <option value="active">Active</option>
-                                                    <option value="inactive">Inactive</option>
-                                                </select>
-                                                <small class="form-text text-muted">Set the current status of the specialization</small>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="specialization-order">Display Order</label>
-                                                <input type="number" id="specialization-order" name="order" class="form-control" value="0" min="0">
-                                                <small class="form-text text-muted">Order in which the specialization appears in lists (0 = default)</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
-
+                            
                                 <div class="form-actions">
-                                    <a href="specializations-index.html" class="btn btn-outline">Cancel</a>
+                                    <a href="{{ route('admin.settings.appointment_types.index')}}" class="btn btn-outline">Cancel</a>
                                     <button type="submit" class="btn btn-primary">Create Appointment Type</button>
                                 </div>
                             </form>
+                            
                         </div>
                     </div>
                 </div>
