@@ -82,7 +82,7 @@
                         <i class="fas fa-pills"></i>
                         <span>Medications</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('patient.payments') }}" class="sidebar-item">
                         <i class="fas fa-credit-card"></i>
                         <span>Payments</span>
                     </a>

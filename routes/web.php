@@ -22,6 +22,7 @@ use App\Http\Controllers\Doctor\ScheduleController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
 use App\Http\Controllers\Patient\PMedicalRecordController;
+use App\Http\Controllers\Patient\PaymentController;
 
 use App\Models\Appointment;
 use App\Models\Department;
@@ -111,7 +112,13 @@ Route::middleware('auth')->group(function () {
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
 
+    /* Patient-medical-records */
+    Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
 
+    /* Patient-payments */
+    Route::get('/patient/payments', [PaymentController::class, 'index'])->name('patient.payments');
+    Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
+    Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
