@@ -47,42 +47,42 @@ class PaymentController extends Controller
         $request->validate([
             'invoice_id' => 'required|exists:invoices,id',
             'amount_paid' => 'required|numeric|min:0',
-            'payment_method_id' => 'required|exists:payment_methods,id', // Ensure payment method is valid
+            'payment_method_id' => 'required|exists:payment_methods,id',
         ]);
     
         // Retrieve the invoice
         $invoice = Invoice::findOrFail($invoiceId);
     
-        // Calculate the outstanding balance by subtracting the total payments from the total_amount
+        // Calculate the outstanding balance
         $totalPayments = $invoice->payments()->sum('amount_paid');
         $outstandingBalance = $invoice->total_amount - $totalPayments;
     
-        // Determine invoice status based on the outstanding balance
-        if ($request->amount_paid >= $outstandingBalance) {
-            $invoiceStatus = 'paid';
-        } else {
-            $invoiceStatus = 'partial';
+        // Restrict overpayment
+        if ($request->amount_paid > $outstandingBalance) {
+            return back()->withErrors(['amount_paid' => 'Payment exceeds the outstanding balance of ₱' . number_format($outstandingBalance, 2)]);
         }
     
-        // Update the invoice status
+        // Determine invoice status
+        $invoiceStatus = ($request->amount_paid == $outstandingBalance) ? 'paid' : 'partial';
+    
+        // Update invoice status
         $invoice->status = $invoiceStatus;
         $invoice->save();
     
-        // Create the payment record
+        // Create the payment
         $payment = new Payment([
             'invoice_id' => $invoice->id,
             'payment_method_id' => $request->payment_method_id,
             'amount_paid' => $request->amount_paid,
-            'status' => $request->amount_paid >= $outstandingBalance ? 'completed' : 'pending', // Set payment status to 'completed' or 'pending'
-            'paid_at' => now(), // Add payment timestamp
+            'status' => $invoiceStatus === 'paid' ? 'completed' : 'pending',
+            'paid_at' => now(),
         ]);
     
-        // Save the payment record
         $payment->save();
     
-        // Redirect with a success message
-        return redirect()->route('patient.payments-invoice-details', ['invoiceId' => $invoice->id])
-                         ->with('success', 'Payment successfully processed!');
+        return redirect()
+            ->route('patient.payments-invoice-details', ['invoiceId' => $invoice->id])
+            ->with('success', 'Payment successfully processed!');
     }
     
     

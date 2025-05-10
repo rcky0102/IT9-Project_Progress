@@ -88,7 +88,7 @@
                         <i class="fas fa-credit-card"></i>
                         <span>Payments</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('patient.messages') }}" class="sidebar-item">
                         <i class="fas fa-envelope"></i>
                         <span>Messages</span>
                     </a>

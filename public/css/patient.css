@@ -1090,12 +1090,35 @@ body {
     background-color: white;
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow);
-    height: calc(100vh - 200px);
-    overflow: hidden;
+    height: calc(100vh - 150px); /* Adjusted for more space */
+    min-height: 500px; /* Ensure minimum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding: 10px; /* Add padding for breathing room */
+}
+
+/* Custom scrollbar styling */
+.messages-container::-webkit-scrollbar {
+    width: 8px;
+}
+.messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 66, 88, 0.3);
+    border-radius: 4px;
+}
+.messages-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Responsive design for smaller screens */
+@media (max-height: 600px) {
+    .messages-container {
+        height: auto;
+        max-height: 400px;
+    }
 }
 
 .messages-sidebar {
-    width: 350px;
+    width: 300px; /* Reduced from 350px to alleviate tight feel */
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -1224,14 +1247,14 @@ body {
 }
 
 .message-body {
-    padding: 20px;
+    padding: 50px;
     flex: 1;
     overflow-y: auto;
     line-height: 1.6;
 }
 
 .message-body p {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 }
 
 .message-body ul {

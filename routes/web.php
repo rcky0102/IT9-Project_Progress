@@ -23,6 +23,7 @@ use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
 use App\Http\Controllers\Patient\PMedicalRecordController;
 use App\Http\Controllers\Patient\PaymentController;
+use App\Http\Controllers\Patient\MessageController;
 
 use App\Models\Appointment;
 use App\Models\Department;
@@ -123,6 +124,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'storePayment'])->name('patient.payments-paynow-store');
     Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
     Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
+
+    /* Patient-messages */
+    Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
+
+
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
