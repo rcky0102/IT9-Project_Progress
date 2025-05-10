@@ -92,10 +92,10 @@
                         <td>
                             <div class="table-actions">
                                 @if ($invoice->status === 'unpaid')
-                                    <button class="btn btn-sm btn-outline">Pay Now</button>
+                                    <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">Pay Now</a>
                                 @endif
                                 <button class="btn btn-sm btn-outline">View</button>
-                            </div>
+                            </div>                            
                         </td>
                     </tr>
                 @endforeach

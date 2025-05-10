@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Invoice extends Model
 {
@@ -16,6 +17,8 @@ class Invoice extends Model
         'notes',
         'payment_method',
     ];
+
+    protected $dates = ['due_date'];
     
     public function appointment()
     {

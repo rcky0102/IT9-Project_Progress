@@ -26,6 +26,19 @@ class PaymentController extends Controller
         return view('patient.payments', compact('paymentMethods', 'invoices'));
     }
 
+    public function payNow($invoiceId)
+    {
+        $paymentMethods = PaymentMethod::all();
+        $invoice = Invoice::findOrFail($invoiceId); // Get the invoice details
+    
+        // Calculate outstanding balance if it exists
+        $outstandingBalance = $invoice->total_amount - $invoice->amount_paid;
+    
+        return view('patient.payments-paynow', compact('paymentMethods', 'invoice', 'outstandingBalance'));
+    }
+    
+    
+
     public function create()
     {
         $paymentMethods = PaymentMethod::all();

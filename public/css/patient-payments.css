@@ -1,0 +1,258 @@
+/* General Form Section */
+.form-section {
+    padding: 20px;
+}
+
+/* Balance Summary */
+.balance-summary {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.balance-summary h4 {
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.balance-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.balance-value {
+    font-weight: bold;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Payment Amount Input */
+.amount-input-container {
+    display: flex;
+    align-items: center;
+}
+
+.amount-input-wrapper {
+    position: relative;
+}
+
+.amount-input-wrapper span {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+}
+
+.amount-input {
+    padding: 10px 10px 10px 30px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 150px;
+}
+
+.amount-buttons {
+    margin-left: 15px;
+}
+
+.amount-buttons .btn.btn-sm.btn-outline {
+    margin-right: 5px;
+}
+
+/* Payment Methods Grid */
+.payment-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-method-card {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+    position: relative;
+    background-color: rgba(0, 66, 88, 0.05);
+    margin-bottom: 10px;
+}
+
+.payment-method-card.active {
+    background-color: rgba(0, 66, 88, 0.1);
+}
+
+.payment-method-radio {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.payment-method-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.payment-method-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 66, 88, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    margin-right: 10px;
+}
+
+.payment-method-details h4 {
+    margin: 0;
+}
+
+.payment-method-details p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+.payment-method-default {
+    font-size: 12px;
+    color: green;
+}
+
+/* Checkbox Container */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input {
+    margin-right: 10px;
+}
+
+/* New Payment Details */
+.new-payment-details {
+    display: none;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.new-payment-details h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.input-full {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.input-row > div {
+    flex: 1;
+}
+
+/* Cash Payment Details */
+.cash-payment-details {
+    display: none;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.cash-payment-details h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.info-box {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.info-box i {
+    color: var(--primary);
+    margin-top: 2px;
+}
+
+.info-box p {
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+
+.info-box p:last-child {
+    font-weight: bold;
+}
+
+/* Billing Address Section */
+.billing-address-section {
+    margin-bottom: 20px;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.radio-group input {
+    margin-right: 10px;
+}
+
+/* Payment Summary */
+.payment-summary {
+    width: 100%;
+    max-width: 400px; /* Adjust as needed */
+}
+
+.summary-row, .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.summary-row span, .summary-total span {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.summary-total {
+    font-weight: bold;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
