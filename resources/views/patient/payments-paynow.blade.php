@@ -17,7 +17,12 @@
         <div class="card-header">
             <h3 class="card-title">Payment Details</h3>
         </div>
-        <form id="payment-form">
+        <form id="payment-form" method="POST" action="{{ route('patient.payments-paynow-store', ['invoiceId' => $invoice->id]) }}">
+            @csrf
+        
+            <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
+            <input type="hidden" name="amount_paid" id="hidden-amount-paid" value="{{ $outstandingBalance }}">
+        
             <div class="form-section">
                 <!-- Outstanding Balance Summary -->
                 <div class="balance-summary">
@@ -47,41 +52,48 @@
                     <div class="amount-input-container">
                         <div class="amount-input-wrapper">
                             <span>$</span>
-                            <input type="text" id="payment-amount" value="{{ $outstandingBalance }}" class="amount-input">
+                            <input type="text" id="payment-amount" class="amount-input" value="{{ number_format($outstandingBalance, 2) }}">
                         </div>
                         <div class="amount-buttons">
-                            <button type="button" class="btn btn-sm btn-outline" id="min-payment-btn">Pay Minimum ({{ number_format($outstandingBalance * 0.25, 2) }})</button>
-                            <button type="button" class="btn btn-sm btn-outline" id="full-payment-btn">Pay Full ({{ number_format($outstandingBalance, 2) }})</button>
+                            <button type="button" class="btn btn-sm btn-outline" id="min-payment-btn" 
+                                data-value="{{ number_format($outstandingBalance * 0.25, 2) }}">
+                                Pay Minimum ({{ number_format($outstandingBalance * 0.25, 2) }})
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline" id="full-payment-btn" 
+                                data-value="{{ number_format($outstandingBalance, 2) }}">
+                                Pay Full ({{ number_format($outstandingBalance, 2) }})
+                            </button>
                         </div>
                     </div>
                 </div>
-        
+
+       
                 <!-- Payment Method Selection -->
                 <div class="form-group">
                     <label class="form-label">Select Payment Method</label>
                     
                     <div class="payment-methods-grid">
                         @foreach ($paymentMethods as $paymentMethod)
-    <div class="payment-method-card">
-        <input type="radio" name="payment_method_id" id="payment-method-{{ $paymentMethod->id }}" value="{{ $paymentMethod->id }}" class="payment-method-radio">
-        <label for="payment-method-{{ $paymentMethod->id }}">
-            <div class="payment-method-content">
-                <div class="payment-method-icon">
-                    <i class="fas fa-credit-card"></i>
-                </div>
-                <div class="payment-method-details">
-                    <h4>
-                        Card/Debit ending in {{ substr($paymentMethod->card_number, -4) }}
-                    </h4>
-                    <p>Expires {{ $paymentMethod->expiration_month }}/{{ substr($paymentMethod->expiration_year, -2) }}</p>
-                    @if ($loop->first)
-                        <div class="payment-method-default">Default</div>
-                    @endif
-                </div>
-            </div>
-        </label>
-    </div>
-@endforeach
+                            <div class="payment-method-card">
+                                <input type="radio" name="payment_method_id" id="payment-method-{{ $paymentMethod->id }}" value="{{ $paymentMethod->id }}" class="payment-method-radio">
+                                <label for="payment-method-{{ $paymentMethod->id }}">
+                                    <div class="payment-method-content">
+                                        <div class="payment-method-icon">
+                                            <i class="fas fa-credit-card"></i>
+                                        </div>
+                                        <div class="payment-method-details">
+                                            <h4>
+                                                Card/Debit ending in {{ substr($paymentMethod->card_number, -4) }}
+                                            </h4>
+                                            <p>Expires {{ $paymentMethod->expiration_month }}/{{ substr($paymentMethod->expiration_year, -2) }}</p>
+                                            @if ($loop->first)
+                                                <div class="payment-method-default">Default</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        @endforeach
 
 
                         <div class="payment-method-card" id="cash-method">
@@ -155,11 +167,11 @@
                     </div>
                 </div>
         
-                <!-- Form Actions -->
+                <!-- Submit -->
                 <div class="form-actions">
                     <a href="#" class="btn btn-outline">Cancel</a>
                     <button type="submit" class="btn btn-primary" id="submit-button">
-                        <i class="fas fa-credit-card"></i> <span id="button-text">Complete Payment</span>
+                        <i class="fas fa-credit-card"></i> Complete Payment
                     </button>
                 </div>
             </div>
@@ -171,6 +183,18 @@
 </div>
 
 <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+                const input = document.getElementById('payment-amount');
+
+                document.getElementById('min-payment-btn').addEventListener('click', function () {
+                    input.value = this.dataset.value;
+                });
+
+                document.getElementById('full-payment-btn').addEventListener('click', function () {
+                    input.value = this.dataset.value;
+                });
+            });
 
         // When a payment method is selected, check if it is 'cash'
         document.querySelectorAll('input[name="payment_method_id"]').forEach(function (input) {

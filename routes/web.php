@@ -118,7 +118,9 @@ Route::middleware('auth')->group(function () {
     /* Patient-payments */
     Route::get('/patient/payments', [PaymentController::class, 'index'])->name('patient.payments');
     Route::get('/patient/payments/create', [PaymentController::class, 'create'])->name('patient.payments-create');
+    Route::get('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'invoiceDetails'])->name('patient.payments-invoice-details');
     Route::get('/patient/payments-paynow/{invoiceId}', [PaymentController::class, 'payNow'])->name('patient.payments-paynow');
+    Route::post('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'storePayment'])->name('patient.payments-paynow-store');
     Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
     Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
 

@@ -92,9 +92,9 @@
                         <td>
                             <div class="table-actions">
                                 @if ($invoice->status === 'unpaid')
-                                    <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">Pay Now</a>
+                                    <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">Pay Now</a>
                                 @endif
-                                <button class="btn btn-sm btn-outline">View</button>
+                                <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">View</a>
                             </div>                            
                         </td>
                     </tr>

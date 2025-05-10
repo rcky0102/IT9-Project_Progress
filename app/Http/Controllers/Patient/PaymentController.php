@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\PaymentMethod;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -29,6 +31,7 @@ class PaymentController extends Controller
     public function payNow($invoiceId)
     {
         $paymentMethods = PaymentMethod::all();
+
         $invoice = Invoice::findOrFail($invoiceId); // Get the invoice details
     
         // Calculate outstanding balance if it exists
@@ -36,6 +39,62 @@ class PaymentController extends Controller
     
         return view('patient.payments-paynow', compact('paymentMethods', 'invoice', 'outstandingBalance'));
     }
+
+
+    public function storePayment(Request $request, $invoiceId)
+    {
+        // Validate incoming data
+        $request->validate([
+            'invoice_id' => 'required|exists:invoices,id',
+            'amount_paid' => 'required|numeric',
+            'payment_method_id' => 'required|exists:payment_methods,id', // Ensure payment method is valid
+        ]);
+    
+        // Retrieve the invoice
+        $invoice = Invoice::findOrFail($invoiceId);
+    
+        // Create the payment record
+        $payment = new Payment([
+            'invoice_id' => $invoice->id,
+            'payment_method_id' => $request->payment_method_id,  // Assuming this is part of the form
+            'amount_paid' => $request->amount_paid,
+            'status' => 'paid', // Set payment status to 'paid'
+            'paid_at' => now(),  // Add payment timestamp
+        ]);
+    
+        // Save the payment record
+        $payment->save();
+    
+        // Update the invoice status to 'paid' if payment is successfully made
+        $invoice->status = 'paid';
+        $invoice->save(); // Save the updated invoice
+    
+        // Redirect with a success message
+        return redirect()->route('patient.invoice-details', ['invoiceId' => $invoice->id])
+                         ->with('success', 'Payment successfully processed!');
+    }
+    
+    
+
+
+
+    public function invoiceDetails($invoiceId)
+    {
+        $invoice = Invoice::with([
+            'appointment.patient.user',
+            'appointment.doctor.user',
+            'appointment.appointmentType',
+            'payments.paymentMethod' // eager load payments and their method
+        ])->findOrFail($invoiceId);
+    
+        // Get payments associated with this invoice
+        $payments = $invoice->payments;
+    
+        return view('patient.payments-invoice-details', compact('invoice', 'payments'));
+    }
+
+
+    
     
     
 

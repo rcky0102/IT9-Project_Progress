@@ -18,11 +18,17 @@ class Invoice extends Model
         'payment_method',
     ];
 
-    protected $dates = ['due_date'];
+    protected $dates = ['due_date', 'issued_at'];
     
     public function appointment()
     {
         return $this->belongsTo(Appointment::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 
 }

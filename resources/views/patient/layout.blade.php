@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/patient-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient-payments.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/patient-invoice-details.css') }}">
 </head>
 <body>
     <div class="app-container">
