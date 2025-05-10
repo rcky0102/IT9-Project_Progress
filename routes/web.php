@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-payments */
     Route::get('/patient/payments', [PaymentController::class, 'index'])->name('patient.payments');
+    Route::get('/patient/payments/create', [PaymentController::class, 'create'])->name('patient.payments-create');
     Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
     Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
 

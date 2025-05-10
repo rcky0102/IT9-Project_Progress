@@ -8,9 +8,9 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Payments</h1>
-        <button class="btn btn-primary">
+        <a href="{{ route('patient.payments-create') }}" class="btn btn-primary">
             <i class="fas fa-credit-card"></i> Make a Payment
-        </button>
+        </a>
     </div>
 
     <!-- Payment Summary -->
@@ -72,92 +72,33 @@
                         <th>Service</th>
                         <th>Provider</th>
                         <th>Total</th>
-                        <th>Insurance</th>
-                        <th>Your Cost</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($invoices as $invoice)
                     <tr>
-                        <td>INV-2025-0342</td>
-                        <td>Mar 15, 2025</td>
-                        <td>General Checkup</td>
-                        <td>Dr. Sarah Johnson</td>
-                        <td>$150.00</td>
-                        <td>$120.00</td>
-                        <td>$30.00</td>
-                        <td><span class="badge unpaid">Unpaid</span></td>
+                        <td>{{ $invoice->invoice_number }}</td>
+                        <td>{{ $invoice->created_at->format('M d, Y') }}</td>
+                        <td>{{ $invoice->appointment->appointmentType->name ?? 'N/A' }}</td>
+                        <td>{{ $invoice->appointment->doctor->full_name ?? 'N/A' }}</td>
+                        <td>${{ number_format($invoice->total_amount, 2) }}</td>
+                        <td>
+                            <span class="badge {{ $invoice->status == 'paid' ? 'paid' : 'unpaid' }}">
+                                {{ ucfirst($invoice->status) }}
+                            </span>
+                        </td>
                         <td>
                             <div class="table-actions">
-                                <button class="btn btn-sm btn-outline">Pay Now</button>
+                                @if ($invoice->status === 'unpaid')
+                                    <button class="btn btn-sm btn-outline">Pay Now</button>
+                                @endif
                                 <button class="btn btn-sm btn-outline">View</button>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>INV-2025-0341</td>
-                        <td>Mar 15, 2025</td>
-                        <td>Blood Test</td>
-                        <td>Clinical Laboratory</td>
-                        <td>$200.00</td>
-                        <td>$110.00</td>
-                        <td>$90.00</td>
-                        <td><span class="badge unpaid">Unpaid</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn btn-sm btn-outline">Pay Now</button>
-                                <button class="btn btn-sm btn-outline">View</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>INV-2025-0325</td>
-                        <td>Feb 28, 2025</td>
-                        <td>Blood Test</td>
-                        <td>Clinical Laboratory</td>
-                        <td>$200.00</td>
-                        <td>$125.00</td>
-                        <td>$75.00</td>
-                        <td><span class="badge paid">Paid</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn btn-sm btn-outline">Receipt</button>
-                                <button class="btn btn-sm btn-outline">View</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>INV-2024-0987</td>
-                        <td>Dec 12, 2024</td>
-                        <td>X-Ray</td>
-                        <td>Radiology Department</td>
-                        <td>$350.00</td>
-                        <td>$280.00</td>
-                        <td>$70.00</td>
-                        <td><span class="badge paid">Paid</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn btn-sm btn-outline">Receipt</button>
-                                <button class="btn btn-sm btn-outline">View</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>INV-2024-0954</td>
-                        <td>Nov 05, 2024</td>
-                        <td>Annual Physical</td>
-                        <td>Dr. Sarah Johnson</td>
-                        <td>$250.00</td>
-                        <td>$250.00</td>
-                        <td>$0.00</td>
-                        <td><span class="badge insurance">Insurance Covered</span></td>
-                        <td>
-                            <div class="table-actions">
-                                <button class="btn btn-sm btn-outline">View</button>
-                            </div>
-                        </td>
-                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

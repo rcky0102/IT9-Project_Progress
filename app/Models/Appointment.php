@@ -34,4 +34,35 @@ class Appointment extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
+
+    protected static function booted()
+    {
+        static::created(function ($appointment) {
+            // Make sure the appointmentType is loaded (just in case)
+            $appointment->load('appointmentType');
+    
+            // Get the charge from appointmentType
+            $charge = $appointment->appointmentType?->charge ?? 0;
+    
+            // Generate a unique invoice number
+            $invoiceNumber = 'INV-' . str_pad($appointment->id, 6, '0', STR_PAD_LEFT);
+    
+            // Create the invoice with the correct total_amount
+            $appointment->invoice()->create([
+                'invoice_number' => $invoiceNumber,
+                'total_amount' => $charge,
+                'status' => 'unpaid',
+                'due_date' => now()->addDays(7),
+            ]);
+        });
+    }
+    
+
+
 }

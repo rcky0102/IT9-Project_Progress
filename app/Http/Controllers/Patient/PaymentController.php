@@ -3,17 +3,36 @@
 namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
     public function index()
     {
         $paymentMethods = PaymentMethod::all(); 
-    
-        return view('patient.payments', compact('paymentMethods'));
+
+        $invoices = Invoice::with([
+            'appointment.appointmentType',
+            'appointment.doctor'
+        ])
+        ->whereHas('appointment', function ($query) {
+            $query->where('patient_id', Auth::user()->patient->id);
+        })
+        ->get();
+
+        return view('patient.payments', compact('paymentMethods', 'invoices'));
     }
+
+    public function create()
+    {
+        $paymentMethods = PaymentMethod::all();
+        
+        return view('patient.payments-create', compact('paymentMethods'));
+    }
+
 
     public function createPaymentMethod()
     {
