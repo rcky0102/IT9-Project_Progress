@@ -28,87 +28,52 @@
                 <button class="filter-btn">Archived</button>
             </div>
             <div class="messages-list">
-                <div class="message-preview active unread">
-                    <div class="message-avatar">
-                        <div class="avatar">
-                            <span class="avatar-fallback">SJ</span>
-                        </div>
-                    </div>
-                    <div class="message-info">
-                        <div class="message-header">
-                            <div class="message-sender">Dr. Sarah Johnson</div>
-                            <div class="message-time">10:30 AM</div>
-                        </div>
-                        <div class="message-subject">Test Results Available</div>
-                        <div class="message-snippet">Your recent blood test results are now available. Please review them at your earliest...</div>
-                    </div>
-                </div>
 
-                <div class="message-preview unread">
-                    <div class="message-avatar">
-                        <div class="avatar">
-                            <span class="avatar-fallback">MC</span>
+                 @foreach ($doctors as $doctor)
+                    <div class="message-preview unread">
+                        <div class="message-avatar">
+                            <div class="avatar">
+                                <span class="avatar-fallback">{{ strtoupper(substr($doctor->user->first_name, 0, 1)) }}{{ strtoupper(substr($doctor->user->last_name, 0, 1)) }}</span>
+                            </div>
+                        </div>
+                        <div class="message-info">
+                            <div class="message-header">
+                                <div class="message-sender">{{ $doctor->getFullNameAttribute() }}</div>
+                                <div class="message-time">
+                                    @if ($doctor->appointments->isNotEmpty())
+                                        {{-- Ensure appointment_date is a Carbon instance --}}
+                                        @php
+                                            $appointmentDate = $doctor->appointments->last()->appointment_date;
+                                            if (!$appointmentDate instanceof \Carbon\Carbon) {
+                                                $appointmentDate = \Carbon\Carbon::parse($appointmentDate);
+                                            }
+                                        @endphp
+                                        {{ $appointmentDate->format('M d, Y') }}
+                                    @else
+                                        No Appointments
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="message-subject">
+                                @if ($doctor->appointments->isNotEmpty())
+                                    {{ $doctor->appointments->last()->reason }} 
+                                @else
+                                    No recent appointments scheduled.
+                                @endif
+                            </div>
+                            <div class="message-snippet">
+                                @if ($doctor->appointments->isNotEmpty())
+                                    {{ $doctor->appointments->last()->notes }} 
+                                @else
+                                    This doctor has no appointments yet.
+                                @endif
+                            </div>
                         </div>
                     </div>
-                    <div class="message-info">
-                        <div class="message-header">
-                            <div class="message-sender">Dr. Michael Chen</div>
-                            <div class="message-time">Yesterday</div>
-                        </div>
-                        <div class="message-subject">Follow-up Appointment</div>
-                        <div class="message-snippet">I'd like to schedule a follow-up appointment to discuss your progress. Please let me know...</div>
-                    </div>
-                </div>
-
-                <div class="message-preview">
-                    <div class="message-avatar">
-                        <div class="avatar">
-                            <span class="avatar-fallback">MC</span>
-                        </div>
-                    </div>
-                    <div class="message-info">
-                        <div class="message-header">
-                            <div class="message-sender">MediCare Clinic</div>
-                            <div class="message-time">Mar 20</div>
-                        </div>
-                        <div class="message-subject">Appointment Reminder</div>
-                        <div class="message-snippet">This is a reminder that you have an appointment scheduled for March 24, 2025 at 10:00 AM...</div>
-                    </div>
-                </div>
-
-                <div class="message-preview">
-                    <div class="message-avatar">
-                        <div class="avatar">
-                            <span class="avatar-fallback">ER</span>
-                        </div>
-                    </div>
-                    <div class="message-info">
-                        <div class="message-header">
-                            <div class="message-sender">Dr. Emily Rodriguez</div>
-                            <div class="message-time">Mar 15</div>
-                        </div>
-                        <div class="message-subject">Prescription Refill Approved</div>
-                        <div class="message-snippet">Your request for a prescription refill has been approved. You can pick it up at your...</div>
-                    </div>
-                </div>
-
-                <div class="message-preview">
-                    <div class="message-avatar">
-                        <div class="avatar">
-                            <span class="avatar-fallback">MC</span>
-                        </div>
-                    </div>
-                    <div class="message-info">
-                        <div class="message-header">
-                            <div class="message-sender">MediCare Clinic</div>
-                            <div class="message-time">Mar 10</div>
-                        </div>
-                        <div class="message-subject">Payment Confirmation</div>
-                        <div class="message-snippet">Thank you for your recent payment of $75.00. This payment has been applied to your...</div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
+
 
         <!-- Message Content -->
         <div class="message-content">

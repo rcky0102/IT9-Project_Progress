@@ -18,11 +18,22 @@ class Doctor extends Model
         return $this->belongsTo(Specialization::class); 
     }
 
+    // Add appointments relationship
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
     // Add a fullName method to get the doctor's full name
     public function getFullNameAttribute()
     {
-        // Assuming 'user' relationship is loaded, access the user's name
         return $this->user->first_name . ' ' . $this->user->middle_name . ' ' . $this->user->last_name;
+    }
+
+    // Optionally get all messages via appointments
+    public function messages()
+    {
+        return $this->hasManyThrough(Message::class, Appointment::class);
     }
 }
 

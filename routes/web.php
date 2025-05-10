@@ -127,7 +127,9 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-messages */
     Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
-
+    Route::get('/patient/{doctorId}/message', [MessageController::class, 'getDoctorMessages']);
+    Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('sendMessage');
+    Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages.store');
 
 
     // Admin routes
