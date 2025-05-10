@@ -46,33 +46,45 @@ class PaymentController extends Controller
         // Validate incoming data
         $request->validate([
             'invoice_id' => 'required|exists:invoices,id',
-            'amount_paid' => 'required|numeric',
+            'amount_paid' => 'required|numeric|min:0',
             'payment_method_id' => 'required|exists:payment_methods,id', // Ensure payment method is valid
         ]);
     
         // Retrieve the invoice
         $invoice = Invoice::findOrFail($invoiceId);
     
+        // Get the outstanding balance of the invoice
+        $outstandingBalance = $invoice->total_amount - $invoice->amount_paid;
+    
+        // Determine invoice status
+        if ($request->amount_paid >= $outstandingBalance) {
+            $invoiceStatus = 'paid';
+        } else {
+            $invoiceStatus = 'partial';
+        }
+    
+        // Update the invoice status
+        $invoice->status = $invoiceStatus;
+        $invoice->save();
+    
         // Create the payment record
         $payment = new Payment([
             'invoice_id' => $invoice->id,
-            'payment_method_id' => $request->payment_method_id,  // Assuming this is part of the form
+            'payment_method_id' => $request->payment_method_id,
             'amount_paid' => $request->amount_paid,
-            'status' => 'paid', // Set payment status to 'paid'
-            'paid_at' => now(),  // Add payment timestamp
+            'status' => $request->amount_paid >= $outstandingBalance ? 'completed' : 'pending', // Set payment status to 'completed' or 'pending'
+            'paid_at' => now(), // Add payment timestamp
         ]);
     
         // Save the payment record
         $payment->save();
     
-        // Update the invoice status to 'paid' if payment is successfully made
-        $invoice->status = 'paid';
-        $invoice->save(); // Save the updated invoice
-    
         // Redirect with a success message
-        return redirect()->route('patient.invoice-details', ['invoiceId' => $invoice->id])
+        return redirect()->route('patient.payments-invoice-details', ['invoiceId' => $invoice->id])
                          ->with('success', 'Payment successfully processed!');
     }
+    
+    
     
     
 
