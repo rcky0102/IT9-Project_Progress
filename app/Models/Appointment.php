@@ -44,25 +44,18 @@ class Appointment extends Model
     protected static function booted()
     {
         static::created(function ($appointment) {
-            // Make sure the appointmentType is loaded (just in case)
-            $appointment->load('appointmentType');
-    
-            // Get the charge from appointmentType
-            $charge = $appointment->appointmentType?->charge ?? 0;
-    
             // Generate a unique invoice number
             $invoiceNumber = 'INV-' . str_pad($appointment->id, 6, '0', STR_PAD_LEFT);
-    
-            // Create the invoice with the correct total_amount
+
+            // Create the invoice
             $appointment->invoice()->create([
                 'invoice_number' => $invoiceNumber,
-                'total_amount' => $charge,
+                'total_amount' => 0, // or calculate default here
                 'status' => 'unpaid',
                 'due_date' => now()->addDays(7),
             ]);
         });
     }
-    
 
 
 }

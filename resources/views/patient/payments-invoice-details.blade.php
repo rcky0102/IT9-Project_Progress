@@ -82,7 +82,7 @@
                         </tbody>
                     </table>
             
-                    <!-- Invoice Summary -->
+                  <!-- Invoice Summary -->
                     <div class="invoice-summary">
                         <div class="summary-table">
                             <div class="summary-row">
@@ -91,10 +91,13 @@
                             </div>
                             <div class="summary-row total">
                                 <div>Balance Due:</div>
-                                <div>${{ number_format($invoice->total_amount, 2) }}</div>
+                                <div>
+                                    ${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}
+                                </div>
                             </div>
                         </div>
                     </div>
+
             
                     <!-- Payment History -->
                     <h4 class="info-title">Payments</h4>

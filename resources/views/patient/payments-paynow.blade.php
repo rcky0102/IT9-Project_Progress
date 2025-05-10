@@ -29,7 +29,7 @@
                     <h4>Outstanding Balance</h4>
                     <div class="balance-row">
                         <span>Total Outstanding:</span>
-                        <span class="balance-value">${{ number_format($outstandingBalance, 2) }}</span>
+                        <span class="balance-value">${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}</span>
                     </div>
                     <div class="balance-row">
                         <span>Due Date:</span>
@@ -52,9 +52,12 @@
                     <div class="amount-input-container">
                         <div class="amount-input-wrapper">
                             <span>$</span>
-                            <input type="text" id="payment-amount" class="amount-input" value="{{ number_format($outstandingBalance, 2) }}">
+                            <!-- This input should allow the user to input any amount they wish to pay -->
+                            <input type="number" id="payment-amount" name="amount_paid" class="amount-input" 
+                                value="{{ old('amount_paid', 0) }}" min="0" step="0.01" required>
                         </div>
                         <div class="amount-buttons">
+                            <!-- These buttons are used to set predefined payment amounts -->
                             <button type="button" class="btn btn-sm btn-outline" id="min-payment-btn" 
                                 data-value="{{ number_format($outstandingBalance * 0.25, 2) }}">
                                 Pay Minimum ({{ number_format($outstandingBalance * 0.25, 2) }})
@@ -155,7 +158,7 @@
                     <h4>Payment Summary</h4>
                     <div class="summary-row">
                         <span>Payment Amount:</span>
-                        <span id="summary-amount">${{ number_format($outstandingBalance, 2) }}</span>
+                        <span id="summary-amount">${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}</span>
                     </div>
                     <div class="summary-row">
                         <span>Processing Fee:</span>
@@ -163,7 +166,7 @@
                     </div>
                     <div class="summary-total">
                         <span>Total:</span>
-                        <span id="summary-total">${{ number_format($outstandingBalance, 2) }}</span>
+                        <span id="summary-total">${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}</span>
                     </div>
                 </div>
         
@@ -184,17 +187,15 @@
 
 <script>
 
-        document.addEventListener("DOMContentLoaded", function () {
-                const input = document.getElementById('payment-amount');
+document.getElementById('min-payment-btn').addEventListener('click', function () {
+        let minPayment = parseFloat(this.getAttribute('data-value'));
+        document.getElementById('payment-amount').value = minPayment.toFixed(2);
+    });
 
-                document.getElementById('min-payment-btn').addEventListener('click', function () {
-                    input.value = this.dataset.value;
-                });
-
-                document.getElementById('full-payment-btn').addEventListener('click', function () {
-                    input.value = this.dataset.value;
-                });
-            });
+    document.getElementById('full-payment-btn').addEventListener('click', function () {
+        let fullPayment = parseFloat(this.getAttribute('data-value'));
+        document.getElementById('payment-amount').value = fullPayment.toFixed(2);
+    });
 
         // When a payment method is selected, check if it is 'cash'
         document.querySelectorAll('input[name="payment_method_id"]').forEach(function (input) {

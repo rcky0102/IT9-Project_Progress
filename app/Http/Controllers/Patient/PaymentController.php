@@ -53,10 +53,11 @@ class PaymentController extends Controller
         // Retrieve the invoice
         $invoice = Invoice::findOrFail($invoiceId);
     
-        // Get the outstanding balance of the invoice
-        $outstandingBalance = $invoice->total_amount - $invoice->amount_paid;
+        // Calculate the outstanding balance by subtracting the total payments from the total_amount
+        $totalPayments = $invoice->payments()->sum('amount_paid');
+        $outstandingBalance = $invoice->total_amount - $totalPayments;
     
-        // Determine invoice status
+        // Determine invoice status based on the outstanding balance
         if ($request->amount_paid >= $outstandingBalance) {
             $invoiceStatus = 'paid';
         } else {
@@ -83,6 +84,7 @@ class PaymentController extends Controller
         return redirect()->route('patient.payments-invoice-details', ['invoiceId' => $invoice->id])
                          ->with('success', 'Payment successfully processed!');
     }
+    
     
     
     
