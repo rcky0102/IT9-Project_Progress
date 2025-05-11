@@ -13,7 +13,6 @@ class MessageController extends Controller
 {
     public function index()
     {
-       
         $patient = Auth::user()->patient;
         
         $doctors = Doctor::with('user')  
@@ -46,7 +45,6 @@ class MessageController extends Controller
         return view('patient.messages-create', compact('uniqueAppointments'));
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
@@ -63,11 +61,59 @@ class MessageController extends Controller
             'appointment_id' => $appointment->id,
             'subject' => $request->subject,
             'content' => $request->content,
+            'sender_type' => 'patient', // Set sender type to patient
         ]);
 
         return redirect()->route('patient.messages')->with('success', 'Message sent successfully.');
     }
 
+    /**
+     * Display a specific message and its conversation thread.
+     */
+    public function show(Message $message)
+    {
+        $patient = Auth::user()->patient;
 
+        // Check if the message belongs to the authenticated patient
+        if ($message->appointment->patient_id !== $patient->id) {
+            return redirect()->route('patient.messages')
+                ->with('error', 'You do not have permission to view this message.');
+        }
 
+        // Get all messages between this patient and doctor (the conversation thread)
+        $thread = Message::where('appointment_id', $message->appointment_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('patient.message-show', compact('message', 'thread'));
+    }
+
+    /**
+     * Reply to a message.
+     */
+    public function reply(Request $request, Message $message)
+    {
+        $patient = Auth::user()->patient;
+
+        // Check if the message belongs to the authenticated patient
+        if ($message->appointment->patient_id !== $patient->id) {
+            return redirect()->route('patient.messages')
+                ->with('error', 'You do not have permission to reply to this message.');
+        }
+
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        // Create a new message as a reply
+        $reply = Message::create([
+            'appointment_id' => $message->appointment_id,
+            'subject' => 'RE: ' . $message->subject,
+            'content' => $request->content,
+            'sender_type' => 'patient', // Indicate this is from the patient
+        ]);
+
+        return redirect()->route('patient.messages.show', $message->id)
+            ->with('success', 'Reply sent successfully.');
+    }
 }

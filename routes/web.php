@@ -138,8 +138,10 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-messages */
     Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
-    Route::get('/patient/messages-create', [MessageController::class, 'create'])->name('patient.messages-create');
-    Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages-store');
+    Route::get('/patient/messages/create', [MessageController::class, 'create'])->name('patient.messages.create');
+    Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages.store');
+    Route::get('/patient/messages/{message}', [MessageController::class, 'show'])->name('patient.messages.show');
+    Route::post('/patient/messages/{message}/reply', [MessageController::class, 'reply'])->name('patient.messages.reply');
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

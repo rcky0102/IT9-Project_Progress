@@ -11,7 +11,6 @@ class Message extends Model
         'subject',
         'content',
         'sender_type',
-        'unread'
     ];
 
     public function appointment()
