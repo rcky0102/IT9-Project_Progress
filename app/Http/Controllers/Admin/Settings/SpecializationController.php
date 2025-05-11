@@ -43,5 +43,29 @@ class SpecializationController extends Controller
 }
 
 
+    public function edit($id)
+    {
+        $specialization = Specialization::findOrFail($id);  // Retrieve the specialization by ID
+        $departments = Department::all();  // Retrieve all departments for the dropdown
+
+        return view('admin.settings.specializations.edit', compact('specialization', 'departments'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $specialization = Specialization::findOrFail($id);
+        $specialization->update($request->all());
+        return redirect()->route('admin.settings.specializations.index')->with('success', 'Specialization updated successfully.');
+    }
+    public function destroy($id)
+    {
+        $specialization = Specialization::findOrFail($id);
+        $specialization->delete();
+    
+        return redirect()->route('admin.settings.specializations.index')
+            ->with('success', 'Specialization deleted successfully.');
+    }
+    
+    
 
 }

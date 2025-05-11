@@ -56,28 +56,36 @@ class DoctorController extends Controller
 
     public function edit($id)
     {
-        $doctor = User::findOrFail($id);
-        return view('admin.doctors.edit', compact('doctor'));
+        $doctor = User::with('doctor')->findOrFail($id);
+        $specializations = Specialization::all();
+    
+        return view('admin.doctors.edit', compact('doctor', 'specializations'));
     }
 
     public function update(Request $request, $id)
     {
         $doctor = User::findOrFail($id);
-        
+    
         $request->validate([
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $doctor->id,
+            'password' => 'nullable|min:6|confirmed',
         ]);
-
+    
         $doctor->update([
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
+            // Only update password if provided
+            'password' => $request->password ? Hash::make($request->password) : $doctor->password,
         ]);
-
+        if ($request->filled('password')) {
+            $doctor->password = Hash::make($request->password);
+            $doctor->save();
+        }
         return redirect()->route('admin.doctors.index')
             ->with('success', 'Doctor information updated successfully');
     }

@@ -24,5 +24,9 @@ class Specialization extends Model
     {
         return $this->belongsToMany(AppointmentType::class);
     }
+    public function recordTypes()
+    {
+        return $this->belongsToMany(RecordType::class, 'record_type_specialization', 'specialization_id', 'record_type_id');
+    }
 
 }

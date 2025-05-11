@@ -42,7 +42,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                @foreach ($recordTypes as $recordType)
+                        <tr>
+                            <td>{{ $recordType->name }}</td>
+                            <td>{{ implode(', ', $recordType->specializations->pluck('name')->toArray()) }}</td>
+                            <td>{{ $recordType->fields->count() }} fields</td>
+                            <td>
+                                <span class="badge {{ $recordType->status === 'active' ? 'badge-success' : 'badge-warning' }}">
+                                    {{ ucfirst($recordType->status) }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ route('admin.settings.record-types.edit', $recordType->id) }}" class="btn-icon edit-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.settings.record-types.destroy', $recordType->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-icon delete-btn" onclick="return confirm('Are you sure you want to delete this record type?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    <!-- <tr>
                         <td>Consultation</td>
                         <td>General Medicine, Cardiology, Neurology</td>
                         <td>8 fields</td>
@@ -57,8 +84,8 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td>Lab Result</td>
                         <td>Pathology, Hematology</td>
                         <td>12 fields</td>
@@ -73,8 +100,8 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td>Imaging</td>
                         <td>Radiology, Cardiology</td>
                         <td>6 fields</td>
@@ -89,8 +116,8 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td>Surgery</td>
                         <td>General Surgery, Orthopedics</td>
                         <td>15 fields</td>
@@ -105,8 +132,8 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td>Prescription</td>
                         <td>All Specializations</td>
                         <td>5 fields</td>
@@ -121,7 +148,7 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>

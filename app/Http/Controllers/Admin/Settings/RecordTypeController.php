@@ -10,8 +10,10 @@ class RecordTypeController extends Controller
 {
     public function index()
     {
-        return view('admin.settings.record-types.index');
+        $recordTypes = RecordType::with(['specializations', 'fields'])->paginate(10); // or use all() if you don't want pagination
+        return view('admin.settings.record-types.index', compact('recordTypes'));
     }
+
 
     public function create()
     {

@@ -416,7 +416,7 @@ body {
     background-color: white;
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow);
-    overflow: hidden;
+    overflow: visible;
     margin-bottom: 30px;
 }
 

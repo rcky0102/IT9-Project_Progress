@@ -10,19 +10,20 @@ use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
 use App\Http\Controllers\Admin\Settings\RecordTypeController;
-
-
 use App\Http\Controllers\Doctor\DAppointmentController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\MedicalRecordController;
 use App\Http\Controllers\Doctor\PrescriptionController;
 use App\Http\Controllers\Doctor\ScheduleController;
+use App\Http\Controllers\Doctor\DMessageController;
+
 
 
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
 use App\Http\Controllers\Patient\PMedicalRecordController;
 use App\Http\Controllers\Patient\PaymentController;
+use App\Http\Controllers\Patient\MessageController;
 
 use App\Models\Appointment;
 use App\Models\Department;
@@ -89,6 +90,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescription-store');
 
 
+    /* Doctor-Messages*/
+    Route::get('/doctor/messages', [DMessageController::class, 'index'])->name('doctor.messages');
+    Route::get('/doctor/message-create', [DMessageController::class, 'create'])->name('doctor.message-create');
+    Route::post('/doctor/message-store', [DMessageController::class, 'store'])->name('doctor.message-store');
+    Route::get('/doctor/messages/{message}', [DMessageController::class, 'show'])->name('doctor.messages.show');
+    Route::post('/doctor/messages/{message}/reply', [DMessageController::class, 'reply'])->name('doctor.messages.reply');
+    Route::get('/doctor/messages/{message}/forward', [DMessageController::class, 'forward'])->name('doctor.messages.forward');
+    Route::delete('/doctor/messages/{message}', [DMessageController::class, 'destroy'])->name('doctor.messages.destroy');
+
+
+
     /* patient's route */
     Route::get('/patient/dashboard', function () {
         return view('patient.dashboard');
@@ -117,8 +129,19 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-payments */
     Route::get('/patient/payments', [PaymentController::class, 'index'])->name('patient.payments');
+    Route::get('/patient/payments/create', [PaymentController::class, 'create'])->name('patient.payments-create');
+    Route::get('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'invoiceDetails'])->name('patient.payments-invoice-details');
+    Route::get('/patient/payments-paynow/{invoiceId}', [PaymentController::class, 'payNow'])->name('patient.payments-paynow');
+    Route::post('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'storePayment'])->name('patient.payments-paynow-store');
     Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
     Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
+
+    /* Patient-messages */
+    Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
+    Route::get('/patient/messages/create', [MessageController::class, 'create'])->name('patient.messages.create');
+    Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages.store');
+    Route::get('/patient/messages/{message}', [MessageController::class, 'show'])->name('patient.messages.show');
+    Route::post('/patient/messages/{message}/reply', [MessageController::class, 'reply'])->name('patient.messages.reply');
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
@@ -161,19 +184,9 @@ Route::middleware('auth')->group(function () {
             return app()->make(DoctorController::class)->store($request);
         })->name('doctors.store');
         
-        Route::get('/doctors/{id}/edit', function ($id) {
-            if (Auth::user()->role !== 'admin') {
-                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
-            }
-            return app()->make(DoctorController::class)->edit($id);
-        })->name('doctors.edit');
+        Route::get('/doctors/{id}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
+        Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update');
         
-        Route::put('/doctors/{id}', function (Request $request, $id) {
-            if (Auth::user()->role !== 'admin') {
-                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
-            }
-            return app()->make(DoctorController::class)->update($request, $id);
-        })->name('doctors.update');
         
         Route::delete('/doctors/{id}', function ($id) {
             if (Auth::user()->role !== 'admin') {
@@ -234,21 +247,33 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings.index');
 
-                Route::get('/appointment_types', [AppointmentTypeController::class, 'index'])->name('appointment_types.index');;
+                Route::get('/appointment_types', [AppointmentTypeController::class, 'index'])->name('appointment_types.index');
                 Route::get('/appointment_types/create', [AppointmentTypeController::class, 'create'])->name('appointment_types.create');
                 Route::post('appointment_types', [AppointmentTypeController::class, 'store'])->name('appointment_types.store');
+                Route::get('/appointment_types/{id}/edit', [AppointmentTypeController::class, 'edit'])->name('appointment_types.edit');
+                Route::put('/appointment_types/{id}', [AppointmentTypeController::class, 'update'])->name('appointment_types.update');
+                Route::delete('/appointment_types/{id}', [AppointmentTypeController::class, 'destroy'])->name('appointment_types.destroy');
+
  
                 Route::get('/record-types', [RecordTypeController::class, 'index'])->name('record-types.index');;
                 Route::get('/record-types/create', [RecordTypeController::class, 'create'])->name('record-types.create');
                 Route::post('/record-types', [RecordTypeController::class, 'store'])->name('record-types.store');
 
-                Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');;
+                Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
                 Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
                 Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
+                Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+                Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+                Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
-                Route::get('/specializations', [SpecializationController::class, 'index'])->name('specializations.index');;
+
+                Route::get('/specializations', [SpecializationController::class, 'index'])->name('specializations.index');
                 Route::get('/specializations/create', [SpecializationController::class, 'create'])->name('specializations.create');
                 Route::post('/specializations', [SpecializationController::class, 'store'])->name('specializations.store');
+                Route::get('specializations/{id}/edit', [SpecializationController::class, 'edit'])->name('specializations.edit');
+                Route::put('specializations/{id}', [SpecializationController::class, 'update'])->name('specializations.update');
+                Route::delete('specializations/{id}', [SpecializationController::class, 'destroy'])->name('specializations.destroy');
+
         
         });  
     });

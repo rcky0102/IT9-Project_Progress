@@ -54,7 +54,7 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn-icon edit-btn">
+                                                <a href="{{ route('admin.settings.appointment_types.edit', $appointmenttype->id) }}" class="btn-icon edit-btn">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <button class="btn-icon delete-btn" data-id="{{ $appointmenttype->id }}">
@@ -106,6 +106,10 @@
             </div>
         </div>
     </div>
+    <form id="delete-form" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -173,14 +177,12 @@
             // Confirm delete
             document.getElementById('confirm-delete').addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
-                
-                // In a real application, you would send a request to the server to delete the appointment type
-                // For this example, we'll just remove the row from the table
-                const row = document.querySelector(`.delete-btn[data-id="${id}"]`).closest('tr');
-                row.remove();
-                
+                const form = document.getElementById('delete-form');
+                form.setAttribute('action', `/admin/settings/appointment_types/${id}`);
+                form.submit();
                 document.getElementById('delete-confirmation-modal').classList.remove('show');
             });
+
 
             // Close modal when clicking outside
             window.addEventListener('click', function(e) {

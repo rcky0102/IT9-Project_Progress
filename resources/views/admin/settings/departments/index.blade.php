@@ -15,6 +15,11 @@
                             <i class="fas fa-plus"></i> Add Department
                         </a>
                     </div>
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
                     <!-- Search and Filter -->
                     <div class="filters-container">
@@ -44,13 +49,13 @@
                                         <td>{{ $department->department_name }}</td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn-icon edit-btn">
+                                                <a href="{{ route('admin.settings.departments.edit', $department->id) }}" class="btn-icon edit-btn">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="#" method="POST" style="display: inline;">
+                                                <form action="{{ route('admin.settings.departments.destroy', $department->id) }}" method="POST" style="display: inline;" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn-icon delete-btn" onclick="return confirm('Are you sure?')">
+                                                    <button type="button" class="btn-icon delete-btn" data-id="{{ $department->id }}">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
@@ -140,11 +145,17 @@
                     const row = this.closest('tr');
                     const name = row.cells[0].textContent;
                     
-                    document.getElementById('delete-confirmation-modal').classList.add('show');
-                    document.getElementById('delete-confirmation-message').textContent = `Are you sure you want to delete the "${name}" department? This action cannot be undone.`;
+                    // Show the confirmation modal
+                    const modal = document.getElementById('delete-confirmation-modal');
+                    const confirmationMessage = document.getElementById('delete-confirmation-message');
                     
-                    // Store the ID for the delete confirmation
-                    document.getElementById('confirm-delete').setAttribute('data-id', id);
+                    confirmationMessage.textContent = `Are you sure you want to delete the "${name}" department? This action cannot be undone.`;
+                    
+                    modal.classList.add('show');
+                    
+                    // Set the department ID on the confirm button for later use
+                    const confirmDeleteButton = document.getElementById('confirm-delete');
+                    confirmDeleteButton.setAttribute('data-id', id);
                 });
             });
 
@@ -168,19 +179,19 @@
             document.getElementById('confirm-delete').addEventListener('click', function() {
                 const id = this.getAttribute('data-id');
                 
-                // In a real application, you would send a request to the server to delete the department
-                // For this example, we'll just remove the row from the table
-                const row = document.querySelector(`.delete-btn[data-id="${id}"]`).closest('tr');
-                row.remove();
+                // Find the corresponding form and submit it to delete the department
+                const form = document.querySelector(`.delete-btn[data-id="${id}"]`).closest('form');
+                form.submit();
                 
-                document.getElementById('delete-confirmation-modal').classList.remove('show');
-            });
+                // Cancel delete
+                document.getElementById('cancel-delete').addEventListener('click', function() {
+                    document.getElementById('delete-confirmation-modal').classList.remove('show');
+                });
 
-            // Close modal when clicking outside
-            window.addEventListener('click', function(e) {
-                document.querySelectorAll('.modal').forEach(modal => {
-                    if (e.target === modal) {
-                        modal.classList.remove('show');
+                // Close modal when clicking outside
+                window.addEventListener('click', function(e) {
+                    if (e.target === document.getElementById('delete-confirmation-modal')) {
+                        document.getElementById('delete-confirmation-modal').classList.remove('show');
                     }
                 });
             });

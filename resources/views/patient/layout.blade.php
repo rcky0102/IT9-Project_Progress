@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ asset('css/patient-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/patient-payments.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/patient-invoice-details.css') }}">
 </head>
 <body>
     <div class="app-container">
@@ -86,7 +88,7 @@
                         <i class="fas fa-credit-card"></i>
                         <span>Payments</span>
                     </a>
-                    <a href="#" class="sidebar-item">
+                    <a href="{{ route('patient.messages') }}" class="sidebar-item">
                         <i class="fas fa-envelope"></i>
                         <span>Messages</span>
                     </a>

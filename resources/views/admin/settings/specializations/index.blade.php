@@ -17,6 +17,7 @@
                         </a>
                     </div>
 
+
                     <!-- Search and Filter -->
                     <div class="filters-container">
                         <div class="search-box">
@@ -49,10 +50,13 @@
                                         <td>{{ $specialization->description }}</td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn-icon edit-btn">
+                                                <a href="{{ route('admin.settings.specializations.edit', $specialization->id) }}" class="btn-icon edit-btn">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button class="btn-icon delete-btn" data-id="{{ $specialization->id }}">
+                                                <button type="button"
+                                                    class="btn-icon delete-btn"
+                                                    data-id="{{ $specialization->id }}"
+                                                    data-name="{{ $specialization->specialization_name }}">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
@@ -101,6 +105,10 @@
             </div>
         </div>
     </div>
+    <form id="delete-form" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -166,15 +174,12 @@
             });
 
             // Confirm delete
-            document.getElementById('confirm-delete').addEventListener('click', function() {
+            document.getElementById('confirm-delete').addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
-                
-                // In a real application, you would send a request to the server to delete the specialization
-                // For this example, we'll just remove the row from the table
-                const row = document.querySelector(`.delete-btn[data-id="${id}"]`).closest('tr');
-                row.remove();
-                
-                document.getElementById('delete-confirmation-modal').classList.remove('show');
+                const deleteForm = document.getElementById('delete-form');
+                const action = `/admin/settings/specializations/${id}`; 
+                deleteForm.setAttribute('action', action);
+                deleteForm.submit();
             });
 
             // Close modal when clicking outside
