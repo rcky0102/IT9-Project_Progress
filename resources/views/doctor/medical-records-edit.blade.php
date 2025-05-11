@@ -1,15 +1,15 @@
 @extends('doctor.layout')
 
-@section('title', 'Medical Records | Medical Clinic')
+@section('title', 'Edit Medical Record | Medical Clinic')
 
 @section('content')
 
- <!-- Main Content -->
- <main class="main-content">
+<!-- Main Content -->
+<main class="main-content">
     <div class="page-header-with-actions">
         <div>
-            <h1>Create Medical Record</h1>
-            <p class="text-muted">Add a new medical record for a patient</p>
+            <h1>Edit Medical Record</h1>
+            <p class="text-muted">Update an existing medical record for a patient</p>
         </div>
     </div>
 
@@ -17,16 +17,17 @@
         <div class="card-header">
             <h3 class="card-title">Record Information</h3>
         </div>
-        <form action="{{ route('doctor.medical-records-store') }}" method="POST" class="record-form">
+        <form action="{{ route('doctor.medical-records-update', $medicalRecord->id) }}" method="POST" class="record-form">
             @csrf
-        
+            @method('PUT')
+
             <div class="form-row">
                 <div class="form-group">
-                    <label for="appointment_id">Patient</label>
+                    <label for="appointment_id">Patient *</label>
                     <select name="appointment_id" id="appointment_id" class="form-control" required>
                         <option value="">Select Patient</option>
                         @foreach($appointments as $appointment)
-                            <option value="{{ $appointment->id }}" {{ old('appointment_id') == $appointment->id ? 'selected' : '' }}>
+                            <option value="{{ $appointment->id }}" {{ $medicalRecord->appointment_id == $appointment->id ? 'selected' : '' }}>
                                 {{ $appointment->patient->full_name }}
                             </option>
                         @endforeach
@@ -34,14 +35,14 @@
                     @error('appointment_id')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
-                </div>                
-        
+                </div>
+
                 <div class="form-group">
                     <label for="record_type_id">Record Type *</label>
                     <select id="record_type_id" name="record_type_id" class="form-control" required>
                         <option value="">Select record type</option>
                         @foreach ($recordTypes as $recordType)
-                            <option value="{{ $recordType->id }}" {{ old('record_type_id') == $recordType->id ? 'selected' : '' }}>
+                            <option value="{{ $recordType->id }}" {{ $medicalRecord->record_type_id == $recordType->id ? 'selected' : '' }}>
                                 {{ $recordType->name }}
                             </option>
                         @endforeach
@@ -51,65 +52,62 @@
                     @enderror
                 </div>
             </div>
-        
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="date">Date *</label>
-                    <input type="date" id="date" name="date" class="form-control" required value="{{ old('date') }}">
+                    <input type="date" id="date" name="date" class="form-control" required value="{{ old('date', $medicalRecord->date) }}">
                     @error('date')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
-        
+
                 <div class="form-group">
                     <label for="diagnosis">Diagnosis *</label>
-                    <input type="text" id="diagnosis" name="diagnosis" class="form-control" placeholder="Enter diagnosis" required value="{{ old('diagnosis') }}">
+                    <input type="text" id="diagnosis" name="diagnosis" class="form-control" placeholder="Enter diagnosis" required value="{{ old('diagnosis', $medicalRecord->diagnosis) }}">
                     @error('diagnosis')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
-        
+
             <h4 class="section-title">Vital Signs</h4>
             <div class="form-row">
                 <div class="form-group">
                     <label for="blood_pressure">Blood Pressure</label>
-                    <input type="text" id="blood_pressure" name="blood_pressure" class="form-control" placeholder="e.g. 120/80 mmHg" value="{{ old('blood_pressure') }}">
+                    <input type="text" id="blood_pressure" name="blood_pressure" class="form-control" placeholder="e.g. 120/80 mmHg" value="{{ old('blood_pressure', $medicalRecord->blood_pressure) }}">
                 </div>
                 <div class="form-group">
                     <label for="temperature">Temperature</label>
-                    <input type="text" id="temperature" name="temperature" class="form-control" placeholder="e.g. 98.6 °F" value="{{ old('temperature') }}">
+                    <input type="text" id="temperature" name="temperature" class="form-control" placeholder="e.g. 98.6 °F" value="{{ old('temperature', $medicalRecord->temperature) }}">
                 </div>
                 <div class="form-group">
                     <label for="heart_rate">Heart Rate</label>
-                    <input type="text" id="heart_rate" name="heart_rate" class="form-control" placeholder="e.g. 72 bpm" value="{{ old('heart_rate') }}">
+                    <input type="text" id="heart_rate" name="heart_rate" class="form-control" placeholder="e.g. 72 bpm" value="{{ old('heart_rate', $medicalRecord->heart_rate) }}">
                 </div>
                 <div class="form-group">
                     <label for="respiratory_rate">Respiratory Rate</label>
-                    <input type="text" id="respiratory_rate" name="respiratory_rate" class="form-control" placeholder="e.g. 16 breaths/min" value="{{ old('respiratory_rate') }}">
+                    <input type="text" id="respiratory_rate" name="respiratory_rate" class="form-control" placeholder="e.g. 16 breaths/min" value="{{ old('respiratory_rate', $medicalRecord->respiratory_rate) }}">
                 </div>
             </div>
-        
+
             <div class="form-group">
                 <label for="notes">Notes *</label>
-                <textarea id="notes" name="notes" class="form-control" rows="6" placeholder="Enter detailed notes about the patient's condition, treatment plan, etc." required>{{ old('notes') }}</textarea>
+                <textarea id="notes" name="notes" class="form-control" rows="6" placeholder="Enter detailed notes about the patient's condition, treatment plan, etc." required>{{ old('notes', $medicalRecord->notes) }}</textarea>
                 @error('notes')
                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                 @enderror
             </div>
-        
+
             <div class="form-actions">
                 <a href="{{ route('doctor.medical-records') }}" class="btn btn-outline">Cancel</a>
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Save Record
+                    <i class="fas fa-save"></i> Update Record
                 </button>
             </div>
         </form>
-        
-        
     </div>
 </main>
-
 
 <script>
     // Dropdown functionality
@@ -140,17 +138,7 @@
                 menu.classList.remove('show');
             });
         });
-    
-        // // Form submission
-        // const form = document.querySelector('.record-form');
-        // if (form) {
-        //     form.addEventListener('submit', function(e) {
-        //         e.preventDefault();  
-        //         alert('Record created successfully!');
-        //         form.submit(); // This will submit the form normally
-        //     });
-        // }
     });
-    </script>
+</script>
 
 @endsection

@@ -87,6 +87,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctor/medical-records', [MedicalRecordController::class, 'index'])->name('doctor.medical-records');
     Route::get('/doctor/medical-records-create', [MedicalRecordController::class, 'create'])->name('doctor.medical-records-create');
     Route::post('/doctor/medical-records', [MedicalRecordController::class, 'store'])->name('doctor.medical-records-store');
+    Route::get('/doctor/medical-records-show/{id}', [MedicalRecordController::class, 'show'])->name('doctor.medical-records-show');
+    Route::get('/doctor/medical-records-edit/{id}', [MedicalRecordController::class, 'edit'])->name('doctor.medical-records-edit');
+    Route::put('/doctor/medical-records-show/{id}', [MedicalRecordController::class, 'update'])->name('doctor.medical-records-update');
     
     /* Doctor-prescriptions*/
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');

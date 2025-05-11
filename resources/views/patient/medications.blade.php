@@ -236,7 +236,7 @@
         </div>
     </div>
 
-    <!-- Medication Schedule -->
+    {{-- <!-- Medication Schedule -->
     <div class="medication-schedule">
         <h3>Daily Medication Schedule</h3>
         <div class="schedule-container">
@@ -247,7 +247,7 @@
                         <div class="schedule-item-name">Lisinopril 10mg</div>
                         <div class="schedule-item-time">8:00 AM</div>
                     </div>
-                </div>
+                </div>  
             </div>
             <div class="schedule-time">
                 <h4>Afternoon</h4>
@@ -268,7 +268,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </main>
 
 <script>
