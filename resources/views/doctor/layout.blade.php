@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/doctor-styles.css')}}">
     <link rel="stylesheet" href="{{ asset('css/doctor.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/doctor-messages.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
 </head>
 <body>
@@ -91,7 +92,7 @@
                         <i class="fas fa-calendar-alt"></i>
                         <span>Schedule</span>
                     </a>
-                     <a href="{{ route('patient.messages') }}" class="sidebar-item">
+                     <a href="{{ route('doctor.messages') }}" class="sidebar-item">
                         <i class="fas fa-envelope"></i>
                         <span>Messages</span>
                     </a>
