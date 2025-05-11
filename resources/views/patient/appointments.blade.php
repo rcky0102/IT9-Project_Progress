@@ -39,10 +39,11 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="card-value">12</div>
+                            <div class="card-value">{{ $pastAppointmentsCount }}</div>
                             <div class="card-label">Previous appointments</div>
                         </div>
                     </div>
+
 
                     <div class="card">
                         <div class="card-header">
@@ -52,10 +53,11 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="card-value">4</div>
+                            <div class="card-value">{{ $doctorCount }}</div>
                             <div class="card-label">Different specialists</div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Appointments Tabs -->

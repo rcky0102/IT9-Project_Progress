@@ -76,13 +76,13 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="detail-item">
+                                    {{-- <div class="detail-item">
                                         <i class="fas fa-map-marker-alt text-primary"></i>
                                         <div>
                                             <p class="font-medium">Location</p>
                                             <p class="text-light">MediCare Clinic</p>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                 
