@@ -127,6 +127,7 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
+    Route::get('/patient/medical-record-show/{id}', [PMedicalRecordController::class, 'show'])->name('patient.medical-record-show');
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');

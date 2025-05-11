@@ -51,4 +51,30 @@ class PMedicalRecordController extends Controller
         return view('patient.medical-records', compact('medicalRecords', 'latestRecord', 'latestDiagnoses'));
 
     }
+
+    public function show($id)
+    {
+        $patient = Auth::user()->patient;
+
+        if (!$patient) {
+            abort(403, 'Unauthorized access - Patient profile not found.');
+        }
+
+        // Load the MedicalRecord with its appointment and related models
+        $medicalRecord = MedicalRecord::with([
+                'appointment.patient',
+                'appointment.doctor',
+                'recordType',
+            ])
+            ->where('id', $id)
+            ->whereHas('appointment', function ($query) use ($patient) {
+                $query->where('patient_id', $patient->id);
+            })
+            ->firstOrFail();
+
+        return view('patient.medical-record-show', [
+            'appointment' => $medicalRecord->appointment, // For your view to work
+            'medicalRecord' => $medicalRecord
+        ]);
+    }
 }
