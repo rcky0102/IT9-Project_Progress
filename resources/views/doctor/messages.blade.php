@@ -1,6 +1,6 @@
-@extends('patient.layout')
+@extends('doctor.layout')
 
-@section('title', 'Patient Dashboard | Medical Clinic')
+@section('title', 'Messages | Medical Clinic')
 
 @section('content')
 

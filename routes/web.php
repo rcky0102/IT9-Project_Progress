@@ -10,13 +10,13 @@ use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
 use App\Http\Controllers\Admin\Settings\RecordTypeController;
-
-
 use App\Http\Controllers\Doctor\DAppointmentController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\MedicalRecordController;
 use App\Http\Controllers\Doctor\PrescriptionController;
 use App\Http\Controllers\Doctor\ScheduleController;
+use App\Http\Controllers\Doctor\DMessageController;
+
 
 
 use App\Http\Controllers\Patient\AppointmentController;
@@ -90,6 +90,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescription-store');
 
 
+    /* Doctor-Messages*/
+    Route::get('/doctor/messages', [DMessageController::class, 'index'])->name('doctor.messages');
+    Route::get('/doctor/message-create', [DMessageController::class, 'create'])->name('doctor.message-create');
+    Route::post('/doctor/messages', [DMessageController::class, 'store'])->name('doctor.message-store');
+
+
+
+
     /* patient's route */
     Route::get('/patient/dashboard', function () {
         return view('patient.dashboard');
@@ -127,10 +135,8 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-messages */
     Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
-    Route::get('/patient/{doctorId}/message', [MessageController::class, 'getDoctorMessages']);
-    Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('sendMessage');
-    Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages.store');
-
+    Route::get('/patient/messages-create', [MessageController::class, 'create'])->name('patient.messages-create');
+    Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages-store');
 
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
