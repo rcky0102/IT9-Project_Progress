@@ -30,5 +30,16 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function recordType()
+    {
+        return $this->belongsTo(RecordType::class);
+    }
+
+    public function billable()
+    {
+        return $this->morphTo();
+    }
+
+
 
 }

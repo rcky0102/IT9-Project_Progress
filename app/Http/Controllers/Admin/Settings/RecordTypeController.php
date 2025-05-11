@@ -10,7 +10,8 @@ class RecordTypeController extends Controller
 {
     public function index()
     {
-        return view('admin.settings.record-types.index');
+        $recordTypes = RecordType::all();
+        return view('admin.settings.record-types.index', compact('recordTypes'));
     }
 
     public function create()
@@ -20,14 +21,20 @@ class RecordTypeController extends Controller
 
     public function store(Request $request)
     {
+
+        // Validate the inputs
         $request->validate([
             'name' => 'required|string|max:255',
+            'charge' => 'required|numeric|min:0', // Ensure charge is numeric and greater than or equal to 0
         ]);
 
+        // Create the record type
         RecordType::create([
             'name' => $request->name,
+            'charge' => $request->charge, // Store the correct charge value
         ]);
 
-        return redirect()->route('admin.settings.record-types.index')->with('success', 'Record Type created successfully.');
+        return redirect()->route('admin.settings.record-types.index')
+                         ->with('success', 'Record Type created successfully.');
     }
 }

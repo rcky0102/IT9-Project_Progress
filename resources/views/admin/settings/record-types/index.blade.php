@@ -35,96 +35,31 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Specializations</th>
-                        <th>Fields</th>
-                        <th>Status</th>
+                        <th>Charge</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Consultation</td>
-                        <td>General Medicine, Cardiology, Neurology</td>
-                        <td>8 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="1">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="1">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Lab Result</td>
-                        <td>Pathology, Hematology</td>
-                        <td>12 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="2">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="2">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Imaging</td>
-                        <td>Radiology, Cardiology</td>
-                        <td>6 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="3">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="3">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Surgery</td>
-                        <td>General Surgery, Orthopedics</td>
-                        <td>15 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="4">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="4">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Prescription</td>
-                        <td>All Specializations</td>
-                        <td>5 fields</td>
-                        <td><span class="badge badge-warning">Inactive</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="5">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="5">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    @foreach ($recordTypes as $recordType)
+                        <tr>
+                            <td>{{ $recordType->name }}</td>
+                            <td>₱{{ number_format($recordType->charge, 2) }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon edit-btn" data-id="{{ $recordType->id }}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon delete-btn" data-id="{{ $recordType->id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
+
 
         <!-- Pagination -->
         <div class="pagination">

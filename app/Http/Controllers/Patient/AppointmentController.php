@@ -26,7 +26,10 @@ class AppointmentController extends Controller
             ->orderBy('appointment_date', 'asc')
             ->get();
 
-        $appointmentsCount = $appointments->count();
+        $appointmentsCount = Appointment::where('patient_id', $patient->id)
+            ->where('status', 'confirmed')
+            ->whereDate('appointment_date', '>=', now())
+            ->count();
 
         $pastAppointmentsCount = $appointments->where('status', 'completed')->count();
 

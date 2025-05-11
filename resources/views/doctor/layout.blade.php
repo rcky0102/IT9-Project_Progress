@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Doctor Dashboard | Medical Clinic')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/doctor-patients.css') }}">
     <link rel="stylesheet" href="{{ asset('css/doctor-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/doctor-styles.css')}}">
     <link rel="stylesheet" href="{{ asset('css/doctor.css') }}">
     <link rel="stylesheet" href="{{ asset('css/doctor-messages.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
+    
 </head>
 <body>
     <div class="app-container">

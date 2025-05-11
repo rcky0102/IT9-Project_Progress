@@ -129,7 +129,7 @@
                                             <i class="fas fa-ellipsis-h"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
+                                            <a href="{{ route('doctor.patient-show', $patient->id) }}" class="dropdown-item">
                                                 <i class="fas fa-eye"></i> View Profile
                                             </a>
                                             <a href="#" class="dropdown-item">

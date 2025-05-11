@@ -19,7 +19,7 @@ use App\Http\Controllers\Doctor\ScheduleController;
 use App\Http\Controllers\Doctor\DMessageController;
 
 
-
+use App\Http\Controllers\Patient\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
 use App\Http\Controllers\Patient\PMedicalRecordController;
@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function () {
     
     /* Doctor-patients*/
     Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
+    Route::get('/doctor/patient-show/{id}', [PatientController::class, 'show'])->name('doctor.patient-show');
 
     /* Doctor-medical-records*/
     Route::get('/doctor/medical-records', [MedicalRecordController::class, 'index'])->name('doctor.medical-records');
@@ -115,9 +116,7 @@ Route::middleware('auth')->group(function () {
 
 
     /* patient's route */
-    Route::get('/patient/dashboard', function () {
-        return view('patient.dashboard');
-    })->name('patient.dashboard');
+    Route::get('/patient/dashboard', [DashboardController::class, 'index'])->name('patient.dashboard');
 
 
     /* Patient-appointments */
@@ -226,6 +225,18 @@ Route::middleware('auth')->group(function () {
 
 
 
+       // Users
+        Route::get('/users', function () {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return view('admin.users.index');
+        })->name('users.index');
+
+
+
+
+
 
         
         // Appointments management
@@ -292,6 +303,11 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.reports.index');
         })->name('reports.index');
+
+
+
+
+
         
         // Settings
         Route::get('/settings', function () {
