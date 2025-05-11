@@ -75,7 +75,11 @@ Route::middleware('auth')->group(function () {
 
     /* Doctor-Appointments*/
     Route::get('/doctor/appointments', [DAppointmentController::class, 'index'])->name('doctor.appointments');
-
+    Route::get('/doctor/appointment-show/{appointment}', [DAppointmentController::class, 'show'])->name('doctor.appointment-show');
+    Route::get('/doctor/appointment-edit/{appointment}', [DAppointmentController::class, 'edit'])->name('doctor.appointment-edit');
+    Route::put('/doctor/appointment-show/{appointment}', [DAppointmentController::class, 'update'])->name('doctor.appointment-update');
+    
+    
     /* Doctor-patients*/
     Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
 
