@@ -93,8 +93,11 @@ Route::middleware('auth')->group(function () {
     /* Doctor-Messages*/
     Route::get('/doctor/messages', [DMessageController::class, 'index'])->name('doctor.messages');
     Route::get('/doctor/message-create', [DMessageController::class, 'create'])->name('doctor.message-create');
-    Route::post('/doctor/messages', [DMessageController::class, 'store'])->name('doctor.message-store');
-
+    Route::post('/doctor/message-store', [DMessageController::class, 'store'])->name('doctor.message-store');
+    Route::get('/doctor/messages/{message}', [DMessageController::class, 'show'])->name('doctor.messages.show');
+    Route::post('/doctor/messages/{message}/reply', [DMessageController::class, 'reply'])->name('doctor.messages.reply');
+    Route::get('/doctor/messages/{message}/forward', [DMessageController::class, 'forward'])->name('doctor.messages.forward');
+    Route::delete('/doctor/messages/{message}', [DMessageController::class, 'destroy'])->name('doctor.messages.destroy');
 
 
 

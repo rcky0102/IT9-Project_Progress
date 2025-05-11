@@ -40,6 +40,12 @@ class Appointment extends Model
         return $this->hasOne(Invoice::class);
     }
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+
 
     protected static function booted()
     {
