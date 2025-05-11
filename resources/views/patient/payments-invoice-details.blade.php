@@ -52,7 +52,7 @@
                         <div class="info-label">Name:</div>
                         <div class="info-value">
                             @if ($invoice->appointment && $invoice->appointment->patient)
-                                {{ $invoice->appointment->patient->full_name ?? 'N/A' }}
+                                {{ $invoice->appointment->patient->user->first_name ?? 'N/A' }}
                             @else
                                 N/A
                             @endif
