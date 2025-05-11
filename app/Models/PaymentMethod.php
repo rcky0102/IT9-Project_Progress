@@ -27,10 +27,10 @@ class PaymentMethod extends Model
     }
 
 
-    public function getCardNumberAttribute($value)
-    {
-        return Crypt::decryptString($value);
-    }
+    // public function getCardNumberAttribute($value)
+    // {
+    //     return Crypt::decryptString($value);
+    // }
 
 
     public function setSecurityCodeAttribute($value)

@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Filters -->
-                <div class="filters-container">
+                <!-- <div class="filters-container">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search appointments...">
@@ -36,10 +36,10 @@
                         <option value="this-week">This Week</option>
                         <option value="next-week">Next Week</option>
                     </select>
-                </div>
+                </div> -->
 
                 <!-- Calendar View -->
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Calendar View</h3>
                         <div class="calendar-navigation">
@@ -102,7 +102,7 @@
                             <div class="calendar-cell disabled">1</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Upcoming Appointments -->
                 <h3 class="section-title">Upcoming Appointments</h3>
@@ -173,160 +173,7 @@
 
                     
 
-                    <div class="appointment-item">
-                        <div class="appointment-date">
-                            <div class="appointment-date-day">26</div>
-                            <div class="appointment-date-month">MAY</div>
-                        </div>
-                        <div class="appointment-details">
-                            <div class="appointment-title">James Brown - Follow-up Consultation</div>
-                            <div class="appointment-info">
-                                <span><i class="fas fa-clock"></i> 11:00 AM - 11:30 AM</span>
-                                <span><i class="fas fa-phone"></i> +1 (555) 234-5678</span>
-                                <span><i class="fas fa-tag"></i> Follow-up</span>
-                            </div>
-                        </div>
-                        <div class="appointment-status scheduled">
-                            Scheduled
-                        </div>
-                        <div class="appointment-actions">
-                            <button class="btn btn-outline">View Details</button>
-                            <div class="dropdown">
-                                <button class="btn-icon">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-edit"></i> Edit Appointment
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-check"></i> Mark as Completed
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-times"></i> Cancel Appointment
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Send Reminder
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="appointment-item">
-                        <div class="appointment-date">
-                            <div class="appointment-date-day">26</div>
-                            <div class="appointment-date-month">MAY</div>
-                        </div>
-                        <div class="appointment-details">
-                            <div class="appointment-title">Olivia Martinez - Blood Pressure Check</div>
-                            <div class="appointment-info">
-                                <span><i class="fas fa-clock"></i> 2:00 PM - 2:30 PM</span>
-                                <span><i class="fas fa-phone"></i> +1 (555) 345-6789</span>
-                                <span><i class="fas fa-tag"></i> Routine</span>
-                            </div>
-                        </div>
-                        <div class="appointment-status scheduled">
-                            Scheduled
-                        </div>
-                        <div class="appointment-actions">
-                            <button class="btn btn-outline">View Details</button>
-                            <div class="dropdown">
-                                <button class="btn-icon">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-edit"></i> Edit Appointment
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-check"></i> Mark as Completed
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-times"></i> Cancel Appointment
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Send Reminder
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Past Appointments -->
-                <h3 class="section-title">Past Appointments</h3>
-                <div class="appointments-list">
-                    <div class="appointment-item">
-                        <div class="appointment-date">
-                            <div class="appointment-date-day">20</div>
-                            <div class="appointment-date-month">MAY</div>
-                        </div>
-                        <div class="appointment-details">
-                            <div class="appointment-title">Robert Johnson - Annual Physical</div>
-                            <div class="appointment-info">
-                                <span><i class="fas fa-clock"></i> 9:00 AM - 10:00 AM</span>
-                                <span><i class="fas fa-phone"></i> +1 (555) 456-7890</span>
-                                <span><i class="fas fa-tag"></i> Annual</span>
-                            </div>
-                        </div>
-                        <div class="appointment-status completed">
-                            Completed
-                        </div>
-                        <div class="appointment-actions">
-                            <button class="btn btn-outline">View Details</button>
-                            <div class="dropdown">
-                                <button class="btn-icon">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-file-medical"></i> View Medical Record
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-calendar-plus"></i> Schedule Follow-up
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Send Summary
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="appointment-item">
-                        <div class="appointment-date">
-                            <div class="appointment-date-day">15</div>
-                            <div class="appointment-date-month">MAY</div>
-                        </div>
-                        <div class="appointment-details">
-                            <div class="appointment-title">Sophia Garcia - Vaccination</div>
-                            <div class="appointment-info">
-                                <span><i class="fas fa-clock"></i> 3:00 PM - 3:15 PM</span>
-                                <span><i class="fas fa-phone"></i> +1 (555) 567-8901</span>
-                                <span><i class="fas fa-tag"></i> Vaccination</span>
-                            </div>
-                        </div>
-                        <div class="appointment-status cancelled">
-                            Cancelled
-                        </div>
-                        <div class="appointment-actions">
-                            <button class="btn btn-outline">View Details</button>
-                            <div class="dropdown">
-                                <button class="btn-icon">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-calendar-plus"></i> Reschedule
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Contact Patient
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </main>
         </div>
