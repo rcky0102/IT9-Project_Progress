@@ -8,9 +8,28 @@
     <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin-doctor.css')}}">
     <link rel="stylesheet" href="{{ asset('css/admin-doctor-create.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/patient-invoice-details.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/patient-payments.css')}}">
 </head>
 <body>
     <div class="app-container">
+
+        @if(session('success'))
+                <div id="flash-message" class="flash-message">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const flash = document.getElementById('flash-message');
+                    if (flash) {
+                        setTimeout(() => flash.remove(), 3500);
+                    }
+                });
+            </script>
+
+
         <!-- Header -->
         <header class="dashboard-header">
             <a href="{{ route('admin.dashboard') }}" class="logo">MediCare Clinic</a>
@@ -69,7 +88,7 @@
                         <i class="fas fa-file-medical"></i>
                         <span>Services</span>
                     </a>
-                    <a href="{{ route('admin.billing.index') }}" class="sidebar-item {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.billing.index') }}" class="sidebar-item {{ request()->routeIs('admin.billings.*') ? 'active' : '' }}">
                         <i class="fas fa-credit-card"></i>
                         <span>Billing</span>
                     </a>

@@ -331,6 +331,11 @@ body {
     background-color: rgba(0, 66, 88, 0.05);
 }
 
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
 /* Dropdown Menu */
 .dropdown {
     position: relative;
@@ -539,6 +544,11 @@ body {
     margin-bottom: 30px;
 }
 
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .page-header-with-actions h1 {
     color: var(--primary);
     margin-bottom: 10px;
@@ -718,6 +728,274 @@ body {
     font-size: 14px;
 }
 
+/* Flash Message */
+.flash-message {
+    background-color: var(--success);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    background-color: white;
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: rgba(0, 66, 88, 0.1);
+}
+
+.pagination-btn.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.pagination-btn:disabled {
+    color: var(--text-light);
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-header h3 {
+    color: var(--primary);
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+.close-modal:hover {
+    color: var(--text);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Form Controls */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: var(--text);
+}
+
+/* Invoice Items */
+.invoice-items-section {
+    margin-bottom: 20px;
+}
+
+.invoice-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.invoice-item {
+    background-color: rgba(0, 66, 88, 0.02);
+    padding: 15px;
+    border-radius: var(--border-radius-sm);
+}
+
+.add-item-btn {
+    margin-top: 10px;
+}
+
+.remove-item {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.remove-item:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Invoice Summary */
+.invoice-summary {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(0, 66, 88, 0.02);
+    border-radius: var(--border-radius-sm);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.summary-label {
+    color: var(--text-light);
+    font-weight: bold;
+}
+
+.summary-value {
+    color: var(--text);
+    font-weight: bold;
+}
+
+.summary-row.total .summary-label,
+.summary-row.total .summary-value {
+    color: var(--primary);
+    font-size: 16px;
+}
+
+/* Radio Buttons */
+.radio-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.radio-label input {
+    margin-right: 5px;
+}
+
+/* Date Range */
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-date {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50px;
+    background-color: white;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+}
+
+/* Invoice Link */
+.invoice-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.invoice-link:hover {
+    text-decoration: underline;
+}
+
+/* Alerts */
+.alert {
+    padding: 10px 15px;
+    border-radius: var(--border-radius-sm);
+    margin-top: 5px;
+}
+
+.alert-danger {
+    background-color: var(--danger);
+    color: white;
+}
+
 /* Responsive Styles */
 @media (max-width: 992px) {
     .sidebar {
@@ -740,6 +1018,10 @@ body {
     .main-content {
         padding: 20px;
     }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
@@ -754,6 +1036,22 @@ body {
 
     .page-header-with-actions .btn {
         align-self: flex-start;
+    }
+
+    .header-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination-container {
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
@@ -780,5 +1078,9 @@ body {
 
     .filters-container {
         flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95%;
     }
 }
