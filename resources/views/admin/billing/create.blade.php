@@ -7,7 +7,7 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Make a Payment</h1>
-        <a href="payments.html" class="btn btn-outline">
+        <a href="{{ route('admin.billing.index') }}" class="btn btn-outline">
             <i class="fas fa-arrow-left"></i> Back to Payments
         </a>
     </div>
@@ -17,148 +17,69 @@
         <div class="card-header">
             <h3 class="card-title">Payment Details</h3>
         </div>
-        <form id="payment-form" method="POST" action="{{ route('admin.billing.store', ['invoiceId' => $invoice->id]) }}">
+        <form id="payment-form" method="POST" action="{{ route('admin.billing.store', ['invoiceId' => $invoice->id ?? 0]) }}">
             @csrf
-        
-            <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
-            <input type="hidden" name="amount_paid" id="hidden-amount-paid" value="{{ $outstandingBalance }}">
-        
+
+            <input type="hidden" name="invoice_id" value="{{ $invoice->id ?? '' }}">
+            <input type="hidden" name="amount_paid" id="hidden-amount-paid" value="{{ $outstandingBalance ?? 0 }}">
+
             <div class="form-section">
                 <!-- Outstanding Balance Summary -->
                 <div class="balance-summary">
                     <h4>Outstanding Balance</h4>
                     <div class="balance-row">
                         <span>Total Outstanding:</span>
-                        <span class="balance-value">${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}</span>
+                        <span class="balance-value">
+                            ${{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
+                        </span>
                     </div>
                     <div class="balance-row">
                         <span>Due Date:</span>
-                        <span>{{ \Carbon\Carbon::parse($invoice->due_date)->format('M d, Y') }}</span>
+                        <span>
+                            {{ \Carbon\Carbon::parse($invoice->due_date ?? now())->format('M d, Y') }}
+                        </span>
                     </div>
-                    
+
                     <div class="balance-row">
                         <span>Invoice #:</span>
-                        <span>{{ $invoice->invoice_number }}</span>
+                        <span>{{ $invoice->invoice_number ?? 'N/A' }}</span>
                     </div>
                     <div class="balance-row">
                         <span>Service:</span>
-                        <span>{{ $invoice->appointment->appointmentType->name }}</span>
+                        <span>{{ $invoice->appointment?->appointmentType?->name ?? 'N/A' }}</span>
                     </div>
                 </div>
-        
+
                 <!-- Payment Amount -->
                 <div class="form-group">
                     <label for="payment-amount" class="form-label">Payment Amount</label>
                     <div class="amount-input-container">
                         <div class="amount-input-wrapper">
                             <span>$</span>
-                            <!-- This input should allow the user to input any amount they wish to pay -->
-                            <input type="number" id="payment-amount" name="amount_paid" class="amount-input" 
+                            <input type="number" id="payment-amount" name="amount_paid" class="amount-input"
                                 value="{{ old('amount_paid', 0) }}" min="0" step="0.01" required>
                         </div>
                         <div class="amount-buttons">
-                            <!-- These buttons are used to set predefined payment amounts -->
-                            <button type="button" class="btn btn-sm btn-outline" id="min-payment-btn" 
-                                data-value="{{ number_format($outstandingBalance * 0.25, 2) }}">
-                                Pay Minimum ({{ number_format($outstandingBalance * 0.25, 2) }})
+                            <button type="button" class="btn btn-sm btn-outline" id="min-payment-btn"
+                                data-value="{{ number_format(($outstandingBalance ?? 0) * 0.25, 2) }}">
+                                Pay Minimum ({{ number_format(($outstandingBalance ?? 0) * 0.25, 2) }})
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline" id="full-payment-btn" 
-                                data-value="{{ number_format($outstandingBalance, 2) }}">
-                                Pay Full ({{ number_format($outstandingBalance, 2) }})
+                            <button type="button" class="btn btn-sm btn-outline" id="full-payment-btn"
+                                data-value="{{ number_format($outstandingBalance ?? 0, 2) }}">
+                                Pay Full ({{ number_format($outstandingBalance ?? 0, 2) }})
                             </button>
                         </div>
                     </div>
                 </div>
 
-       
-                <!-- Payment Method Selection -->
-                {{-- <div class="form-group">
-                    <label class="form-label">Select Payment Method</label>
-                    
-                    <div class="payment-methods-grid"> --}}
-                        {{-- @foreach ($paymentMethods as $paymentMethod)
-                            <div class="payment-method-card">
-                                <input type="radio" name="payment_method_id" id="payment-method-{{ $paymentMethod->id }}" value="{{ $paymentMethod->id }}" class="payment-method-radio">
-                                <label for="payment-method-{{ $paymentMethod->id }}">
-                                    <div class="payment-method-content">
-                                        <div class="payment-method-icon">
-                                            <i class="fas fa-credit-card"></i>
-                                        </div>
-                                        <div class="payment-method-details">
-                                            <h4>
-                                                Card/Debit ending in {{ substr($paymentMethod->card_number, -4) }}
-                                            </h4>
-                                            <p>Expires {{ $paymentMethod->expiration_month }}/{{ substr($paymentMethod->expiration_year, -2) }}</p>
-                                            @if ($loop->first)
-                                                <div class="payment-method-default">Default</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                        @endforeach --}}
-
-
-                        {{-- <div class="payment-method-card" id="cash-method">
-                            <input type="radio" name="payment_method_id" id="cash-payment" value="cash" class="payment-method-radio">
-                            <label for="cash-payment">
-                                <div class="payment-method-content">
-                                    <div class="payment-method-icon">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                    </div>
-                                    <div class="payment-method-details">
-                                        <h4>Cash</h4>
-                                        <p>Pay in person</p>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-
-                    </div>
-                </div> --}}
-
-                {{-- <!-- Cash Payment Details (shown when cash is selected) -->
-                <div id="cash-payment-details" class="cash-payment-details" style="display: none;">
-                    <h4>Cash Payment Information</h4>
-
-                    <div class="info-box">
-                        <i class="fas fa-info-circle"></i>
-                        <div>
-                            <p>Please bring this amount in cash to any of our clinic locations during business hours. A receipt will be provided upon payment.</p>
-                            <p style="font-weight: bold;">This will not complete your payment now. This option is to indicate your intention to pay with cash.</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="preferred-location" class="form-label">Preferred Payment Location</label>
-                        <select id="preferred-location" class="input-full">
-                            <option value="">Select a location</option>
-                            <option value="main">Main Clinic - 123 Medical Dr.</option>
-                            <option value="north">North Branch - 456 Health Ave.</option>
-                            <option value="east">East Branch - 789 Wellness Blvd.</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="payment-date" class="form-label">Planned Payment Date</label>
-                        <input type="date" id="payment-date" class="input-full">
-                    </div>
-                </div>
-        
-                <!-- Terms and Conditions -->
-                <div class="form-group">
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="terms">
-                        <label for="terms" style="font-size: 14px;">I authorize Medical Clinic to charge my selected payment method for the amount specified above. I have read and agree to the <a href="#" style="color: var(--primary);">Terms and Conditions</a>.</label>
-                    </div>
-                </div> --}}
-        
                 <!-- Payment Summary -->
                 <div class="payment-summary">
                     <h4>Payment Summary</h4>
                     <div class="summary-row">
                         <span>Payment Amount:</span>
-                        <span id="summary-amount">${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}</span>
+                        <span id="summary-amount">
+                            ${{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
+                        </span>
                     </div>
                     <div class="summary-row">
                         <span>Processing Fee:</span>
@@ -166,23 +87,24 @@
                     </div>
                     <div class="summary-total">
                         <span>Total:</span>
-                        <span id="summary-total">${{ number_format($invoice->total_amount - $invoice->payments->sum('amount_paid'), 2) }}</span>
+                        <span id="summary-total">
+                            ${{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
+                        </span>
                     </div>
                 </div>
-        
+
                 <!-- Submit -->
                 <div class="form-actions">
-                    <a href="#" class="btn btn-outline">Cancel</a>
+                    <a href="{{ route('admin.billing.index') }}" class="btn btn-outline">Cancel</a>
                     <button type="submit" class="btn btn-primary" id="submit-button">
                         <i class="fas fa-credit-card"></i> Complete Payment
                     </button>
                 </div>
             </div>
         </form>
-        
-        
     </div>
 </main>
+
 </div>
 
 <script>
