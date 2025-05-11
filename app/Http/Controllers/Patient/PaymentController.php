@@ -9,25 +9,38 @@ use App\Models\Payment;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MedicalRecord;
 use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
-    public function index()
-    {
-        $paymentMethods = PaymentMethod::all();
 
-        $invoices = Invoice::with([
-            'billable.appointmentType',
-            'billable.doctor'
-        ])
-        ->whereHasMorph('billable', [Appointment::class], function ($query) {
-            $query->where('patient_id', Auth::user()->patient->id);
-        })
-        ->get();
+public function index()
+{
+    $paymentMethods = PaymentMethod::all();
 
-        return view('patient.payments', compact('paymentMethods', 'invoices'));
-    }
+    $invoices = Invoice::with([
+        'billable' => function ($morphTo) {
+            $morphTo->morphWith([
+                \App\Models\Appointment::class => ['appointmentType', 'doctor'],
+                \App\Models\MedicalRecord::class => ['appointment.doctor'],
+            ]);
+        }
+    ])
+    ->where(function ($query) {
+        $query->whereHasMorph('billable', [\App\Models\Appointment::class], function ($q) {
+            $q->where('patient_id', Auth::user()->patient->id);
+        })->orWhereHasMorph('billable', [\App\Models\MedicalRecord::class], function ($q) {
+            $q->whereHas('appointment', function ($appointmentQuery) {
+                $appointmentQuery->where('patient_id', Auth::user()->patient->id);
+            });
+        });
+    })
+    ->get();
+
+    return view('patient.payments', compact('paymentMethods', 'invoices'));
+}
+
 
     public function payNow($invoiceId)
     {
@@ -81,10 +94,15 @@ class PaymentController extends Controller
     public function invoiceDetails($invoiceId)
     {
         $invoice = Invoice::with([
-            'billable.patient.user',
-            'billable.doctor.user',
-            'billable.appointmentType',
-            'payments.paymentMethod'
+            'billable' => function ($morphTo) {
+                $morphTo->morphWith([
+                    \App\Models\Appointment::class => ['appointmentType', 'doctor'],
+                    \App\Models\MedicalRecord::class => ['appointment' => function ($q) {
+                        $q->with('patient'); // Load the patient relation through the appointment
+                    }],
+                ]);
+            },
+            'payments.paymentMethod',
         ])->findOrFail($invoiceId);
 
         $payments = $invoice->payments;

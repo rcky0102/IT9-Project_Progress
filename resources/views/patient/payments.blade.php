@@ -81,14 +81,35 @@
                 <tr>
                     <td>{{ $invoice->invoice_number }}</td>
                     <td>{{ $invoice->created_at->format('M d, Y') }}</td>
-                    <td>{{ $invoice->billable->appointmentType->name ?? 'N/A' }}</td>
-                    <td>{{ $invoice->billable->doctor->full_name ?? 'N/A' }}</td>
+                    
+                   <td>
+                        @if ($invoice->billable instanceof \App\Models\Appointment)
+                            {{ $invoice->billable->appointmentType->name ?? 'N/A' }}
+                        @elseif ($invoice->billable instanceof \App\Models\MedicalRecord)
+                            Medical Record
+                        @endif
+                    </td>
+
+                    <td>
+                        @if ($invoice->billable instanceof \App\Models\Appointment)
+                            {{ $invoice->billable->doctor->full_name ?? 'N/A' }}
+                        @elseif ($invoice->billable instanceof \App\Models\MedicalRecord)
+                            {{ $invoice->billable->appointment->doctor->full_name ?? 'N/A' }}
+                        @endif
+                    </td>
+
+
+                    {{-- Total --}}
                     <td>₱{{ number_format($invoice->total_amount, 2) }}</td>
+
+                    {{-- Status --}}
                     <td>
                         <span class="badge {{ $invoice->status === 'paid' ? 'paid' : 'unpaid' }}">
                             {{ ucfirst($invoice->status) }}
                         </span>
                     </td>
+
+                    {{-- Actions --}}
                     <td>
                         <div class="table-actions">
                             @if ($invoice->status === 'unpaid')
@@ -103,6 +124,7 @@
         </table>
     </div>
 </div>
+
 
 
     <!-- Payment Methods -->

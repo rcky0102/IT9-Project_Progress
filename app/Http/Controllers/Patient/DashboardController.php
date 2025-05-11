@@ -24,15 +24,21 @@ class DashboardController extends Controller
         $medicalRecordsCount = $patient->medicalRecords()->count();
 
         // 3. Sum of all unpaid invoices (not marked 'paid')
-       $outstandingBalance = Invoice::whereHasMorph('billable', [Appointment::class], function ($query) use ($patient) {
-                $query->where('patient_id', $patient->id);
+        $outstandingBalance = Invoice::where(function ($query) use ($patient) {
+                $query->whereHasMorph('billable', [Appointment::class], function ($q) use ($patient) {
+                    $q->where('patient_id', $patient->id);
+                })
+                ->orWhereHasMorph('billable', [MedicalRecord::class], function ($q) use ($patient) {
+                    $q->whereHas('appointment', function ($q) use ($patient) {
+                        $q->where('patient_id', $patient->id);
+                    });
+                });
             })
             ->where('status', '!=', 'paid')
             ->get()
             ->sum(function ($invoice) {
                 return $invoice->total_amount - $invoice->payments->sum('amount_paid');
             });
-
 
         return view('patient.dashboard', compact(
             'upcomingAppointmentsCount',
@@ -41,3 +47,4 @@ class DashboardController extends Controller
         ));
     }
 }
+

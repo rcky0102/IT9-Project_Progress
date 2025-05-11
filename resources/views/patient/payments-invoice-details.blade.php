@@ -51,8 +51,8 @@
                     <div class="info-row">
                         <div class="info-label">Name:</div>
                         <div class="info-value">
-                            @if ($invoice->appointment && $invoice->appointment->patient)
-                                {{ $invoice->appointment->patient->user->first_name ?? 'N/A' }}
+                            @if ($invoice->billable && $invoice->billable->patient)
+                                {{ $invoice->billable->patient->user->first_name ?? 'N/A' }}
                             @else
                                 N/A
                             @endif
@@ -64,8 +64,8 @@
                     <div class="info-row">
                         <div class="info-label">Provider:</div>
                         <div class="info-value">
-                            @if ($invoice->appointment && $invoice->appointment->doctor)
-                                {{ $invoice->appointment->doctor->full_name ?? 'N/A' }}
+                            @if ($invoice->billable && $invoice->billable->doctor)
+                                {{ $invoice->billable->doctor->full_name ?? 'N/A' }}
                             @else
                                 N/A
                             @endif
@@ -86,8 +86,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $invoice->appointment && $invoice->appointment->appointmentType ? $invoice->appointment->appointmentType->name : 'N/A' }}</td>
-                        <td>{{ $invoice->appointment && $invoice->appointment->appointment_date ? \Carbon\Carbon::parse($invoice->appointment->appointment_date)->format('M d, Y') : 'N/A' }}</td>
+                        <td>{{ $invoice->billable && $invoice->billable->appointmentType ? $invoice->billable->appointmentType->name : 'N/A' }}</td>
+                        <td>{{ $invoice->billable && $invoice->billable->appointment_date ? \Carbon\Carbon::parse($invoice->billable->appointment_date)->format('M d, Y') : 'N/A' }}</td>
                         <td class="text-right">₱{{ number_format($invoice->total_amount ?? 0, 2) }}</td>
                     </tr>
                 </tbody>
@@ -154,12 +154,13 @@
             <button class="btn btn-outline" onclick="downloadPDF()">
                 <i class="fas fa-file-pdf"></i> Download PDF
             </button>
-            <a href="#" class="btn btn-primary">
+            <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-primary">
                 <i class="fas fa-credit-card"></i> Pay Now
             </a>
         </div>
     </div>
 </main>
+
 
 
 
