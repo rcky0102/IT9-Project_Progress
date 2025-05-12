@@ -38,4 +38,12 @@ class Patient extends Model
     {
         return Carbon::parse($this->birthdate)->age;
     }
+
+ 
+    public function medicalRecords()
+    {
+        return $this->hasManyThrough(MedicalRecord::class, Appointment::class, 'patient_id', 'appointment_id', 'id', 'id');
+    }
+
+
 }

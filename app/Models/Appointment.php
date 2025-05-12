@@ -8,9 +8,9 @@ use Carbon\Carbon;
 class Appointment extends Model
 {
     protected $fillable = [
-        'patient_id',             
-        'appointment_type_id',   
-        'doctor_id',             
+        'patient_id',
+        'appointment_type_id',
+        'doctor_id',
         'appointment_date',
         'appointment_time',
         'reason',
@@ -37,7 +37,7 @@ class Appointment extends Model
 
     public function invoice()
     {
-        return $this->hasOne(Invoice::class);
+        return $this->morphOne(Invoice::class, 'billable');
     }
 
     public function messages()
@@ -45,23 +45,27 @@ class Appointment extends Model
         return $this->hasMany(Message::class);
     }
 
-
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class);
+    }
 
     protected static function booted()
     {
         static::created(function ($appointment) {
-            // Generate a unique invoice number
+            // Eager-load appointmentType if not already loaded
+            $appointment->loadMissing('appointmentType');
+
+            $charge = $appointment->appointmentType->charge ?? 0;
+
             $invoiceNumber = 'INV-' . str_pad($appointment->id, 6, '0', STR_PAD_LEFT);
 
-            // Create the invoice
             $appointment->invoice()->create([
                 'invoice_number' => $invoiceNumber,
-                'total_amount' => 0, // or calculate default here
+                'total_amount' => $charge,
                 'status' => 'unpaid',
                 'due_date' => now()->addDays(7),
             ]);
         });
     }
-
-
 }

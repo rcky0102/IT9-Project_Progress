@@ -104,7 +104,7 @@
                                                 {{ strtoupper(substr($patient->user->last_name, 0, 1)) }}
                                             </span>
                                         </div>
-                                        <div>{{ $patient->user->first_name }} {{ $patient->user->last_name }}</div>
+                                        <div>{{ $patient->user->first_name }} {{ $patient->user->middle_name }} {{ $patient->user->last_name }}</div>
                                     </div>
                                 </td>
                                 <td>
@@ -115,9 +115,11 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($patient->birthdate)->age }} / {{ $patient->gender }}</td>
                                 <td>{{ \Carbon\Carbon::parse($patient->created_at)->format('F d, Y') }}</td>
+                                @foreach($latestMedicalRecords as $medicalrecord)
                                 <td>
-                                    <span class="badge badge-outline">{{ $patient->medical_history ?? 'N/A' }}</span>
+                                    <span class="badge badge-outline">{{ $medicalrecord->diagnosis }}</span>
                                 </td>
+                                @endforeach
                                 <td>
                                     <span class="badge badge-outline-blue">Active</span>
                                 </td>
@@ -127,7 +129,7 @@
                                             <i class="fas fa-ellipsis-h"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
+                                            <a href="{{ route('doctor.patient-show', $patient->id) }}" class="dropdown-item">
                                                 <i class="fas fa-eye"></i> View Profile
                                             </a>
                                             <a href="#" class="dropdown-item">

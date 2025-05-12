@@ -59,50 +59,73 @@
     </div>
 
     <!-- Invoices Table -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Recent Invoices</h3>
-        </div>
-        <div class="table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Invoice #</th>
-                        <th>Date</th>
-                        <th>Service</th>
-                        <th>Provider</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($invoices as $invoice)
-                    <tr>
-                        <td>{{ $invoice->invoice_number }}</td>
-                        <td>{{ $invoice->created_at->format('M d, Y') }}</td>
-                        <td>{{ $invoice->appointment->appointmentType->name ?? 'N/A' }}</td>
-                        <td>{{ $invoice->appointment->doctor->full_name ?? 'N/A' }}</td>
-                        <td>${{ number_format($invoice->total_amount, 2) }}</td>
-                        <td>
-                            <span class="badge {{ $invoice->status == 'paid' ? 'paid' : 'unpaid' }}">
-                                {{ ucfirst($invoice->status) }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="table-actions">
-                                @if ($invoice->status === 'unpaid')
-                                    <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">Pay Now</a>
-                                @endif
-                                <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">View</a>
-                            </div>                            
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Recent Invoices</h3>
     </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Invoice #</th>
+                    <th>Date</th>
+                    <th>Service</th>
+                    <th>Provider</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($invoices as $invoice)
+                <tr>
+                    <td>{{ $invoice->invoice_number }}</td>
+                    <td>{{ $invoice->created_at->format('M d, Y') }}</td>
+                    
+                   <td>
+                        @if ($invoice->billable instanceof \App\Models\Appointment)
+                            {{ $invoice->billable->appointmentType->name ?? 'N/A' }}
+                        @elseif ($invoice->billable instanceof \App\Models\MedicalRecord)
+                            Medical Record
+                        @endif
+                    </td>
+
+                    <td>
+                        @if ($invoice->billable instanceof \App\Models\Appointment)
+                            {{ $invoice->billable->doctor->full_name ?? 'N/A' }}
+                        @elseif ($invoice->billable instanceof \App\Models\MedicalRecord)
+                            {{ $invoice->billable->appointment->doctor->full_name ?? 'N/A' }}
+                        @endif
+                    </td>
+
+
+                    {{-- Total --}}
+                    <td>₱{{ number_format($invoice->total_amount, 2) }}</td>
+
+                    {{-- Status --}}
+                    <td>
+                        <span class="badge {{ $invoice->status === 'paid' ? 'paid' : 'unpaid' }}">
+                            {{ ucfirst($invoice->status) }}
+                        </span>
+                    </td>
+
+                    {{-- Actions --}}
+                    <td>
+                        <div class="table-actions">
+                            @if ($invoice->status === 'unpaid')
+                                <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">Pay Now</a>
+                            @endif
+                            <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-sm btn-outline">View</a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 
     <!-- Payment Methods -->
     <div class="payment-methods">

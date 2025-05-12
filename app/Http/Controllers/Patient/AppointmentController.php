@@ -15,26 +15,40 @@ use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
 {
+
     public function index()
     {
         // Get the authenticated user's patient record
         $patient = Patient::where('user_id', Auth::id())->first();
-    
+
         $appointments = Appointment::with('appointmentType')
-            ->where('patient_id', $patient->id) // Changed user_id to patient_id
+            ->where('patient_id', $patient->id)
             ->orderBy('appointment_date', 'asc')
             ->get();
-    
-        $appointmentsCount = $appointments->count();
-    
+
+        $appointmentsCount = Appointment::where('patient_id', $patient->id)
+            ->where('status', 'confirmed')
+            ->whereDate('appointment_date', '>=', now())
+            ->count();
+
+        $pastAppointmentsCount = $appointments->where('status', 'completed')->count();
+
+        $doctorCount = Appointment::where('patient_id', $patient->id)
+            ->whereHas('doctor') 
+            ->pluck('doctor_id')
+            ->unique()
+            ->count();
+
+
         $doctorNames = Doctor::with('user')
             ->get()
             ->mapWithKeys(function ($doctor) {
                 return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
             });
-    
-        return view('patient.appointments', compact('appointments', 'appointmentsCount', 'doctorNames'));
+
+        return view('patient.appointments', compact('appointments', 'appointmentsCount', 'pastAppointmentsCount', 'doctorCount', 'doctorNames'));
     }
+
     
 
     public function create()
@@ -105,41 +119,55 @@ class AppointmentController extends Controller
     public function edit($id)
     {
         $appointment = Appointment::where('id', $id)
-            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+            ->where('patient_id', Auth::user()->patient->id) 
             ->firstOrFail();
 
-        return view('patient.patient_crud.edit', compact('appointment'));
+        
+        $appointmentTypes = AppointmentType::all();
+
+        
+        $doctors = Doctor::with('user')->get();
+
+        return view('patient.patient_crud.edit', compact('appointment', 'appointmentTypes', 'doctors'));
     }
+
 
     public function update(Request $request, $id)
     {
+        
         $validated = $request->validate([
-            'appointmentType'   => 'required|string|max:255',
-            'doctor'            => 'required|string|max:255',
-            'date'              => 'required|string',
+            'appointmentType'   => 'required|exists:appointment_types,id',
+            'doctor'            => 'required|exists:doctors,id',
+            'date'              => 'required|date',
             'time'              => 'required|string',
             'reason'            => 'required|string',
             'notes'             => 'nullable|string',
         ]);
 
+        
         $appointment = Appointment::where('id', $id)
-            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+            ->where('patient_id', Auth::user()->patient->id) // Ensure the authenticated user is the owner of the appointment
             ->firstOrFail();
 
+        // Format the date to the required format (Y-m-d)
         $formattedDate = Carbon::parse($validated['date'])->format('Y-m-d');
 
+        // Update the appointment record with the validated data
         $appointment->update([
-            'appointment_type' => $validated['appointmentType'],
-            'doctor' => $validated['doctor'],
+            'appointment_type_id' => $validated['appointmentType'], 
+            'doctor_id'        => $validated['doctor'], 
             'appointment_date' => $formattedDate,
             'appointment_time' => $validated['time'],
-            'reason' => $validated['reason'],
-            'notes' => $validated['notes'] ?? null,
+            'reason'           => $validated['reason'],
+            'notes'            => $validated['notes'] ?? null,
         ]);
 
+
+        
         return redirect()->route('patient.patient_crud.show', $appointment->id)
-                         ->with('success', 'Appointment updated successfully!');
+                        ->with('success', 'Appointment updated successfully!');
     }
+
 
     public function destroy($id)
     {

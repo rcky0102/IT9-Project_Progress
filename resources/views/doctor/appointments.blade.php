@@ -141,7 +141,7 @@
                             </span>
 
                             <div class="appointment-actions">
-                                <a href="#" class="btn btn-outline">View Details</a>
+                                <a href="{{ route('doctor.appointment-show', $appointment->id) }}" class="btn btn-outline">View Details</a>
                                 <div class="dropdown">
                                     <button class="btn-icon">
                                         <i class="fas fa-ellipsis-h"></i>

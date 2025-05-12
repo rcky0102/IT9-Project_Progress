@@ -47,15 +47,19 @@
                                             <h4>{{ optional($medicalRecord->recordType)->name }}</h4>
                                             <span class="badge {{ Str::slug(optional($medicalRecord->recordType)->name, '-') }}">{{ optional($medicalRecord->recordType)->name }}</span>
                                         </div>
+
+                                        <div class="timeline-header">
+                                            <h5>Diagnosis : {{ $medicalRecord->diagnosis }}</h5>
+                                        </div>
+                                            
                                         <div class="timeline-details">
-                                            <p><strong>Diagnosis:</strong> {{ $medicalRecord->diagnosis }}</p> <!-- Diagnosis added here -->
-                                            <p><strong>Notes:</strong> {{ $medicalRecord->notes }}</p> <!-- Existing notes section -->
+                                            <p>{{ $medicalRecord->notes }}</p> <!-- Existing notes section -->
                                             <div class="timeline-meta">
                                                 <span><i class="fas fa-user-md"></i> {{ optional($medicalRecord->appointment->doctor)->full_name ?? 'N/A' }}</span>
                                             </div>
                                         </div>
                                         <div class="timeline-actions">
-                                            <a href="#" class="btn btn-sm btn-outline">View Details</a>
+                                            <a href="{{ route('patient.medical-record-show', $medicalRecord->id) }}" class="btn btn-sm btn-outline">View Details</a>
                                             <a href="#" class="btn btn-sm btn-outline">Download PDF</a>
                                         </div>
                                     </div>

@@ -18,60 +18,65 @@
 
                 <!-- Dashboard Cards -->
                 <div class="dashboard-cards">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Upcoming Appointments</h3>
-                            <div class="card-icon">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-value">2</div>
-                            <div class="card-label">Scheduled appointments</div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link">
-                                View All <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
+    <!-- Upcoming Appointments -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Upcoming Appointments</h3>
+            <div class="card-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="card-value">{{ $upcomingAppointmentsCount }}</div>
+            <div class="card-label">Scheduled appointments</div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ route('patient.appointments') }}" class="card-link">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Medical Records</h3>
-                            <div class="card-icon">
-                                <i class="fas fa-file-medical"></i>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-value">8</div>
-                            <div class="card-label">Total records</div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link">
-                                View All <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
+    <!-- Medical Records -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Medical Records</h3>
+            <div class="card-icon">
+                <i class="fas fa-file-medical"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="card-value">{{ $medicalRecordsCount }}</div>
+            <div class="card-label">Total records</div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ route('patient.medical-records') }}" class="card-link">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Payments</h3>
-                            <div class="card-icon">
-                                <i class="fas fa-credit-card"></i>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-value">$120</div>
-                            <div class="card-label">Outstanding balance</div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link">
-                                View Details <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <!-- Payments -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Payments</h3>
+            <div class="card-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="card-value">₱{{ number_format($outstandingBalance, 2) }}</div>
+            <div class="card-label">Outstanding balance</div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ route('patient.payments') }}" class="card-link">
+                View Details <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+
+
 
                 <!-- Upcoming Appointments -->
                 <div class="appointments-list">

@@ -39,10 +39,11 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="card-value">12</div>
+                            <div class="card-value">{{ $pastAppointmentsCount }}</div>
                             <div class="card-label">Previous appointments</div>
                         </div>
                     </div>
+
 
                     <div class="card">
                         <div class="card-header">
@@ -52,10 +53,11 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="card-value">4</div>
+                            <div class="card-value">{{ $doctorCount }}</div>
                             <div class="card-label">Different specialists</div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Appointments Tabs -->
@@ -109,7 +111,17 @@
 
                                     </div>
                                     <div class="appointment-info">
-                                        <span><i class="fas fa-clock"></i> {{ $time }}</span>
+                                        <span>
+                                            <i class="fas fa-clock"></i>
+                                            {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}
+                                            @if($appointment->appointment_end_time)
+                                                - {{ \Carbon\Carbon::parse($appointment->appointment_end_time)->format('h:i A') }}
+                                            @else
+                                                - (doctor will set once confirmed)
+                                            @endif
+                                        </span>
+
+
                                         <span><i class="fas fa-user-md"></i> {{ $doctorNames[$appointment->doctor_id] ?? 'Unknown Doctor' }}</span>
                                     </div>
                                 </div>

@@ -1,13 +1,13 @@
-@extends('patient.layout')
+@extends('admin.layout')
 
-@section('title', 'Pay Now | Medical Clinic')
+@section('title', 'Create Payment | Medical Clinic')
 
 @section('content')
 
 <main class="main-content">
     <div class="page-header">
         <h1>Make a Payment</h1>
-        <a href="payments.html" class="btn btn-outline">
+        <a href="{{ route('admin.billing.index') }}" class="btn btn-outline">
             <i class="fas fa-arrow-left"></i> Back to Payments
         </a>
     </div>
@@ -17,253 +17,97 @@
         <div class="card-header">
             <h3 class="card-title">Payment Details</h3>
         </div>
-        <form id="payment-form"
-      method="POST"
-      action="{{ route('patient.payments-paynow-store', ['invoiceId' => $invoice->id]) }}">
-    @csrf
+        <form id="payment-form" method="POST" action="{{ route('admin.billing.store', ['invoiceId' => $invoice->id ?? 0]) }}">
+            @csrf
 
-    <input type="hidden" name="invoice_id"    value="{{ $invoice->id }}">
-    <input type="hidden" name="amount_paid"   id="hidden-amount-paid"
-           value="{{ $outstandingBalance ?? 0 }}">
+            <input type="hidden" name="invoice_id" value="{{ $invoice->id ?? '' }}">
+            <input type="hidden" name="amount_paid" id="hidden-amount-paid" value="{{ $outstandingBalance ?? 0 }}">
 
-    <div class="form-section">
-        {{-- Outstanding Balance Summary --}}
-        <div class="balance-summary">
-            <h4>Outstanding Balance</h4>
-
-            <div class="balance-row">
-                <span>Total Outstanding:</span>
-                <span class="balance-value">
-                    ₱{{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
-                </span>
-            </div>
-
-            <div class="balance-row">
-                <span>Due Date:</span>
-                <span>
-                    {{ $invoice->due_date ? \Carbon\Carbon::parse($invoice->due_date)->format('M d, Y') : 'N/A' }}
-                </span>
-            </div>
-
-            <div class="balance-row">
-                <span>Invoice #:</span>
-                <span>{{ $invoice->invoice_number ?? 'N/A' }}</span>
-            </div>
-
-            <div class="balance-row">
-                <span>Service:</span>
-                <span>
-                    {{ $invoice->appointment && $invoice->appointment->appointmentType
-                        ? $invoice->appointment->appointmentType->name
-                        : 'N/A' }}
-                </span>
-            </div>
-        </div>
-
-        {{-- Payment Amount --}}
-        <div class="form-group">
-            <label for="payment-amount" class="form-label">Payment Amount</label>
-
-            <div class="amount-input-container">
-                <div class="amount-input-wrapper">
-                    <span>₱</span>
-                    <input
-                        type="number"
-                        id="payment-amount"
-                        name="amount_paid"
-                        class="amount-input"
-                        value="{{ old('amount_paid', 0) }}"
-                        min="0" step="0.01" required>
-                </div>
-
-                <div class="amount-buttons">
-                    <button type="button"
-                            class="btn btn-sm btn-outline"
-                            id="min-payment-btn"
-                            data-value="{{ number_format(($outstandingBalance ?? 0) * 0.25, 2, '.', '') }}">
-                        Pay&nbsp;Minimum
-                        ({{ number_format(($outstandingBalance ?? 0) * 0.25, 2) }})
-                    </button>
-
-                    <button type="button"
-                            class="btn btn-sm btn-outline"
-                            id="full-payment-btn"
-                            data-value="{{ number_format($outstandingBalance ?? 0, 2, '.', '') }}">
-                        Pay&nbsp;Full
-                        ({{ number_format($outstandingBalance ?? 0, 2) }})
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        {{-- Payment Method Selection --}}
-        <div class="form-group">
-            <label class="form-label">Select Payment Method</label>
-
-            <div class="payment-methods-grid">
-                @forelse ($paymentMethods as $paymentMethod)
-                    <div class="payment-method-card">
-                        <input type="radio"
-                               name="payment_method_id"
-                               id="payment-method-{{ $paymentMethod->id }}"
-                               value="{{ $paymentMethod->id }}"
-                               class="payment-method-radio">
-                        <label for="payment-method-{{ $paymentMethod->id }}">
-                            <div class="payment-method-content">
-                                <div class="payment-method-icon">
-                                    <i class="fas fa-credit-card"></i>
-                                </div>
-                                <div class="payment-method-details">
-                                    <h4>
-                                        Card ending in
-                                        {{ $paymentMethod->card_number
-                                            ? substr($paymentMethod->card_number, -4)
-                                            : '****' }}
-                                    </h4>
-                                    <p>
-                                        Expires
-                                        {{ $paymentMethod->expiration_month ?? '??' }}/
-                                        {{ $paymentMethod->expiration_year
-                                            ? substr($paymentMethod->expiration_year, -2)
-                                            : '??' }}
-                                    </p>
-                                    @if ($loop->first)
-                                        <div class="payment-method-default">Default</div>
-                                    @endif
-                                </div>
-                            </div>
-                        </label>
+            <div class="form-section">
+                <!-- Outstanding Balance Summary -->
+                <div class="balance-summary">
+                    <h4>Outstanding Balance</h4>
+                    <div class="balance-row">
+                        <span>Total Outstanding:</span>
+                        <span class="balance-value">
+                            ${{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
+                        </span>
                     </div>
-                @empty
-                    <p>No saved cards. Select “Cash” or add a method.</p>
-                @endforelse
+                    <div class="balance-row">
+                        <span>Due Date:</span>
+                        <span>
+                            {{ \Carbon\Carbon::parse($invoice->due_date ?? now())->format('M d, Y') }}
+                        </span>
+                    </div>
 
-                {{-- Cash option --}}
-                <div class="payment-method-card" id="cash-method">
-                    <input type="radio"
-                           name="payment_method_id"
-                           id="cash-payment"
-                           value="cash"
-                           class="payment-method-radio">
-                    <label for="cash-payment">
-                        <div class="payment-method-content">
-                            <div class="payment-method-icon">
-                                <i class="fas fa-money-bill-wave"></i>
-                            </div>
-                            <div class="payment-method-details">
-                                <h4>Cash</h4>
-                                <p>Pay in person</p>
-                            </div>
+                    <div class="balance-row">
+                        <span>Invoice #:</span>
+                        <span>{{ $invoice->invoice_number ?? 'N/A' }}</span>
+                    </div>
+                    <div class="balance-row">
+                        <span>Service:</span>
+                        <span>{{ $invoice->appointment?->appointmentType?->name ?? 'N/A' }}</span>
+                    </div>
+                </div>
+
+                <!-- Payment Amount -->
+                <div class="form-group">
+                    <label for="payment-amount" class="form-label">Payment Amount</label>
+                    <div class="amount-input-container">
+                        <div class="amount-input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="payment-amount" name="amount_paid" class="amount-input"
+                                value="{{ old('amount_paid', 0) }}" min="0" step="0.01" required>
                         </div>
-                    </label>
+                        <div class="amount-buttons">
+                            <button type="button" class="btn btn-sm btn-outline" id="min-payment-btn"
+                                data-value="{{ number_format(($outstandingBalance ?? 0) * 0.25, 2) }}">
+                                Pay Minimum ({{ number_format(($outstandingBalance ?? 0) * 0.25, 2) }})
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline" id="full-payment-btn"
+                                data-value="{{ number_format($outstandingBalance ?? 0, 2) }}">
+                                Pay Full ({{ number_format($outstandingBalance ?? 0, 2) }})
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="payment-summary">
+                    <h4>Payment Summary</h4>
+                    <div class="summary-row">
+                        <span>Payment Amount:</span>
+                        <span id="summary-amount">
+                            ${{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
+                        </span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Processing Fee:</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total:</span>
+                        <span id="summary-total">
+                            ${{ number_format(($invoice->total_amount ?? 0) - ($invoice->payments->sum('amount_paid') ?? 0), 2) }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="form-actions">
+                    <a href="{{ route('admin.billing.index') }}" class="btn btn-outline">Cancel</a>
+                    <button type="submit" class="btn btn-primary" id="submit-button">
+                        <i class="fas fa-credit-card"></i> Complete Payment
+                    </button>
                 </div>
             </div>
-        </div>
-
-        {{-- Cash Payment extra fields --}}
-        <div id="cash-payment-details" class="cash-payment-details" style="display:none;">
-            <h4>Cash Payment Information</h4>
-
-            <div class="info-box">
-                <i class="fas fa-info-circle"></i>
-                <div>
-                    <p>Please bring this amount in cash to any of our clinic locations during business hours. A receipt will be provided upon payment.</p>
-                    <p style="font-weight:bold;">
-                        Selecting “Cash” does not complete payment now; it only records your intent.
-                    </p>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="preferred-location" class="form-label">Preferred Payment Location</label>
-                <select id="preferred-location" class="input-full">
-                    <option value="">Select a location</option>
-                    <option value="main">Main Clinic – 123 Medical Dr.</option>
-                    <option value="north">North Branch – 456 Health Ave.</option>
-                    <option value="east">East Branch – 789 Wellness Blvd.</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="payment-date" class="form-label">Planned Payment Date</label>
-                <input type="date" id="payment-date" class="input-full">
-            </div>
-        </div>
-
-        {{-- Payment Summary --}}
-        <div class="payment-summary">
-            <h4>Payment Summary</h4>
-            <div class="summary-row">
-                <span>Payment Amount:</span>
-                <span id="summary-amount">
-                    ₱{{ number_format($outstandingBalance ?? 0, 2) }}
-                </span>
-            </div>
-            <div class="summary-row">
-                <span>Processing Fee:</span>
-                <span>₱0.00</span>
-            </div>
-            <div class="summary-total">
-                <span>Total:</span>
-                <span id="summary-total">
-                    ₱{{ number_format($outstandingBalance ?? 0, 2) }}
-                </span>
-            </div>
-        </div>
-
-        {{-- Submit --}}
-        <div class="form-actions">
-            <a href="#" class="btn btn-outline">Cancel</a>
-            <button type="submit" class="btn btn-primary" id="submit-button">
-                <i class="fas fa-credit-card"></i> Complete Payment
-            </button>
-        </div>
-    </div>
-</form>
-        
-        
+        </form>
     </div>
 </main>
+
 </div>
 
 <script>
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const minBtn  = document.getElementById('min-payment-btn');
-    const fullBtn = document.getElementById('full-payment-btn');
-    const amount  = document.getElementById('payment-amount');
-    const sumAmt  = document.getElementById('summary-amount');
-    const sumTot  = document.getElementById('summary-total');
-    const cashRad = document.getElementById('cash-payment');
-    const cashBox = document.getElementById('cash-payment-details');
-
-    const updateSummary = () => {
-        const val = parseFloat(amount.value || 0).toFixed(2);
-        sumAmt.textContent = `₱${val}`;
-        sumTot.textContent = `₱${val}`;
-    };
-
-    minBtn?.addEventListener('click', e => {
-        amount.value = e.currentTarget.dataset.value;
-        updateSummary();
-    });
-
-    fullBtn?.addEventListener('click', e => {
-        amount.value = e.currentTarget.dataset.value;
-        updateSummary();
-    });
-
-    amount.addEventListener('input', updateSummary);
-
-    // toggle cash info box
-    document.querySelectorAll('.payment-method-radio').forEach(r => {
-        r.addEventListener('change', () => {
-            cashBox.style.display = cashRad.checked ? 'block' : 'none';
-        });
-    });
-
-    updateSummary();
-});
 
 document.getElementById('min-payment-btn').addEventListener('click', function () {
         let minPayment = parseFloat(this.getAttribute('data-value'));

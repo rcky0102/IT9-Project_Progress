@@ -11,7 +11,7 @@
         <div class="settings-header">
             <h1>Record Types</h1>
             <p>Manage medical record types in the system</p>
-            <a href="{{ route('admin.settings.record-types.create') }}" class="btn btn-primary" id="add-record-type-btn">
+            <a href="#" class="btn btn-primary" id="add-record-type-btn">
                 <i class="fas fa-plus"></i> Add Record Type
             </a>
         </div>
@@ -35,120 +35,29 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Specializations</th>
-                        <th>Fields</th>
-                        <th>Status</th>
+                        <th>Charge</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($recordTypes as $recordType)
+                    @foreach ($recordTypes as $recordType)
                         <tr>
                             <td>{{ $recordType->name }}</td>
-                            <td>{{ implode(', ', $recordType->specializations->pluck('name')->toArray()) }}</td>
-                            <td>{{ $recordType->fields->count() }} fields</td>
-                            <td>
-                                <span class="badge {{ $recordType->status === 'active' ? 'badge-success' : 'badge-warning' }}">
-                                    {{ ucfirst($recordType->status) }}
-                                </span>
-                            </td>
+                            <td>₱{{ number_format($recordType->charge, 2) }}</td>
                             <td>
                                 <div class="action-buttons">
-                                    <a href="{{ route('admin.settings.record-types.edit', $recordType->id) }}" class="btn-icon edit-btn">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('admin.settings.record-types.destroy', $recordType->id) }}" method="POST" style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-icon delete-btn" onclick="return confirm('Are you sure you want to delete this record type?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button class="btn-icon edit-btn" data-id="{{ $recordType->id }}">
+                                        <a href="{{ route('admin.settings.record-types.edit', $recordType->id) }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </button>
+                                    <button class="btn-icon delete-btn" data-id="{{ $recordType->id }}" data-name="{{ $recordType->name }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
-
-                    <!-- <tr>
-                        <td>Consultation</td>
-                        <td>General Medicine, Cardiology, Neurology</td>
-                        <td>8 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="1">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="1">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr> -->
-                    <!-- <tr>
-                        <td>Lab Result</td>
-                        <td>Pathology, Hematology</td>
-                        <td>12 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="2">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="2">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr> -->
-                    <!-- <tr>
-                        <td>Imaging</td>
-                        <td>Radiology, Cardiology</td>
-                        <td>6 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="3">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="3">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr> -->
-                    <!-- <tr>
-                        <td>Surgery</td>
-                        <td>General Surgery, Orthopedics</td>
-                        <td>15 fields</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="4">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="4">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr> -->
-                    <!-- <tr>
-                        <td>Prescription</td>
-                        <td>All Specializations</td>
-                        <td>5 fields</td>
-                        <td><span class="badge badge-warning">Inactive</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon edit-btn" data-id="5">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-btn" data-id="5">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -166,29 +75,69 @@
         </div>
     </div>
 </main>
-</div>
+
+<!-- Record Type Modal -->
+<div class="modal" id="record-type-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Add Record Type</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <form id="record-type-form" method="POST" action="">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="record-type-name">Name</label>
+                    <input type="text" id="record-type-name" name="name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="record-type-charge">Charge (₱)</label>
+                    <input type="number" id="record-type-charge" name="charge" class="form-control" required step="0.01" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Custom Fields</label>
+                    <div id="custom-fields-container" style="margin-bottom: 15px;"></div>
+                    <button type="button" class="btn btn-secondary" id="add-field-btn">
+                        <i class="fas fa-plus"></i> Add Field
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancel-btn">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
 <div class="modal" id="delete-confirmation-modal">
-<div class="modal-content">
-<div class="modal-header">
-    <h2>Confirm Delete</h2>
-    <button class="close-modal">&times;</button>
-</div>
-<div class="modal-body">
-    <p id="delete-confirmation-message">Are you sure you want to delete this record type? This action cannot be undone.</p>
-    <div class="alert alert-warning" style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; margin-top: 15px; display: flex; align-items: flex-start; gap: 10px;">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>Warning: Deleting a record type will affect all existing medical records of this type and may cause data loss.</span>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Delete</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="delete-confirmation-message">Are you sure you want to delete this record type? This action cannot be undone.</p>
+            <div class="alert alert-warning" style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; margin-top: 15px; display: flex; align-items: flex-start; gap: 10px;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Warning: Deleting a record type will affect all existing medical records of this type and may cause data loss.</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="cancel-delete">Cancel</button>
+            <button class="btn btn-danger" id="confirm-delete">Delete</button>
+        </div>
     </div>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-outline" id="cancel-delete">Cancel</button>
-    <button class="btn btn-danger" id="confirm-delete">Delete</button>
-</div>
-</div>
-</div>
+
+<form id="delete-form" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -284,15 +233,12 @@ document.getElementById('cancel-delete').addEventListener('click', function() {
 });
 
 // Confirm delete
-document.getElementById('confirm-delete').addEventListener('click', function() {
+document.getElementById('confirm-delete').addEventListener('click', function () {
+    console.log('Confirm delete clicked'); // Add this
     const id = this.getAttribute('data-id');
-    
-    // In a real application, you would send a request to the server to delete the record type
-    // For this example, we'll just remove the row from the table
-    const row = document.querySelector(`.delete-btn[data-id="${id}"]`).closest('tr');
-    row.remove();
-    
-    document.getElementById('delete-confirmation-modal').classList.remove('show');
+    const form = document.getElementById('delete-form');
+    form.setAttribute('action', `/admin/settings/record-types/${id}`);
+    form.submit();
 });
 
 // Close modal when clicking outside

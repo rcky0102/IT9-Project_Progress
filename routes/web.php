@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\BillingController;
 use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
@@ -18,7 +19,7 @@ use App\Http\Controllers\Doctor\ScheduleController;
 use App\Http\Controllers\Doctor\DMessageController;
 
 
-
+use App\Http\Controllers\Patient\DashboardController;
 use App\Http\Controllers\Patient\AppointmentController;
 use App\Http\Controllers\Patient\MedicationController;
 use App\Http\Controllers\Patient\PMedicalRecordController;
@@ -75,19 +76,32 @@ Route::middleware('auth')->group(function () {
 
     /* Doctor-Appointments*/
     Route::get('/doctor/appointments', [DAppointmentController::class, 'index'])->name('doctor.appointments');
-
+    Route::get('/doctor/appointment-show/{appointment}', [DAppointmentController::class, 'show'])->name('doctor.appointment-show');
+    Route::get('/doctor/appointment-edit/{appointment}', [DAppointmentController::class, 'edit'])->name('doctor.appointment-edit');
+    Route::put('/doctor/appointment-show/{appointment}', [DAppointmentController::class, 'update'])->name('doctor.appointment-update');
+    
+    
     /* Doctor-patients*/
     Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
+    Route::get('/doctor/patient-show/{id}', [PatientController::class, 'show'])->name('doctor.patient-show');
 
     /* Doctor-medical-records*/
     Route::get('/doctor/medical-records', [MedicalRecordController::class, 'index'])->name('doctor.medical-records');
     Route::get('/doctor/medical-records-create', [MedicalRecordController::class, 'create'])->name('doctor.medical-records-create');
     Route::post('/doctor/medical-records', [MedicalRecordController::class, 'store'])->name('doctor.medical-records-store');
+    Route::get('/doctor/medical-records-show/{id}', [MedicalRecordController::class, 'show'])->name('doctor.medical-records-show');
+    Route::get('/doctor/medical-records-edit/{id}', [MedicalRecordController::class, 'edit'])->name('doctor.medical-records-edit');
+    Route::put('/doctor/medical-records-show/{id}', [MedicalRecordController::class, 'update'])->name('doctor.medical-records-update');
     
-    /* Doctor-prescriptions*/
+    // Doctor-prescriptions
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
     Route::get('/doctor/prescription-create', [PrescriptionController::class, 'create'])->name('doctor.prescription-create');
     Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescription-store');
+
+    // New Routes for View, Edit, and Update
+    Route::get('/doctor/prescriptions-show/{id}', [PrescriptionController::class, 'show'])->name('doctor.prescription-show');
+    Route::get('/doctor/prescriptions-edit/{id}', [PrescriptionController::class, 'edit'])->name('doctor.prescription-edit');
+    Route::put('/doctor/prescriptions-show/{id}', [PrescriptionController::class, 'update'])->name('doctor.prescription-update');
 
 
     /* Doctor-Messages*/
@@ -102,9 +116,7 @@ Route::middleware('auth')->group(function () {
 
 
     /* patient's route */
-    Route::get('/patient/dashboard', function () {
-        return view('patient.dashboard');
-    })->name('patient.dashboard');
+    Route::get('/patient/dashboard', [DashboardController::class, 'index'])->name('patient.dashboard');
 
 
     /* Patient-appointments */
@@ -115,7 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::post('patient/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
-    Route::put('/patient/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::put('/patient/appointments/show/{id}', [AppointmentController::class, 'update'])->name('patient.patient_crud.update');
     Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 
     /* Patient-medications */
@@ -123,6 +135,7 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
+    Route::get('/patient/medical-record-show/{id}', [PMedicalRecordController::class, 'show'])->name('patient.medical-record-show');
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
@@ -161,6 +174,10 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.users.index');
         })->name('users.index');
+
+
+
+
         
         // Doctor management routes
         Route::get('/doctors', function () {
@@ -194,6 +211,23 @@ Route::middleware('auth')->group(function () {
             }
             return app()->make(DoctorController::class)->destroy($id);
         })->name('doctors.destroy');
+
+
+
+
+       // Users
+        Route::get('/users', function () {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return view('admin.users.index');
+        })->name('users.index');
+
+
+
+
+
+
         
         // Appointments management
         Route::get('/appointments', function () {
@@ -210,15 +244,48 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.services.index');
         })->name('services.index');
+
+
+
+
+
+
         
         // Billing management
         Route::get('/billing', function () {
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
             }
-            return view('admin.billing.index');
+            return app()->make(BillingController::class)->index();
         })->name('billing.index');
         
+        Route::get('/billing/{invoiceId}', function ($invoiceId) {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return app()->make(BillingController::class)->show($invoiceId);
+        })->name('billing.show');
+        
+        // Route to display payment form (create)
+        Route::get('/billing/{invoiceId}/create', function ($invoiceId) {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return app()->make(BillingController::class)->create($invoiceId);
+        })->name('billing.create');
+
+        // Route to handle payment submission (store)
+        Route::post('/billing/{invoiceId}/store', function (Illuminate\Http\Request $request, $invoiceId) {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return app()->make(BillingController::class)->store($request, $invoiceId);
+        })->name('billing.store');
+
+
+
+
+
         // Reports
         Route::get('/reports', function () {
             if (Auth::user()->role !== 'admin') {
@@ -226,6 +293,11 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.reports.index');
         })->name('reports.index');
+
+
+
+
+
         
         // Settings
         Route::get('/settings', function () {
@@ -253,11 +325,13 @@ Route::middleware('auth')->group(function () {
                 Route::get('/appointment_types/{id}/edit', [AppointmentTypeController::class, 'edit'])->name('appointment_types.edit');
                 Route::put('/appointment_types/{id}', [AppointmentTypeController::class, 'update'])->name('appointment_types.update');
                 Route::delete('/appointment_types/{id}', [AppointmentTypeController::class, 'destroy'])->name('appointment_types.destroy');
-
  
                 Route::get('/record-types', [RecordTypeController::class, 'index'])->name('record-types.index');;
                 Route::get('/record-types/create', [RecordTypeController::class, 'create'])->name('record-types.create');
                 Route::post('/record-types', [RecordTypeController::class, 'store'])->name('record-types.store');
+                Route::get('/record-types/{id}/edit', [RecordTypeController::class, 'edit'])->name('record-types.edit');
+                Route::put('/record-types/{id}', [RecordTypeController::class, 'update'])->name('record-types.update');
+                Route::delete('/record-types/{id}', [RecordTypeController::class, 'destroy'])->name('record-types.destroy');
 
                 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
                 Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');

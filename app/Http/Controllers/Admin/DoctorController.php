@@ -85,7 +85,10 @@ class DoctorController extends Controller
         if ($request->filled('password')) {
             $doctor->password = Hash::make($request->password);
             $doctor->save();
+            
         }
+            $doctor->doctor->specialization_id = $request->specialization_id;
+            $doctor->doctor->save();
         return redirect()->route('admin.doctors.index')
             ->with('success', 'Doctor information updated successfully');
     }
