@@ -28,8 +28,10 @@ use App\Http\Controllers\Patient\MessageController;
 
 use App\Models\Appointment;
 use App\Models\Department;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 
 
 Route::get('/', function () {
@@ -156,6 +158,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/messages/{message}', [MessageController::class, 'show'])->name('patient.messages.show');
     Route::post('/patient/messages/{message}/reply', [MessageController::class, 'reply'])->name('patient.messages.reply');
 
+    
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
