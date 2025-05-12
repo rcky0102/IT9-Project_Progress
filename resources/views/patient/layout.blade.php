@@ -132,7 +132,97 @@
             color: var(--text-light, #666);
         }
 
-        /* Add this to the style section in the head */
+        /* User Dropdown Styles */
+        .dropdown {
+            position: relative;
+            z-index: 30; /* Increased to ensure it's above other elements */
+        }
+
+        .avatar-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            z-index: 40; /* Higher z-index to prevent overlap */
+            position: relative;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary, #004258);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-fallback {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: var(--border-radius-sm, 4px);
+            box-shadow: var(--shadow, 0 2px 10px rgba(0, 0, 0, 0.1));
+            min-width: 200px;
+            z-index: 100;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            color: var(--text-dark, #333);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--primary-light, #e6f0f3);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.05);
+            margin: 5px 0;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .user-email {
+            color: var(--text-light, #666);
+            margin: 0;
+            font-size: 12px;
+        }
+
         .btn-icon {
             position: relative;
             background: none;
@@ -143,12 +233,12 @@
             padding: 0.5rem;
             border-radius: 50%;
             transition: background-color 0.2s;
-            z-index: 10; /* Ensure button is above other elements */
+            z-index: 10;
         }
 
         .notification-dropdown {
             position: relative;
-            z-index: 20; /* Higher z-index to ensure dropdown is above other elements */
+            z-index: 30; /* Match user dropdown z-index */
         }
     </style>
 </head>
@@ -301,6 +391,8 @@
         
         console.log("Notification button:", notificationBtn);
         console.log("Notification menu:", notificationMenu);
+        console.log("Avatar button:", avatarBtn);
+        console.log("User dropdown menu:", userDropdownMenu);
 
         // Function to get icon based on notification type
         function getNotificationIcon(type) {
@@ -412,13 +504,26 @@
             });
         }
 
-        // Toggle user dropdown
+        // Toggle user dropdown with enhanced debugging
         if (avatarBtn) {
             avatarBtn.addEventListener('click', function(e) {
+                console.log("Avatar button clicked!");
+                e.preventDefault();
                 e.stopPropagation();
                 userDropdownMenu.classList.toggle('show');
                 notificationMenu.classList.remove('show'); // Close notification dropdown if open
             });
+
+            // Fallback click handler using onclick
+            avatarBtn.onclick = function(e) {
+                console.log("Avatar button clicked (fallback handler)!");
+                e.preventDefault();
+                e.stopPropagation();
+                userDropdownMenu.classList.toggle('show');
+                notificationMenu.classList.remove('show');
+            };
+        } else {
+            console.error("Avatar button not found in DOM!");
         }
 
         // Close dropdowns when clicking outside
