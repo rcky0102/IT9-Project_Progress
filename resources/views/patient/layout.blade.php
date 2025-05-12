@@ -10,6 +10,147 @@
     <link rel="stylesheet" href="{{ asset('css/patient.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient-payments.css') }}">
     <link rel="stylesheet" href="{{ asset('css/patient-invoice-details.css') }}">
+    <style>
+        /* Notification Dropdown Styles */
+        .notification-dropdown {
+            position: relative;
+        }
+        
+        .notification-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: var(--border-radius-sm, 4px);
+            box-shadow: var(--shadow, 0 2px 10px rgba(0, 0, 0, 0.1));
+            min-width: 300px;
+            z-index: 100;
+            display: none;
+            margin-top: 10px;
+        }
+        
+        .notification-menu.show {
+            display: block;
+        }
+        
+        .dropdown-header {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dropdown-title {
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .dropdown-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .dropdown-action {
+            background: none;
+            border: none;
+            color: var(--primary, #004258);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .dropdown-action:hover {
+            text-decoration: underline;
+        }
+        
+        .notification-items {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        
+        .dropdown-item.unread {
+            background-color: var(--primary-light, #e6f0f3);
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 500;
+            margin: 0 0 5px 0;
+        }
+        
+        .notification-message {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: var(--text-light, #666);
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: var(--text-light, #666);
+            margin: 0;
+        }
+        
+        .notification-icon {
+            color: var(--primary, #004258);
+        }
+        
+        .notification-icon.appointment {
+            color: #3b82f6;
+        }
+        
+        .notification-icon.message {
+            color: #10b981;
+        }
+        
+        .notification-icon.medication {
+            color: #ef4444;
+        }
+        
+        .dropdown-footer {
+            padding: 10px 15px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .dropdown-footer a {
+            color: var(--primary, #004258);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .dropdown-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .empty-state {
+            padding: 30px 15px;
+            text-align: center;
+            color: var(--text-light, #666);
+        }
+
+        /* Add this to the style section in the head */
+        .btn-icon {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #4b5563;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            z-index: 10; /* Ensure button is above other elements */
+        }
+
+        .notification-dropdown {
+            position: relative;
+            z-index: 20; /* Higher z-index to ensure dropdown is above other elements */
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -33,10 +174,28 @@
         <header class="dashboard-header">
             <a href="{{ route('patient.dashboard') }}" class="logo">MediCare Clinic</a>
             <div class="header-actions">
-                <button class="btn-icon notification-btn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
+                <!-- Notification Dropdown -->
+                <div class="dropdown notification-dropdown">
+                    <button class="btn-icon notification-btn" type="button">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="dropdown-menu notification-menu">
+                        <div class="dropdown-header">
+                            <p class="dropdown-title">Notifications</p>
+                            <div class="dropdown-actions">
+                                <button class="dropdown-action" id="markAllReadBtn" type="button">Mark all as read</button>
+                            </div>
+                        </div>
+                        <div class="notification-items">
+                            <!-- Notifications will be populated by JavaScript -->
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="#">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="dropdown">
                     <button class="avatar-btn">
                         <div class="avatar">
@@ -95,8 +254,189 @@
                 </nav>
             </aside>
             
-
             @yield('content')
+        </div>
+    </div>
 
+    <script>
+    // Notification data
+    const notifications = [
+        {
+            id: 1,
+            title: "Appointment Reminder",
+            message: "Your appointment with Dr. Smith is tomorrow at 10:00 AM",
+            time: "1 hour ago",
+            read: false,
+            type: "appointment"
+        },
+        {
+            id: 2,
+            title: "New Message",
+            message: "Dr. Johnson sent you a message regarding your recent lab results",
+            time: "3 hours ago",
+            read: false,
+            type: "message"
+        },
+        {
+            id: 3,
+            title: "Medication Reminder",
+            message: "Don't forget to take your medication today",
+            time: "5 hours ago",
+            read: false,
+            type: "medication"
+        }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM fully loaded");
+        
+        // DOM Elements
+        const notificationBtn = document.querySelector('.notification-btn');
+        const notificationBadge = document.querySelector('.notification-badge');
+        const notificationMenu = document.querySelector('.notification-menu');
+        const notificationItems = document.querySelector('.notification-items');
+        const markAllReadBtn = document.getElementById('markAllReadBtn');
+        const avatarBtn = document.querySelector('.avatar-btn');
+        const userDropdownMenu = document.querySelector('.dropdown:not(.notification-dropdown) .dropdown-menu');
+        
+        console.log("Notification button:", notificationBtn);
+        console.log("Notification menu:", notificationMenu);
+
+        // Function to get icon based on notification type
+        function getNotificationIcon(type) {
+            switch (type) {
+                case 'appointment':
+                    return '<i class="fas fa-calendar notification-icon appointment"></i>';
+                case 'message':
+                    return '<i class="fas fa-comment notification-icon message"></i>';
+                case 'medication':
+                    return '<i class="fas fa-pills notification-icon medication"></i>';
+                default:
+                    return '<i class="fas fa-bell notification-icon"></i>';
+            }
+        }
+
+        // Function to render notifications
+        function renderNotifications() {
+            console.log("Rendering notifications");
+            // Clear the list
+            notificationItems.innerHTML = '';
+            
+            // Update badge count
+            const unreadCount = notifications.filter(notification => !notification.read).length;
+            notificationBadge.textContent = unreadCount;
+            
+            // Hide badge if no unread notifications
+            if (unreadCount === 0) {
+                notificationBadge.style.display = 'none';
+            } else {
+                notificationBadge.style.display = 'flex';
+            }
+            
+            // If no notifications, show empty message
+            if (notifications.length === 0) {
+                notificationItems.innerHTML = '<div class="empty-state">No notifications</div>';
+                return;
+            }
+            
+            // Render each notification
+            notifications.forEach(notification => {
+                const div = document.createElement('div');
+                div.className = `dropdown-item ${notification.read ? '' : 'unread'}`;
+                div.dataset.id = notification.id;
+                
+                div.innerHTML = `
+                    ${getNotificationIcon(notification.type)}
+                    <div class="notification-content">
+                        <h4 class="notification-title">${notification.title}</h4>
+                        <p class="notification-message">${notification.message}</p>
+                        <p class="notification-time">${notification.time}</p>
+                    </div>
+                `;
+                
+                notificationItems.appendChild(div);
+            });
+        }
+
+        // Function to mark a notification as read
+        function markAsRead(id) {
+            console.log("Marking as read:", id);
+            const index = notifications.findIndex(notification => notification.id === parseInt(id));
+            if (index !== -1) {
+                notifications[index].read = true;
+                renderNotifications();
+            }
+        }
+
+        // Function to mark all notifications as read
+        function markAllAsRead() {
+            console.log("Marking all as read");
+            notifications.forEach(notification => {
+                notification.read = true;
+            });
+            renderNotifications();
+        }
+
+        // Make sure notification button is clickable by removing any existing listeners
+        const newNotificationBtn = notificationBtn.cloneNode(true);
+        notificationBtn.parentNode.replaceChild(newNotificationBtn, notificationBtn);
+        
+        // Re-assign the variable to the new button
+        const updatedNotificationBtn = document.querySelector('.notification-btn');
+        
+        // Toggle notification dropdown with direct click handler
+        updatedNotificationBtn.onclick = function(e) {
+            console.log("Notification button clicked");
+            e.preventDefault();
+            e.stopPropagation();
+            notificationMenu.classList.toggle('show');
+            userDropdownMenu.classList.remove('show'); // Close user dropdown if open
+            return false;
+        };
+
+        // Mark all as read
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                markAllAsRead();
+            });
+        }
+
+        // Mark notification as read when clicked
+        if (notificationItems) {
+            notificationItems.addEventListener('click', function(e) {
+                const item = e.target.closest('.dropdown-item');
+                if (item) {
+                    markAsRead(item.dataset.id);
+                }
+            });
+        }
+
+        // Toggle user dropdown
+        if (avatarBtn) {
+            avatarBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userDropdownMenu.classList.toggle('show');
+                notificationMenu.classList.remove('show'); // Close notification dropdown if open
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (notificationMenu && !notificationMenu.contains(e.target) && !updatedNotificationBtn.contains(e.target)) {
+                notificationMenu.classList.remove('show');
+            }
+            
+            if (userDropdownMenu && !userDropdownMenu.contains(e.target) && !avatarBtn.contains(e.target)) {
+                userDropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Initialize notifications
+        renderNotifications();
+        
+        console.log("Notification setup complete");
+    });
+</script>
 </body>
 </html>
