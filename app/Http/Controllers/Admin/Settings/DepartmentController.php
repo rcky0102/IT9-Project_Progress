@@ -8,12 +8,20 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $departments = Department::all(); 
+        // Get the search query from the request
+        $searchQuery = $request->input('search');
 
+        // Query the departments, applying the search if it exists
+        $departments = Department::when($searchQuery, function($query, $searchQuery) {
+            return $query->where('department_name', 'like', '%' . $searchQuery . '%');
+        })->get();
+
+        // Pass the departments to the view
         return view('admin.settings.departments.index', compact('departments'));
     }
+
 
     public function create()
     {

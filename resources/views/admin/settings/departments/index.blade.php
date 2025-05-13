@@ -25,13 +25,8 @@
                     <div class="filters-container">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search departments...">
+                            <input type="text" id="department-search" placeholder="Search departments...">
                         </div>
-                        <select class="filter-select">
-                            <option value="all">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
                     </div>
 
                     <!-- Departments Table -->
@@ -195,7 +190,26 @@
                     }
                 });
             });
+
+            // Search department functionality
+            const searchInput = document.getElementById('department-search');
+            const departmentRows = document.querySelectorAll('.data-table tbody tr');
+
+            searchInput.addEventListener('keyup', function() {
+                const query = searchInput.value.toLowerCase();
+
+                departmentRows.forEach(function(row) {
+                    const departmentName = row.cells[0].textContent.toLowerCase();
+
+                    if (departmentName.indexOf(query) > -1) {
+                        row.style.display = ''; // Show row if match found
+                    } else {
+                        row.style.display = 'none'; // Hide row if no match
+                    }
+                });
+            });
         });
     </script>
+
 
 @endsection

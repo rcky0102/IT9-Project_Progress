@@ -9,9 +9,21 @@ use Illuminate\Http\Request;
 
 class AppointmentTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $appointmenttypes = AppointmentType::all(); 
+        // Get the search term from the request (if present)
+        $search = $request->input('search');
+
+        // Query the database for appointment types, applying the search filter if present
+        $appointmenttypes = AppointmentType::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('charge', 'like', '%' . $search . '%')
+                        ->orWhereHas('specializations', function ($query) use ($search) {
+                            return $query->where('specialization_name', 'like', '%' . $search . '%');
+                        });
+        })->get();
+
+        // Return the view with the filtered appointment types
         return view('admin.settings.appointment_types.index', compact('appointmenttypes'));
     }
 

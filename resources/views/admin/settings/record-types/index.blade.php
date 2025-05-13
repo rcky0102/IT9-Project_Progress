@@ -6,6 +6,18 @@
 
 <!-- Main Content -->
 <main class="settings-content">
+    <!-- Flash Messages -->
+    @if(session('success'))
+        <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+            <i class="fas fa-check-circle"></i> {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+            <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+        </div>
+    @endif
     <div class="settings-section" id="record-types-section">
         <div class="settings-header">
             <h1>Record Types</h1>
@@ -16,17 +28,14 @@
         </div>
 
         <!-- Search and Filter -->
-        <div class="filters-container">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search record types...">
-            </div>
-            <select class="filter-select">
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
-        </div>
+        <form method="GET" action="{{ route('admin.settings.record-types.index') }}" class="search-box" style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-search"></i>
+            <input type="text" name="search" placeholder="Search record types..." value="{{ request('search') }}">
+            @if(request('search'))
+                <a href="{{ route('admin.settings.record-types.index') }}" style="color: #999; margin-left: 5px;">Clear</a>
+            @endif
+        </form>
+
 
         <!-- Record Types Table -->
         <div class="table-container">

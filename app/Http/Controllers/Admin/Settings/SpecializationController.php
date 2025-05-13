@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 
 class SpecializationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $specializations = Specialization::all(); 
+        $query = Specialization::with('department');
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('specialization_name', 'like', "%{$search}%")
+                ->orWhereHas('department', function ($q) use ($search) {
+                    $q->where('department_name', 'like', "%{$search}%");
+                });
+        }
+
+        $specializations = $query->get();
 
         return view('admin.settings.specializations.index', compact('specializations'));
     }

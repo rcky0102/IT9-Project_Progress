@@ -5,12 +5,21 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\RecordType;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 class RecordTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $recordTypes = RecordType::all();
+        $query = RecordType::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $recordTypes = $query->orderBy('name')->get();
+
         return view('admin.settings.record-types.index', compact('recordTypes'));
     }
 
@@ -60,12 +69,16 @@ class RecordTypeController extends Controller
             ->with('success', 'Record Type updated successfully.');
     }
 
+
+
     public function destroy($id)
     {
-        $recordType = RecordType::findOrFail($id);
-        $recordType->delete();
-
-        return redirect()->route('admin.settings.record-types.index')
-            ->with('success', 'Record Type deleted successfully.');
+        try {
+            RecordType::findOrFail($id)->delete();
+            return redirect()->back()->with('success', 'Record type deleted successfully.');
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'Cannot delete this record type because it is being used by medical records.');
+        }
     }
+
 }

@@ -4,87 +4,84 @@
 
 @section('content')
 
-            <!-- Main Content -->
-            <main class="settings-content">
-                <!-- Appointment Types Section -->
-                <div class="settings-section" id="appointment-types-section">
-                    <div class="settings-header">
-                        <h1>Appointment Types</h1>
-                        <p>Manage appointment types for doctors in the system</p>
-                        <a href="{{ route('admin.settings.appointment_types.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add Appointment Type
-                        </a>
-                    </div>
+    <!-- Main Content -->
+    <main class="settings-content">
+        <!-- Appointment Types Section -->
+        <div class="settings-section" id="appointment-types-section">
+            <div class="settings-header">
+                <h1>Appointment Types</h1>
+                <p>Manage appointment types for doctors in the system</p>
+                <a href="{{ route('admin.settings.appointment_types.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Appointment Type
+                </a>
+            </div>
 
-                    <!-- Search and Filter -->
-                    <div class="filters-container">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search appointment types...">
-                        </div>
-                        <select class="filter-select">
-                            <option value="all">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
-
-                    <!-- Appointment Types Table -->
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Charge (₱)</th> 
-                                    <th>Specializations</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($appointmenttypes as $appointmenttype)
-                                    <tr>
-                                        <td>{{ $appointmenttype->name }}</td>
-                                        <td>₱{{ number_format($appointmenttype->charge, 2) }}</td> 
-                                        <td>
-                                            @if($appointmenttype->specializations->isNotEmpty())
-                                                {{ $appointmenttype->specializations->pluck('specialization_name')->implode(', ') }}
-                                            @else
-                                                None
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="{{ route('admin.settings.appointment_types.edit', $appointmenttype->id) }}" class="btn-icon edit-btn">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <button class="btn-icon delete-btn" data-id="{{ $appointmenttype->id }}">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    
-
-                    <!-- Pagination -->
-                    <div class="pagination">
-                        <button class="pagination-btn" disabled>
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
+            <!-- Search and Filter -->
+            <div class="filters-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search appointment types...">
                 </div>
-            </main>
+                <select class="filter-select">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+
+            <!-- Appointment Types Table -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Charge (₱)</th> 
+                            <th>Specializations</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($appointmenttypes as $appointmenttype)
+                            <tr>
+                                <td>{{ $appointmenttype->name }}</td>
+                                <td>₱{{ number_format($appointmenttype->charge, 2) }}</td> 
+                                <td>
+                                    @if($appointmenttype->specializations->isNotEmpty())
+                                        {{ $appointmenttype->specializations->pluck('specialization_name')->implode(', ') }}
+                                    @else
+                                        None
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('admin.settings.appointment_types.edit', $appointmenttype->id) }}" class="btn-icon edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn-icon delete-btn" data-id="{{ $appointmenttype->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
-    </div>
+    </main>
 
     <!-- Delete Confirmation Modal -->
     <div class="modal" id="delete-confirmation-modal">
@@ -106,9 +103,10 @@
             </div>
         </div>
     </div>
+
     <form id="delete-form" method="POST" style="display: none;">
-    @csrf
-    @method('DELETE')
+        @csrf
+        @method('DELETE')
     </form>
 
     <script>
@@ -183,7 +181,6 @@
                 document.getElementById('delete-confirmation-modal').classList.remove('show');
             });
 
-
             // Close modal when clicking outside
             window.addEventListener('click', function(e) {
                 document.querySelectorAll('.modal').forEach(modal => {
@@ -193,12 +190,12 @@
                 });
             });
 
-            // Client-side search
+            // Client-side search (live search)
             document.querySelector('.search-box input').addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
                 document.querySelectorAll('.data-table tbody tr').forEach(row => {
                     const name = row.cells[0].textContent.toLowerCase();
-                    const specializations = row.cells[1].textContent.toLowerCase();
+                    const specializations = row.cells[2].textContent.toLowerCase();
                     row.style.display = name.includes(searchTerm) || specializations.includes(searchTerm) ? '' : 'none';
                 });
             });

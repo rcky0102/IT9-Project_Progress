@@ -20,15 +20,13 @@
 
                     <!-- Search and Filter -->
                     <div class="filters-container">
-                        <div class="search-box">
+                        <form method="GET" action="{{ route('admin.settings.specializations.index') }}" class="search-box" style="display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search specializations...">
-                        </div>
-                        <select class="filter-select">
-                            <option value="all">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search specializations...">
+                            @if(request('search'))
+                                <a href="{{ route('admin.settings.specializations.index') }}" style="margin-left: 8px; color: #999;">Clear</a>
+                            @endif
+                        </form>
                     </div>
 
                     <!-- Specializations Table -->
@@ -190,8 +188,28 @@
                     }
                 });
             });
+
+            // Live Search for Specializations
+            const searchInput = document.querySelector('.search-box input');
+            const tableRows = document.querySelectorAll('.data-table tbody tr');
+
+            searchInput.addEventListener('input', function () {
+                const search = this.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const name = row.cells[0].textContent.toLowerCase();
+                    const department = row.cells[1].textContent.toLowerCase();
+
+                    if (name.includes(search) || department.includes(search)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
         });
     </script>
+
 
 @endsection
 
