@@ -148,9 +148,9 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons no-print">
-            <button class="btn btn-outline" onclick="window.print()">
+            {{-- <button class="btn btn-outline" onclick="window.print()">
                 <i class="fas fa-print"></i> Print Invoice
-            </button>
+            </button> --}}
             <a href="{{ route('payments.download', $payment->id) }}" class="btn btn-outline">
                 <i class="fas fa-file-pdf"></i> Download Receipt
             </a>

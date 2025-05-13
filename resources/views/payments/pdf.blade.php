@@ -48,7 +48,7 @@
             </tr>
             <tr>
                 <th>Invoice Number</th>
-                <td>{{ $invoice->number ?? $payment->invoice_id ?? 'N/A' }}</td>
+                <td>{{ $invoice->invoice_number ?? 'N/A' }}</td>
             </tr>
             <tr>
                 <th>Payment Date</th>
@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <th>Payment Method</th>
-                <td>{{ $payment->paymentMethod->name ?? 'N/A' }}</td>
+                <td>{{ $payment->paymentMethod->cardholder_name ?? 'N/A' }}</td>
             </tr>
         </table>
 

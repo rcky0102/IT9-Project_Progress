@@ -27,7 +27,7 @@
                     <div class="p-6">
                         <div class="flex-between mb-6">
                             <h1 class="text-2xl font-bold text-primary">Medical Record Details</h1>
-                            <a href="{{ route('patient.appointments') }}" class="btn-icon-sm">
+                            <a href="{{ route('patient.medical-records') }}" class="btn-icon-sm">
                                 <i class="fas fa-arrow-left"></i>
                             </a>
                         </div>
@@ -38,13 +38,13 @@
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-primary">Record Information</h3>
                                     <div class="details-list">
-                                        <div class="detail-item">
+                                        {{-- <div class="detail-item">
                                             <i class="fas fa-id-badge text-primary"></i>
                                             <div>
                                                 <p class="font-medium">Appointment ID</p>
                                                 <p class="text-light">{{ $medicalRecord->appointment_id }}</p>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="detail-item">
                                             <i class="fas fa-tags text-primary"></i>
                                             <div>

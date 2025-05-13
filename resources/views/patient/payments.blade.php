@@ -8,9 +8,9 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Payments</h1>
-        <a href="{{ route('patient.payments-create') }}" class="btn btn-primary">
+        {{-- <a href="{{ route('patient.payments-create') }}" class="btn btn-primary">
             <i class="fas fa-credit-card"></i> Make a Payment
-        </a>
+        </a> --}}
     </div>
 
     <!-- Payment Summary -->
@@ -46,12 +46,12 @@
 
     <!-- Payment Filters -->
     <div class="filters-container">
-        <div class="filters">
+        {{-- <div class="filters">
             <button class="filter-btn active">All</button>
             <button class="filter-btn">Unpaid</button>
             <button class="filter-btn">Paid</button>
             <button class="filter-btn">Insurance Pending</button>
-        </div>
+        </div> --}}
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search invoices...">
             <button class="search-btn"><i class="fas fa-search"></i></button>

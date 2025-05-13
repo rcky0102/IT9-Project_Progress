@@ -175,55 +175,36 @@
                         @endforeach
 
                 <!-- Recent Medical Records -->
-                <div class="medical-records">
-                    <div class="records-header">
-                        <h3 class="records-title">Recent Medical Records</h3>
-                        <a href="#" class="btn btn-outline">View All Records</a>
-                    </div>
-
-                    <div class="records-tabs">
-                        <div class="records-tab active">All</div>
-                        <div class="records-tab">Consultations</div>
-                        <div class="records-tab">Lab Results</div>
-                        <div class="records-tab">Prescriptions</div>
-                    </div>
-
-                    <div class="records-list">
-                        <div class="record-item">
-                            <div class="record-header">
-                                <div class="record-title">General Checkup</div>
-                                <div class="record-date">Mar 15, 2025</div>
-                            </div>
-                            <div class="record-content">
-                                <p>Regular health checkup. Blood pressure normal. Recommended annual screening tests based on age and risk factors.</p>
-                            </div>
-                            <div class="record-footer">
-                                <div class="record-doctor">
-                                    <div class="doctor-avatar">SJ</div>
-                                    <div class="doctor-name">Dr. Sarah Johnson</div>
-                                </div>
-                                <a href="#" class="card-link">View <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
+                <div class="records-list">
+                    @forelse ($recentMedicalRecords as $record)
+                        @php
+                            $date = \Carbon\Carbon::parse($record->date)->format('M d, Y');
+                            $doctor = $record->appointment->doctor->user ?? null;
+                            $doctorInitials = $doctor ? strtoupper(substr($doctor->first_name, 0, 1) . substr($doctor->last_name, 0, 1)) : 'NA';
+                            $doctorName = $doctor ? 'Dr. ' . $doctor->first_name . ' ' . $doctor->last_name : 'Unknown';
+                        @endphp
 
                         <div class="record-item">
                             <div class="record-header">
-                                <div class="record-title">Blood Test Results</div>
-                                <div class="record-date">Feb 28, 2025</div>
+                                <div class="record-title">{{ $record->recordType->name ?? 'Medical Record' }}</div>
+                                <div class="record-date">{{ $date }}</div>
                             </div>
                             <div class="record-content">
-                                <p>Complete blood count and metabolic panel. All results within normal range. No significant findings.</p>
+                                <p>{{ $record->notes ?? 'No notes available.' }}</p>
                             </div>
                             <div class="record-footer">
                                 <div class="record-doctor">
-                                    <div class="doctor-avatar">MC</div>
-                                    <div class="doctor-name">Dr. Michael Chen</div>
+                                    <div class="doctor-avatar">{{ $doctorInitials }}</div>
+                                    <div class="doctor-name">{{ $doctorName }}</div>
                                 </div>
-                                <a href="#" class="card-link">View <i class="fas fa-arrow-right"></i></a>
+                                <a href="{{ route('patient.medical-record-show', $record->id) }}" class="card-link">View <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
-                    </div>
+                    @empty
+                        <p class="text-muted">No recent medical records found.</p>
+                    @endforelse
                 </div>
+
             </main>
         </div>
     </div>

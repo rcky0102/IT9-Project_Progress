@@ -71,11 +71,54 @@ class DashboardController extends Controller
                 return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
             });
 
+             $medicalRecords = MedicalRecord::with(['appointment.patient', 'appointment.doctor', 'recordType'])
+            ->whereHas('appointment', function ($query) use ($patient) {
+                $query->where('patient_id', $patient->id);
+            })
+            ->orderByDesc('date')
+            ->get()
+            ->groupBy(function ($record) {
+                return \Carbon\Carbon::parse($record->date)->format('Y');
+            });
+
+        // Get the most recent record with vital signs for the health summary
+        $latestRecord = MedicalRecord::whereHas('appointment', function ($query) use ($patient) {
+                $query->where('patient_id', $patient->id);
+            })
+            ->whereNotNull('blood_pressure')
+            ->orWhereNotNull('heart_rate')
+            ->orWhereNotNull('temperature')
+            ->orWhereNotNull('respiratory_rate')
+            ->orderByDesc('date')
+            ->first();
+
+        // Fetch latest diagnoses (distinct and recent)
+        $latestDiagnoses = MedicalRecord::whereHas('appointment', function ($query) use ($patient) {
+            $query->where('patient_id', $patient->id);
+        })
+        ->whereNotNull('diagnosis')
+        ->orderByDesc('date')
+        ->limit(5)
+        ->pluck('diagnosis', 'date');
+
+        $recentMedicalRecords = MedicalRecord::with(['appointment.patient', 'appointment.doctor', 'recordType'])
+            ->whereHas('appointment', function ($query) use ($patient) {
+                $query->where('patient_id', $patient->id);
+            })
+            ->orderByDesc('date')
+            ->limit(3)
+            ->get();
+
+
         return view('patient.dashboard', compact(
             'upcomingAppointmentsCount',
             'medicalRecordsCount',
             'outstandingBalance',
-            'appointments'
+            'appointments',
+            'medicalRecords', 
+            'latestRecord', 
+            'latestDiagnoses',
+            'recentMedicalRecords'
         ));
     }
 }

@@ -8,7 +8,7 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Add Payment Method</h1>
-        <a href="payments.html" class="btn btn-outline">
+        <a href="{{ route('patient.payments') }}" class="btn btn-outline">
             <i class="fas fa-arrow-left"></i> Back to Payments
         </a>
     </div>
@@ -98,17 +98,17 @@
                     </div>
         
                     {{-- Default Card Checkbox --}}
-                    <div style="margin-bottom: 30px;">
+                    {{-- <div style="margin-bottom: 30px;">
                         <div style="display: flex; align-items: center;">
                             <input type="checkbox" id="default-card" name="default_card" style="margin-right: 10px;" {{ old('default_card') ? 'checked' : '' }}>
                             <label for="default-card">Set as default payment method</label>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
         
                 <!-- Form Buttons -->
                 <div style="display: flex; justify-content: flex-end; gap: 15px;">
-                    <a href="#" class="btn btn-outline">Cancel</a>
+                    <a href="{{ route('patient.payments') }}" class="btn btn-outline">Cancel</a>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Add Payment Method
                     </button>

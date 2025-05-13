@@ -20,4 +20,13 @@ class MedicationController extends Controller
 
         return view('patient.medications', compact('prescriptions'));
     }
+
+
+    public function show($id)
+    {
+        $prescription = Prescription::with('appointment')->findOrFail($id);
+        return view('patient.medication-show', compact('prescription'));
+    }
+
+
 }

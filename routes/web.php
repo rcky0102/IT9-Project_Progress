@@ -135,13 +135,15 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-medications */
     Route::get('/patient/medications', [MedicationController::class, 'index'])->name('patient.medications');
+    Route::get('/patient/medication-show/{id}', [MedicationController::class, 'show'])->name('patient.medication-show');
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
     Route::get('/patient/medical-record-show/{id}', [PMedicalRecordController::class, 'show'])->name('patient.medical-record-show');
 
-    /* Patient-medical-records */
-    Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
+    // /* Patient-medical-records */
+    // Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
+    // Route::get('/patient/medication-show/{id}', [PrescriptionController::class, 'show'])->name('patient.medication-show');
 
     /* Patient-payments */
     Route::get('/patient/payments', [PaymentController::class, 'index'])->name('patient.payments');

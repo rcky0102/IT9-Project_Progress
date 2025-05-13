@@ -8,27 +8,27 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Medications</h1>
-        <button class="btn btn-outline">
+        {{-- <button class="btn btn-outline">
             <i class="fas fa-print"></i> Print Medication List
-        </button>
+        </button> --}}
     </div>
 
     <!-- Medication Filters -->
     <div class="filters-container">
-        <div class="filters">
+        {{-- <div class="filters">
             <button class="filter-btn active">All</button>
             <button class="filter-btn">Current</button>
             <button class="filter-btn">Past</button>
-        </div>
+        </div> --}}
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search medications...">
             <button class="search-btn"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
-    <!-- Current Medications -->
+    <!-- Medications -->
     <div class="medications-section">
-        <h3>Current Medications</h3>
+        {{-- <h3>Medications</h3> --}}
         <div class="medications-grid">
             @foreach ($prescriptions as $prescription)
                 <div class="medication-card">
@@ -67,8 +67,8 @@
                         </div>
                     </div>
                     <div class="medication-actions">
-                        <button class="btn btn-sm btn-outline">Request Refill</button>
-                        <button class="btn btn-sm btn-outline">View Details</button>
+                        {{-- <button class="btn btn-sm btn-outline">Request Refill</button> --}}
+                        <a href="{{ route('patient.medication-show', $prescription->id) }}" class="btn btn-sm btn-outline">View Details</a>
                     </div>
                 </div>
             @endforeach
@@ -113,44 +113,6 @@
                 </div>
             </div>
 
-            <div class="medication-card">
-                <div class="medication-header">
-                    <h4>Loratadine</h4>
-                    <span class="badge">Active</span>
-                </div>
-                <div class="medication-details">
-                    <div class="medication-info">
-                        <div class="info-item">
-                            <span class="info-label">Dosage:</span>
-                            <span class="info-value">10mg</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Frequency:</span>
-                            <span class="info-value">Once daily as needed</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Purpose:</span>
-                            <span class="info-value">Allergy relief</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Prescribed:</span>
-                            <span class="info-value">Feb 28, 2025</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Refills:</span>
-                            <span class="info-value">5 remaining</span>
-                        </div>
-                    </div>
-                    <div class="medication-instructions">
-                        <h5>Instructions</h5>
-                        <p>Take one tablet by mouth once daily as needed for allergy symptoms. May cause drowsiness.</p>
-                    </div>
-                </div>
-                <div class="medication-actions">
-                    <button class="btn btn-sm btn-outline">Request Refill</button>
-                    <button class="btn btn-sm btn-outline">View Details</button>
-                </div>
-            </div>
         </div>
     </div>
 

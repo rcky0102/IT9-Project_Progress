@@ -7,7 +7,7 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Make a Payment</h1>
-        <a href="payments.html" class="btn btn-outline">
+        <a href="{{ route('patient.payments-invoice-details', ['invoiceId' => $invoice->id]) }}" class="btn btn-outline">
             <i class="fas fa-arrow-left"></i> Back to Payments
         </a>
     </div>
@@ -191,7 +191,7 @@
         </div>
 
         {{-- Payment Summary --}}
-        <div class="payment-summary">
+        <div class="payment-summary1">
             <h4>Payment Summary</h4>
             <div class="summary-row">
                 <span>Payment Amount:</span>
