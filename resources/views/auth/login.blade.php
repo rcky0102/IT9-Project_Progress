@@ -216,7 +216,7 @@
                 @enderror
             </div>
             
-            <div class="form-options">
+            {{-- <div class="form-options">
                 <label class="remember-me">
                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                     Remember me
@@ -225,7 +225,7 @@
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="forgot-password">Forgot Password?</a>
                 @endif
-            </div>
+            </div> --}}
             
             <button type="submit" class="login-button">Login</button>
         </form>
