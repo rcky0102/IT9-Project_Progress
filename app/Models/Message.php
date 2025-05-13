@@ -17,4 +17,10 @@ class Message extends Model
     {
         return $this->belongsTo(Appointment::class);
     }
+
+    public function getTimeAgoAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
 }

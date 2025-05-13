@@ -28,8 +28,10 @@ use App\Http\Controllers\Patient\MessageController;
 
 use App\Models\Appointment;
 use App\Models\Department;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 
 
 Route::get('/', function () {
@@ -74,6 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctor/schedule-create', [ScheduleController::class, 'create'])->name('doctor.schedule-create');
     Route::post('/doctor/schedules', [ScheduleController::class, 'store'])->name('doctor.schedule-store');
     Route::get('/doctor/schedule-edit/{id}', [ScheduleController::class, 'edit'])->name('doctor.schedule-edit');
+    Route::put('/schedule/update/{id}', [ScheduleController::class, 'update'])->name('doctor.schedule-update');
     Route::delete('/doctor/schedules/{id}', [ScheduleController::class, 'destroy'])->name('doctor.schedule-destroy');
 
 
@@ -171,6 +174,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/messages/{message}', [MessageController::class, 'show'])->name('patient.messages.show');
     Route::post('/patient/messages/{message}/reply', [MessageController::class, 'reply'])->name('patient.messages.reply');
 
+    
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 

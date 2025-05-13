@@ -35,6 +35,10 @@ class Doctor extends Model
     {
         return $this->hasManyThrough(Message::class, Appointment::class);
     }
+    public function availabilities()
+    {
+        return $this->hasMany(Availability::class);
+    }
 }
 
 

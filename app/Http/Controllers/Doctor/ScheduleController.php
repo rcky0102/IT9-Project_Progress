@@ -73,12 +73,20 @@ public function edit($id)
     return view('doctor.schedule-edit', compact('availability'));
 }
 
+
 // Update availability
 public function update(Request $request, $id)
 {
     $availability = Availability::findOrFail($id);
-    $availability->update($request->all());
-    return redirect()->route('doctor.schedule-index')->with('success', 'Availability updated successfully');
+    $availability->update([
+        'name' => $request->name,
+        'day' => $request->day,
+        'start_time' => $request->start_time,
+        'end_time' => $request->end_time,
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('doctor.schedules')->with('success', 'Availability updated successfully');
 }
 
 // Delete availability
@@ -86,7 +94,8 @@ public function destroy($id)
 {
     $availability = Availability::findOrFail($id);
     $availability->delete();
-    return redirect()->route('doctor.schedule-index')->with('success', 'Availability deleted successfully');
+
+    return redirect()->route('doctor.schedules')->with('success', 'Availability deleted successfully.');
 }
 
 
