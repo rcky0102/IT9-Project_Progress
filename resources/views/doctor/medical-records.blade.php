@@ -19,7 +19,7 @@
 
     <!-- Filters -->
     <div class="filters-container">
-        <form action="{{ route('doctor.medical-records-index') }}" method="GET" class="search-box">
+        <form action="{{ route('doctor.medical-records') }}" method="GET" class="search-box">
             <i class="fas fa-search"></i>
             <input type="text" name="search" placeholder="Search records..." value="{{ request('search') }}">
         </form>

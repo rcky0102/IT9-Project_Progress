@@ -114,7 +114,7 @@
                                 <td>{{ $prescription->dosage }} - {{ ucfirst(str_replace('-', ' ', $prescription->frequency)) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($prescription->start_date)->format('M d, Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($prescription->end_date)->format('M d, Y') }}</td>
-                                {{-- <td>
+                                 <td>
                                     <span class="badge badge-outline-blue">Active</span>
                                 </td>
                                 <td>
