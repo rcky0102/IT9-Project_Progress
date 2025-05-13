@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Appointment;
 use App\Models\MedicalRecord;
 use App\Models\Invoice;
+use App\Models\Patient;
+use App\Models\Doctor;
 
 class DashboardController extends Controller
 {
@@ -40,10 +42,40 @@ class DashboardController extends Controller
                 return $invoice->total_amount - $invoice->payments->sum('amount_paid');
             });
 
+        // Get the authenticated user's patient record
+        $patient = Patient::where('user_id', Auth::id())->first();
+
+        $appointments = Appointment::with('appointmentType')
+            ->where('patient_id', $patient->id)
+            ->take(3)
+            ->orderBy('appointment_date', 'asc')
+            ->get();
+
+        $appointmentsCount = Appointment::where('patient_id', $patient->id)
+            ->where('status', 'confirmed')
+            ->whereDate('appointment_date', '>=', now())
+            ->count();
+
+        $pastAppointmentsCount = $appointments->where('status', 'completed')->count();
+
+        $doctorCount = Appointment::where('patient_id', $patient->id)
+            ->whereHas('doctor') 
+            ->pluck('doctor_id')
+            ->unique()
+            ->count();
+
+
+        $doctorNames = Doctor::with('user')
+            ->get()
+            ->mapWithKeys(function ($doctor) {
+                return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
+            });
+
         return view('patient.dashboard', compact(
             'upcomingAppointmentsCount',
             'medicalRecordsCount',
-            'outstandingBalance'
+            'outstandingBalance',
+            'appointments'
         ));
     }
 }

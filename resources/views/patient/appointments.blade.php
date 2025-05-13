@@ -77,7 +77,6 @@
                     <div id="list-view" class="tab-content active">
                         <div class="appointments-list">
 
-                            <!-- Appointment Item 3 -->
                             @foreach ($appointments as $appointment)
                             @php
                                 $day = \Carbon\Carbon::parse($appointment->appointment_date)->format('d');
@@ -134,9 +133,9 @@
                                             <a href="{{ route('patient.patient_crud.show', $appointment->id) }}" class="dropdown-item">
                                                 <i class="fas fa-eye"></i> View Details
                                             </a>
-                                            <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item">
+                                            {{-- <a href="{{ url('edit-appointment?id=' . $appointment->id) }}" class="dropdown-item">
                                                 <i class="fas fa-calendar-alt"></i> Reschedule
-                                            </a>
+                                            </a> --}}
                                             <a href="#" class="dropdown-item text-danger"
                                                 onclick="event.preventDefault(); 
                                                     if (confirm('Are you sure you want to cancel this appointment?')) {
@@ -158,7 +157,7 @@
                         
                         
 
-                    <!-- Calendar View Tab -->
+                    {{-- <!-- Calendar View Tab -->
                     <div id="calendar-view" class="tab-content">
                         <div class="calendar-container">
                             <div class="calendar">
@@ -248,7 +247,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </main>
         </div>

@@ -49,20 +49,32 @@ class AppointmentController extends Controller
         return view('patient.appointments', compact('appointments', 'appointmentsCount', 'pastAppointmentsCount', 'doctorCount', 'doctorNames'));
     }
 
+
+    
+       public function show($id)
+        {
+            $appointment = Appointment::with(['appointmentType', 'doctor.user']) 
+                ->where('id', $id)
+                ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+                ->firstOrFail();
+        
+            return view('patient.patient_crud.show', compact('appointment'));
+        }
+
     
 
-public function create()
-{
-    $appointmentTypes = AppointmentType::with('specializations')->get();
+    public function create()
+    {
+        $appointmentTypes = AppointmentType::with('specializations')->get();
 
-    $doctorNames = Doctor::with('user')
-        ->get()
-        ->mapWithKeys(function ($doctor) {
-            return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
-        });
+        $doctorNames = Doctor::with('user')
+            ->get()
+            ->mapWithKeys(function ($doctor) {
+                return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
+            });
 
-    return view('patient.patient_crud.create', compact('appointmentTypes', 'doctorNames'));
-}
+        return view('patient.patient_crud.create', compact('appointmentTypes', 'doctorNames'));
+    }
 
 
     public function store(Request $request)

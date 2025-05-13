@@ -3,50 +3,54 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Message;
 use App\Models\Appointment;
+use App\Models\Doctor;
+use App\Models\Message;
+use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class AMessageController extends Controller
+class MessageController extends Controller
 {
     public function index()
     {
-        $messages = Message::with('appointment.doctor', 'appointment.patient')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $doctors = Doctor::with('user')->get(); 
+        $patients = Patient::with('user')->get();
+        $messages = Message::with(['appointment.patient.user', 'appointment.doctor.user'])
+                        ->latest()
+                        ->paginate(10);
 
-        return view('admin.messages.index', compact('messages'));
-    }
-
-    public function create()
-    {
-        $appointments = Appointment::with('doctor', 'patient')->get();
-
-        return view('admin.messages.create', compact('appointments'));
+        return view('admin.messages.index', compact('doctors', 'patients', 'messages'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'appointment_id' => 'required|exists:appointments,id',
+        $request->validate([
+            'recipient_type' => 'required|in:doctor,patient',
+            'recipient_id' => 'required|numeric',
             'subject' => 'required|string|max:255',
             'content' => 'required|string',
         ]);
 
+        // Find an existing appointment or create a dummy one for the message
+        $appointment = Appointment::firstOrCreate([
+            'patient_id' => $request->recipient_type === 'patient' ? $request->recipient_id : null,
+            'doctor_id' => $request->recipient_type === 'doctor' ? $request->recipient_id : null,
+            'appointment_date' => now(),
+            'status' => 'message_only',
+        ], [
+            'appointment_type_id' => 1, // Default type
+            'reason' => 'System message',
+        ]);
+
         Message::create([
-            'appointment_id' => $validated['appointment_id'],
-            'subject' => $validated['subject'],
-            'content' => $validated['content'],
+            'appointment_id' => $appointment->id,
+            'subject' => $request->subject,
+            'content' => $request->content,
             'sender_type' => 'admin',
         ]);
 
-        return redirect()->route('admin.messages.index')->with('success', 'Message sent successfully!');
-    }
-
-    public function show(Message $message)
-    {
-        $message->load('appointment.doctor', 'appointment.patient');
-
-        return view('admin.messages.show', compact('message'));
+        return redirect()->route('messages.index')
+            ->with('success', 'Message sent successfully!');
     }
 }
