@@ -78,7 +78,7 @@
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
                     </a>
-                    <a href="{{ route('doctor.patients') }}" class="sidebar-item {{ request()->routeIs('doctor.patients') ? 'active' : '' }}">
+                    <a href="{{ route('doctor.patients.index') }}" class="sidebar-item {{ request()->routeIs('doctor.patients') ? 'active' : '' }}">
                         <i class="fas fa-user"></i>
                         <span>Patients</span>
                     </a>

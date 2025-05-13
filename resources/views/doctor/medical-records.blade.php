@@ -72,36 +72,29 @@
                     </td>
                     <td>{{ $record->appointment->doctor->full_name }}</td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn-icon">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="{{ route('doctor.medical-records-show', $record->id) }}" class="dropdown-item">
-                                    <i class="fas fa-eye"></i> View Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-edit"></i> Edit Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-print"></i> Print Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-share"></i> Share Record
-                                </a>
-                            </div>
+                        <!-- Edit and Delete Icon Buttons -->
+                        <div class="action-buttons">
+                            <!-- Edit Button -->
+                            <a href="{{ route('doctor.medical-records-edit', $record->id) }}" class="btn-icon">
+                                <i class="fas fa-edit" title="Edit Record"></i>
+                            </a>
+
+                            <!-- Delete Button -->
+                            <form action="{{ route('doctor.medical-records-destroy', $record->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-icon" style="border: none; background: none;">
+                                    <i class="fas fa-trash" title="Delete Record"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
                 @endforeach
-
-                
             </tbody>
         </table>
     </div>
 
-    
-    </div>
 </main>
 </div>
 </div>

@@ -95,8 +95,11 @@ Route::middleware('auth')->group(function () {
     
     
     /* Doctor-patients*/
-    Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
+    Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients.index');
     Route::get('/doctor/patient-show/{id}', [PatientController::class, 'show'])->name('doctor.patient-show');
+    Route::get('/doctor/patients/{id}/edit', [PatientController::class, 'edit'])->name('doctor.patients.edit');
+    Route::put('/doctor/patients/{id}', [PatientController::class, 'update'])->name('doctor.patients.update');
+    Route::delete('/doctor/patients/{id}', [PatientController::class, 'destroy'])->name('doctor.patients.destroy');
     
 
     /* Doctor-medical-records*/
@@ -113,6 +116,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
     Route::get('/doctor/prescription-create', [PrescriptionController::class, 'create'])->name('doctor.prescription-create');
     Route::post('/doctor/prescriptions', [PrescriptionController::class, 'store'])->name('doctor.prescription-store');
+    Route::delete('doctor/prescriptions/{id}', [PrescriptionController::class, 'destroy'])->name('doctor.prescriptions.destroy');
+    Route::get('doctor/prescriptions/{id}/edit', [PrescriptionController::class, 'edit'])->name('doctor.prescription-edit');
+
 
     // New Routes for View, Edit, and Update
     Route::get('/doctor/prescriptions-show/{id}', [PrescriptionController::class, 'show'])->name('doctor.prescription-show');

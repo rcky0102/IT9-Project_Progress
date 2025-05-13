@@ -1,5 +1,3 @@
-<?php
-
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
@@ -15,21 +13,23 @@ class PatientController extends Controller
     {
         $doctor = Auth::user()->doctor;
 
+        // Fetch patients associated with this doctor through appointments
         $patients = Appointment::where('doctor_id', $doctor->id)
-            ->with(['patient', 'patient.medicalRecords']) // Eager load the medical records through patient
+            ->with(['patient', 'patient.medicalRecords']) // Eager load medical records through patient
             ->get()
             ->pluck('patient')
-            ->unique('id'); 
+            ->unique('id'); // Ensures no duplicates
 
-        $latestMedicalRecords = MedicalRecord::latest()
+        // Get the latest medical record for each patient
+        $latestMedicalRecords = MedicalRecord::whereIn('patient_id', $patients->pluck('id'))
+            ->latest()
             ->get()
-            ->unique('patient_id');
+            ->keyBy('patient_id'); // Keyed by patient_id to ensure we get the latest per patient
 
-        return view('doctor.patients', compact('patients', 'latestMedicalRecords'));
+        return view('doctor.patients.index', compact('patients', 'latestMedicalRecords'));
     }
 
     public function show($id)
-
     {
         $doctor = Auth::user()->doctor;
 
@@ -50,4 +50,34 @@ class PatientController extends Controller
         return view('doctor.patient-show', compact('patient'));
     }
 
+    public function edit($id)
+    {
+        $patient = Patient::findOrFail($id);
+        return view('doctor.patient-edit', compact('patient'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'nullable|email',
+            'contact_number' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+        ]);
+
+        // Update the patient's details
+        $patient->update($request->all());
+
+        return redirect()->route('doctor.patients.index')->with('success', 'Patient updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $patient = Patient::findOrFail($id);
+        $patient->delete();
+
+        return redirect()->route('doctor.patients.index')->with('success', 'Patient deleted successfully');
+    }
 }

@@ -106,6 +106,13 @@ public function update(Request $request, $id)
 
     return redirect()->route('doctor.prescription-show', ['id' => $prescription->id])->with('success', 'Prescription updated successfully.');
 }
+  public function destroy($id)
+    {
+        $prescription = Prescription::findOrFail($id);
+        $prescription->delete();
+
+        return redirect()->route('doctor.prescriptions')->with('success', 'Prescription deleted successfully!');
+    }
 
 }
 

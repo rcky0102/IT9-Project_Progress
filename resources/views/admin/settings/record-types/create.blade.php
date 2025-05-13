@@ -54,16 +54,8 @@
                         </div>
                     </div>
 
-                    <div class="form-section">
-                        <h3 class="form-section-title">Custom Fields</h3>
-                        <div id="custom-fields-container">
-                            <!-- Dynamic custom fields will be appended here -->
-                        </div>
-                        <button type="button" id="add-field-btn" class="btn btn-outline">Add Custom Field</button>
-                    </div>
-
                     <div class="form-actions">
-                        <a href="{{ route('admin.settings.record-types.index') }}" class="btn btn-outline">Cancel</a>
+                        <a href="#" class="btn btn-outline">Cancel</a>
                         <button type="submit" class="btn btn-primary">Create Record Type</button>
                     </div>
                 </form>
@@ -74,42 +66,31 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    let fieldCounter = 1;
+    // Dropdown functionality
+    const dropdownBtns = document.querySelectorAll('.dropdown .btn-icon, .dropdown .avatar-btn');
 
-    // Add custom field
-    document.getElementById('add-field-btn').addEventListener('click', function() {
-        const container = document.getElementById('custom-fields-container');
-        const fieldRow = document.createElement('div');
-        fieldRow.className = 'custom-field-row';
-        fieldRow.style = 'display: flex; gap: 10px; margin-bottom: 10px;';
-        
-        fieldRow.innerHTML = `
-            <input type="text" name="custom_fields[${fieldCounter}][name]" class="form-control" placeholder="Field name" style="flex: 2;">
-            <select name="custom_fields[${fieldCounter}][type]" class="form-control" style="flex: 1;">
-                <option value="text">Text</option>
-                <option value="number">Number</option>
-                <option value="date">Date</option>
-                <option value="select">Dropdown</option>
-                <option value="checkbox">Checkbox</option>
-            </select>
-            <button type="button" class="btn-icon delete-field-btn">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        
-        container.appendChild(fieldRow);
-        fieldCounter++;
-        
-        // Add event listener to the delete button
-        fieldRow.querySelector('.delete-field-btn').addEventListener('click', function() {
-            fieldRow.remove();
+    dropdownBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const menu = this.nextElementSibling;
+            menu.classList.toggle('show');
+            
+            // Close other dropdowns
+            dropdownBtns.forEach(otherBtn => {
+                if (otherBtn !== btn) {
+                    const otherMenu = otherBtn.nextElementSibling;
+                    if (otherMenu) {
+                        otherMenu.classList.remove('show');
+                    }
+                }
+            });
         });
     });
 
-    // Delete custom field
-    document.querySelectorAll('.delete-field-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            this.closest('.custom-field-row').remove();
+    // Close dropdowns when clicking outside
+    window.addEventListener('click', function() {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
         });
     });
 });

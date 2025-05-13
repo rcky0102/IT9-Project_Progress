@@ -118,7 +118,7 @@ class MedicalRecordController extends Controller
 
         $medicalRecord->update($validated);
 
-        return redirect()->route('doctor.medical-records-show')->with('success', 'Record updated successfully.');
+        return redirect()->route('doctor.medical-records')->with('success', 'Record updated successfully.');
     }
     public function destroy($id)
     {
@@ -126,7 +126,7 @@ class MedicalRecordController extends Controller
 
         $medicalRecord->delete();
 
-        return redirect()->route('doctor.medical-records-index') // Adjust the redirect route if needed
+        return redirect()->route('doctor.medical-records') // Adjust the redirect route if needed
                          ->with('success', 'Medical Record deleted successfully.');
     }
 

@@ -124,29 +124,20 @@
                                     <span class="badge badge-outline-blue">Active</span>
                                 </td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="{{ route('doctor.patient-show', $patient->id) }}" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Profile
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-file-medical"></i> Medical Records
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-calendar-plus"></i> Schedule Appointment
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-prescription"></i> Prescribe Medication
-                                            </a>
-                                        </div>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('doctor.patients.edit', $patient->id) }}" class="btn-icon edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('doctor.patients.destroy', $patient->id) }}" method="POST" style="display: inline;" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn-icon delete-btn" data-id="{{ $patient->id }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
+
                             </tr>
                             @endforeach
 
@@ -170,35 +161,35 @@
     </div>
 
     <script>
-        // Dropdown functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdownBtns = document.querySelectorAll('.dropdown .btn-icon, .dropdown .avatar-btn');
-            
-            dropdownBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const menu = this.nextElementSibling;
-                    menu.classList.toggle('show');
-                    
-                    // Close other dropdowns
-                    dropdownBtns.forEach(otherBtn => {
-                        if (otherBtn !== btn) {
-                            const otherMenu = otherBtn.nextElementSibling;
-                            if (otherMenu) {
-                                otherMenu.classList.remove('show');
-                            }
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all dropdown buttons
+        const dropdownBtns = document.querySelectorAll('.dropdown .btn-icon');
+
+        // Add click event listener to each dropdown button
+        dropdownBtns.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation(); // Prevent event from bubbling up
+                const menu = this.nextElementSibling; // Get the dropdown menu
+                menu.classList.toggle('show'); // Toggle the 'show' class
+
+                // Close other dropdowns
+                dropdownBtns.forEach(otherBtn => {
+                    if (otherBtn !== btn) {
+                        const otherMenu = otherBtn.nextElementSibling;
+                        if (otherMenu) {
+                            otherMenu.classList.remove('show');
                         }
-                    });
-                });
-            });
-            
-            // Close dropdowns when clicking outside
-            window.addEventListener('click', function() {
-                document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.classList.remove('show');
+                    }
                 });
             });
         });
-    </script>
 
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', function () {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        });
+    });
+</script>
 @endsection

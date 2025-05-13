@@ -118,33 +118,25 @@
                                     <span class="badge badge-outline-blue">Active</span>
                                 </td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="{{ route('doctor.prescription-show', $prescription->id) }}" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-print"></i> Print Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-envelope"></i> Email to Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-times"></i> Cancel Prescription
-                                            </a>
-                                        </div>
+                                    <!-- Edit and Delete Icon Buttons -->
+                                    <div class="action-buttons">
+                                        <!-- Edit Button -->
+                                        <a href="{{ route('doctor.prescription-edit', $prescription->id) }}" class="btn-icon">
+                                            <i class="fas fa-edit" title="Edit Prescription"></i>
+                                        </a>
+
+                                        <!-- Delete Button -->
+                                        <form action="{{ route('doctor.prescriptions.destroy', $prescription->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-icon" style="border: none; background: none;">
+                                                <i class="fas fa-trash" title="Delete Prescription"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
-
-                            
                         </tbody>
                     </table>
                 </div>

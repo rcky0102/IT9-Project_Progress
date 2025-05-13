@@ -25,16 +25,13 @@ class RecordTypeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'charge' => 'required|numeric|min:0',
-            'custom_fields' => 'nullable|array',
-            'custom_fields.*.name' => 'required|string|max:255',
-            'custom_fields.*.type' => 'required|string|in:text,number,date,select,checkbox',
         ]);
+        
     
         // Create the record type
         RecordType::create([
             'name' => $request->name,
             'charge' => $request->charge,
-            'custom_fields' => $request->custom_fields ? json_encode($request->custom_fields) : null,
         ]);
     
         return redirect()->route('admin.settings.record-types.index')
