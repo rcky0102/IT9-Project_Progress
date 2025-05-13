@@ -194,16 +194,32 @@ public function getDoctorAvailability($doctorId)
                         ->with('success', 'Appointment updated successfully!');
     }
 
-
-    public function destroy($id)
+    public function cancel($id)
     {
         $appointment = Appointment::where('id', $id)
-            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+            ->where('patient_id', Auth::user()->patient->id)
             ->firstOrFail();
 
-        $appointment->delete();
+        // Update status to 'Cancelled' instead of deleting
+        $appointment->update([
+            'status' => 'Cancelled',
+            'cancelled_at' => now() // Optional: add cancellation timestamp if you have this column
+        ]);
 
         return redirect()->route('patient.appointments')
-                         ->with('success', 'Appointment cancelled successfully!');
+                        ->with('success', 'Appointment cancelled successfully!');
     }
+
+
+    // public function destroy($id)
+    // {
+    //     $appointment = Appointment::where('id', $id)
+    //         ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+    //         ->firstOrFail();
+
+    //     $appointment->delete();
+
+    //     return redirect()->route('patient.appointments')
+    //                      ->with('success', 'Appointment cancelled successfully!');
+    // }
 }

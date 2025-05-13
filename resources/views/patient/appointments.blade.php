@@ -145,10 +145,10 @@
                                                 <i class="fas fa-times-circle"></i> Cancel Appointment
                                             </a>
                                             <form id="cancel-appointment-form-{{ $appointment->id }}" 
-                                                  action="{{ route('appointments.destroy', $appointment->id) }}" 
-                                                  method="POST" style="display: none;">
+                                                action="{{ route('appointments.cancel', $appointment->id) }}" 
+                                                method="POST" style="display: none;">
                                                 @csrf
-                                                @method('DELETE')
+                                                @method('PATCH')
                                             </form>
                                         </div>
                                     </div>

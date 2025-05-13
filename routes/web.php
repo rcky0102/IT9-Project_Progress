@@ -130,7 +130,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
     Route::put('/patient/appointments/show/{id}', [AppointmentController::class, 'update'])->name('patient.patient_crud.update');
-    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    // Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    Route::patch('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
 
     /* Patient-medications */
     Route::get('/patient/medications', [MedicationController::class, 'index'])->name('patient.medications');
@@ -150,7 +151,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'storePayment'])->name('patient.payments-paynow-store');
     Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
     Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
-
+   Route::get('/payments/{payment}/download', [PaymentController::class, 'downloadPDF'])
+     ->name('payments.download');
     /* Patient-messages */
     Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
     Route::get('/patient/messages/create', [MessageController::class, 'create'])->name('patient.messages.create');

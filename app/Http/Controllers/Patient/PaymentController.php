@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\PaymentMethod;
 use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -140,5 +141,15 @@ public function index()
         ]);
 
         return redirect()->route('patient.payments')->with('message', 'Payment method added successfully!');
+    }
+
+    public function downloadPDF(Payment $payment)
+    {
+        $pdf = Pdf::loadView('payments.pdf', [
+            'payment' => $payment,
+            'invoice' => $payment->invoice // Assuming a relationship
+        ]);
+        
+        return $pdf->download("payment-{$payment->invoice_id}.pdf");
     }
 }

@@ -151,12 +151,12 @@
             <button class="btn btn-outline" onclick="window.print()">
                 <i class="fas fa-print"></i> Print Invoice
             </button>
-            <button class="btn btn-outline" onclick="downloadPDF()">
-                <i class="fas fa-file-pdf"></i> Download PDF
-            </button>
-            <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-primary">
-                <i class="fas fa-credit-card"></i> Pay Now
+            <a href="{{ route('payments.download', $payment->id) }}" class="btn btn-outline">
+                <i class="fas fa-file-pdf"></i> Download Receipt
             </a>
+            {{-- <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-primary">
+                <i class="fas fa-credit-card"></i> Pay Now
+            </a> --}}
         </div>
     </div>
 </main>
@@ -165,6 +165,8 @@
 
 
     <script>
+
+
         // Function to simulate downloading PDF
         function downloadPDF() {
             // In a real implementation, this would generate and download a PDF
