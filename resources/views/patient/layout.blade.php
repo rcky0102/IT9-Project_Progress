@@ -50,7 +50,7 @@
                             <p class="user-email">{{ Auth::user()->email }}</p>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                        <a href="{{ route('patient.profile') }}" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
                         <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
                         <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="POST" class="dropdown-item text-danger">

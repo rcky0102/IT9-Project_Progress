@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\BillingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AAppointmentController;
 
-
+use App\Http\Controllers\Patient\PatientProfileController;
 
 use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
@@ -129,6 +129,8 @@ Route::middleware('auth')->group(function () {
     /* patient's route */
     Route::get('/patient/dashboard', [DashboardController::class, 'index'])->name('patient.dashboard');
 
+    Route::get('/patient/profile/edit', [PatientProfileController::class, 'edit'])->name('patient.profile');
+    Route::put('/patient/profile/update', [PatientProfileController::class, 'update'])->name('patient.profile.update');
 
     /* Patient-appointments */
     Route::get('/patient/appointments', [AppointmentController::class, 'index'])->name('patient.appointments');
