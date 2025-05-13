@@ -11,7 +11,7 @@
                         <h1>Create Availability</h1>
                         <p class="text-muted">Set your working hours and availability</p>
                     </div>
-                    <a href="schedule.html" class="btn btn-outline">
+                    <a onclick="history.back()" class="btn btn-outline">
                         <i class="fas fa-arrow-left"></i> Back to Schedule
                     </a>
                 </div>

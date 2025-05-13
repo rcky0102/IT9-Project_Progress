@@ -21,12 +21,12 @@
                 <input type="text" placeholder="Search messages..." class="search-input" id="searchMessages">
                 <button class="search-btn"><i class="fas fa-search"></i></button>
             </div>
-            <div class="messages-filters">
+            {{-- <div class="messages-filters">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="unread">Unread</button>
                 <button class="filter-btn" data-filter="sent">Sent</button>
                 <button class="filter-btn" data-filter="archived">Archived</button>
-            </div>
+            </div> --}}
             <div class="messages-list" id="messagesList">
                 <!-- Message previews will be loaded here -->
             </div>

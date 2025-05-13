@@ -23,7 +23,7 @@
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search prescriptions...">
                     </div>
-                    <select class="filter-select">
+                    {{-- <select class="filter-select">
                         <option value="">All Patients</option>
                         <option value="emma-wilson">Emma Wilson</option>
                         <option value="james-brown">James Brown</option>
@@ -35,7 +35,7 @@
                         <option value="active">Active</option>
                         <option value="completed">Completed</option>
                         <option value="expired">Expired</option>
-                    </select>
+                    </select> --}}
                 </div>
 
                 <!-- Prescription Stats -->
@@ -90,8 +90,8 @@
                                 <th>Dosage</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                {{-- <th>Status</th> --}}
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,159 +114,17 @@
                                 <td>{{ $prescription->dosage }} - {{ ucfirst(str_replace('-', ' ', $prescription->frequency)) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($prescription->start_date)->format('M d, Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($prescription->end_date)->format('M d, Y') }}</td>
-                                <td>
+                                {{-- <td>
                                     <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="{{ route('doctor.prescription-show', $prescription->id) }}" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-print"></i> Print Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-envelope"></i> Email to Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-times"></i> Cancel Prescription
-                                            </a>
-                                        </div>
+                                </td> --}}
+                                <td> 
+                                    <div class="appointment-actions">
+                                        <a href={{ route('doctor.prescription-show', $prescription->id) }}"" class="btn btn-outline">View Details</a>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
 
-                            <tr>
-                                <td>
-                                    <div class="patient-cell">
-                                        <div class="patient-avatar">
-                                            <span class="avatar-fallback">JB</span>
-                                        </div>
-                                        <div>James Brown</div>
-                                    </div>
-                                </td>
-                                <td>Metformin</td>
-                                <td>500mg twice daily</td>
-                                <td>May 10, 2025</td>
-                                <td>Aug 10, 2025</td>
-                                <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-print"></i> Print Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-envelope"></i> Email to Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-times"></i> Cancel Prescription
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="patient-cell">
-                                        <div class="patient-avatar">
-                                            <span class="avatar-fallback">OM</span>
-                                        </div>
-                                        <div>Olivia Martinez</div>
-                                    </div>
-                                </td>
-                                <td>Albuterol Inhaler</td>
-                                <td>2 puffs as needed</td>
-                                <td>May 8, 2025</td>
-                                <td>Aug 8, 2025</td>
-                                <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-print"></i> Print Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-envelope"></i> Email to Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-times"></i> Cancel Prescription
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="patient-cell">
-                                        <div class="patient-avatar">
-                                            <span class="avatar-fallback">RJ</span>
-                                        </div>
-                                        <div>Robert Johnson</div>
-                                    </div>
-                                </td>
-                                <td>Ibuprofen</td>
-                                <td>400mg as needed</td>
-                                <td>May 5, 2025</td>
-                                <td>Jun 5, 2025</td>
-                                <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Details
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-print"></i> Print Prescription
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-envelope"></i> Email to Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-times"></i> Cancel Prescription
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

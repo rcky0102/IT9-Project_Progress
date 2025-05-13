@@ -23,7 +23,7 @@
             <i class="fas fa-search"></i>
             <input type="text" placeholder="Search records...">
         </div>
-        <select class="filter-select">
+        {{-- <select class="filter-select">
             <option value="">All Patients</option>
             <option value="emma-wilson">Emma Wilson</option>
             <option value="james-brown">James Brown</option>
@@ -36,7 +36,7 @@
             <option value="lab-result">Lab Result</option>
             <option value="imaging">Imaging</option>
             <option value="surgery">Surgery</option>
-        </select>
+        </select> --}}
     </div>
 
     <!-- Records List -->
@@ -49,7 +49,7 @@
                     <th>Date</th>
                     <th>Diagnosis</th>
                     <th>Created By</th>
-                    <th>Actions</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +59,7 @@
                         <div class="patient-cell">
                             <div class="patient-avatar">
                                 <span class="avatar-fallback">
-                                    {{ strtoupper(substr($record->appointment->patient->first_name, 0, 1) . substr($record->appointment->patient->last_name, 0, 1)) }}
+                                    {{ strtoupper(substr($record->appointment->patient->user->first_name, 0, 1) . substr($record->appointment->patient->user->last_name, 0, 1)) }}
                                 </span>
                             </div>
                             <div>{{ $record->appointment->patient->full_name }}</div>
@@ -72,145 +72,18 @@
                     </td>
                     <td>{{ $record->appointment->doctor->full_name }}</td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn-icon">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="{{ route('doctor.medical-records-show', $record->id) }}" class="dropdown-item">
-                                    <i class="fas fa-eye"></i> View Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-edit"></i> Edit Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-print"></i> Print Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-share"></i> Share Record
-                                </a>
-                            </div>
+                        <div class="appointment-actions">
+                            <a href="{{ route('doctor.medical-records-show', $record->id) }}" class="btn btn-outline">View Details</a>
                         </div>
                     </td>
                 </tr>
                 @endforeach
 
-                <tr>
-                    <td>
-                        <div class="patient-cell">
-                            <div class="patient-avatar">
-                                <span class="avatar-fallback">JB</span>
-                            </div>
-                            <div>James Brown</div>
-                        </div>
-                    </td>
-                    <td>Lab Result</td>
-                    <td>May 12, 2025</td>
-                    <td>
-                        <span class="badge badge-outline">Diabetes</span>
-                    </td>
-                    <td>Dr. John Smith</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn-icon">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-eye"></i> View Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-edit"></i> Edit Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-print"></i> Print Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-share"></i> Share Record
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="patient-cell">
-                            <div class="patient-avatar">
-                                <span class="avatar-fallback">OM</span>
-                            </div>
-                            <div>Olivia Martinez</div>
-                        </div>
-                    </td>
-                    <td>Imaging</td>
-                    <td>May 8, 2025</td>
-                    <td>
-                        <span class="badge badge-outline">Asthma</span>
-                    </td>
-                    <td>Dr. John Smith</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn-icon">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-eye"></i> View Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-edit"></i> Edit Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-print"></i> Print Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-share"></i> Share Record
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="patient-cell">
-                            <div class="patient-avatar">
-                                <span class="avatar-fallback">RJ</span>
-                            </div>
-                            <div>Robert Johnson</div>
-                        </div>
-                    </td>
-                    <td>Consultation</td>
-                    <td>May 5, 2025</td>
-                    <td>
-                        <span class="badge badge-outline">Arthritis</span>
-                    </td>
-                    <td>Dr. John Smith</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn-icon">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-eye"></i> View Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-edit"></i> Edit Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-print"></i> Print Record
-                                </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-share"></i> Share Record
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Record Details -->
+    {{-- <!-- Record Details -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Record Details</h3>
@@ -276,7 +149,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </main>
 </div>
 </div>

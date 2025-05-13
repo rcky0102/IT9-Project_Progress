@@ -142,31 +142,6 @@
 
                             <div class="appointment-actions">
                                 <a href="{{ route('doctor.appointment-show', $appointment->id) }}" class="btn btn-outline">View Details</a>
-                                {{-- <div class="dropdown">
-                                    <button class="btn-icon">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item">
-                                            <i class="fas fa-edit"></i> Edit Appointment
-                                        </a>
-                                        <form action="#" method="POST">
-                                            @csrf @method('PATCH')
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-check"></i> Mark as Completed
-                                            </button>
-                                        </form>
-                                        <form action="#" method="POST">
-                                            @csrf @method('PATCH')
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-times"></i> Cancel Appointment
-                                            </button>
-                                        </form>
-                                        <a href="#" class="dropdown-item">
-                                            <i class="fas fa-envelope"></i> Send Reminder
-                                        </a>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
                     @endforeach

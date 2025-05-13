@@ -29,8 +29,8 @@
                         <p class="text-muted">View the details of your medical record</p>
                     </div>
                     <div class="header-buttons">
-                        <a href="{{ route('patient.appointments') }}" class="btn btn-outline">
-                            <i class="fas fa-arrow-left"></i> Back to Appointments
+                        <a onclick="history.back()" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i> Back
                         </a>
                         <a href="{{ route('doctor.medical-records-edit', $medicalRecord->id) }}" class="btn btn-primary">
                             <i class="fas fa-edit"></i> Edit Medical Record

@@ -12,9 +12,9 @@
                         <p class="text-muted">Manage your work schedule</p>
                     </div>
                     <div class="header-buttons">
-                        <button class="btn btn-outline">
+                        {{-- <button class="btn btn-outline">
                             <i class="fas fa-sync"></i> Refresh
-                        </button>
+                        </button> --}}
                         <a href="{{ route('doctor.schedule-create') }}" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Add Availability
                         </a>
@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- Schedule View Selector -->
-                <div class="view-selector">
+                {{-- <div class="view-selector">
                     <button class="view-btn active">
                         <i class="fas fa-calendar-day"></i> Day
                     </button>
@@ -35,9 +35,9 @@
                     <button class="view-btn">
                         <i class="fas fa-list"></i> List
                     </button>
-                </div>
+                </div> --}}
 
-                <!-- Date Navigation -->
+                {{-- <!-- Date Navigation -->
                 <div class="date-navigation">
                     <button class="btn-icon"><i class="fas fa-chevron-left"></i></button>
                     <h2 class="current-date">May 26, 2025</h2>
@@ -140,7 +140,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Availability Settings -->
                 <div class="card">
@@ -148,9 +148,9 @@
                         <div class="card-header-with-actions">
                             <h3 class="card-title">Availability Settings</h3>
                             <div class="card-actions">
-                                <a href="{{ route('doctor.schedule-create') }}" class="btn btn-sm btn-outline">
+                                {{-- <a href="{{ route('doctor.schedule-create') }}" class="btn btn-sm btn-outline">
                                     <i class="fas fa-plus"></i> Add New
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>
@@ -181,15 +181,18 @@
                                         </td>
                                         <td>
                                             <div class="row-actions">
-                                                <a href="#" class="btn-icon" title="Edit">
+                                                <a href="{{ route('doctor.schedule-edit', $availability->id) }}" class="btn-icon" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="#" method="POST" style="display:inline;">
+                                                
+                                                <button type="button" class="btn-icon delete-btn" title="Delete" onclick="document.getElementById('delete-form-{{ $availability->id }}').submit();">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+
+                                                <!-- Hidden Delete Form -->
+                                                <form id="delete-form-{{ $availability->id }}" method="POST" action="{{ route('doctor.schedule-destroy', $availability->id) }}" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn-icon delete-btn" title="Delete">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
                                                 </form>
                                             </div>
                                         </td>

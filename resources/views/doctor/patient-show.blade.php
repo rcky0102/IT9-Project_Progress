@@ -25,7 +25,7 @@
         <div class="record-details">
             <div class="patient-cell" style="margin-bottom: 20px;">
                 <div class="patient-avatar">
-                    {{ strtoupper(substr($patient->first_name, 0, 1) . substr($patient->last_name, 0, 1)) }}
+                    {{ strtoupper(substr($patient->user->first_name, 0, 1) . substr($patient->user->last_name, 0, 1)) }}
                 </div>
                 <div>
                     <div style="font-weight: bold; font-size: 16px;">
