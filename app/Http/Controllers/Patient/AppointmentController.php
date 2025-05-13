@@ -122,7 +122,7 @@ public function getDoctorAvailability($doctorId)
                 return [
                     'date' => $appointment->appointment_date,
                     'time' => $appointment->appointment_time,
-                    'end_time' => $appointment->appointment_end_time,
+                    'end_time' => $appointment->appointment_end_time, 
                     'patient_name' => $appointment->patient->user->first_name
                         . ' ' . $appointment->patient->user->middle_name
                         . ' ' . $appointment->patient->user->last_name,

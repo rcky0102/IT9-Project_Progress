@@ -177,7 +177,7 @@
     });
         });
 
- document.getElementById('doctor').addEventListener('change', function () {
+document.getElementById('doctor').addEventListener('change', function () {
     const doctorId = this.value;
     const availabilityDiv = document.getElementById('doctor-availability');
     availabilityDiv.innerHTML = 'Loading availability and confirmed appointments...';
@@ -205,12 +205,13 @@
                 html += '</ul>';
             }
 
-            // Confirmed appointments
+            // Confirmed appointments - now showing both start and end times
             if (data.confirmedAppointments.length > 0) {
                 html += '<h4 class="font-semibold mt-4 mb-2">Confirmed Appointments:</h4><ul class="list-disc pl-6">';
                 data.confirmedAppointments.forEach(appointment => {
                     html += `<li>
-                        <strong>${appointment.date}</strong> at ${appointment.time} - Patient: ${appointment.patient_name}
+                        <strong>${appointment.date}</strong> 
+                        ${formatTime(appointment.time)} - ${formatTime(appointment.end_time)} 
                     </li>`;
                 });
                 html += '</ul>';
@@ -223,8 +224,20 @@
         });
 });
 
-function formatTime(time) {
-    return new Date(`1970-01-01T${time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+function formatTime(timeString) {
+    // Split the time string into hours and minutes
+    const [hours, minutes] = timeString.split(':').map(Number);
+    
+    // Create a date object with fixed date (timezone doesn't matter here)
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    
+    // Format as AM/PM without timezone conversion
+    return date.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true
+    });
 }
 
     </script>

@@ -20,7 +20,7 @@ class Appointment extends Model
         'status',
     ];
 
-    protected $dates = ['appointment_date', 'appointment_time'];
+    protected $dates = ['appointment_date', 'appointment_time', 'appointment_end_time'];
 
     public function patient()
     {
