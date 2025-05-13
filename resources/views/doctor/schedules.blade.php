@@ -62,10 +62,10 @@
                                         </td>
                                         <td>
                                             <div class="row-actions">
-                                                <a href="#" class="btn-icon" title="Edit">
+                                                <a href="{{ route('doctor.schedule-edit', $availability->id) }}"  class="btn-icon" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="#" method="POST" style="display:inline;">
+                                                <form action="{{ route('doctor.schedule-destroy', $availability->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn-icon delete-btn" title="Delete">

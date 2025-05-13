@@ -73,17 +73,28 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctor/schedules', [ScheduleController::class, 'index'])->name('doctor.schedules');
     Route::get('/doctor/schedule-create', [ScheduleController::class, 'create'])->name('doctor.schedule-create');
     Route::post('/doctor/schedules', [ScheduleController::class, 'store'])->name('doctor.schedule-store');
+    Route::get('/doctor/schedule-edit/{id}', [ScheduleController::class, 'edit'])->name('doctor.schedule-edit');
+    Route::delete('/doctor/schedules/{id}', [ScheduleController::class, 'destroy'])->name('doctor.schedule-destroy');
+
+
 
     /* Doctor-Appointments*/
     Route::get('/doctor/appointments', [DAppointmentController::class, 'index'])->name('doctor.appointments');
     Route::get('/doctor/appointment-show/{appointment}', [DAppointmentController::class, 'show'])->name('doctor.appointment-show');
     Route::get('/doctor/appointment-edit/{appointment}', [DAppointmentController::class, 'edit'])->name('doctor.appointment-edit');
     Route::put('/doctor/appointment-show/{appointment}', [DAppointmentController::class, 'update'])->name('doctor.appointment-update');
+    Route::patch('/doctor/appointment-complete/{appointment}', [DAppointmentController::class, 'complete'])->name('doctor.appointment-complete');
+    Route::patch('/doctor/appointment-cancel/{appointment}', [DAppointmentController::class, 'cancel'])->name('doctor.appointment-cancel');
+    Route::get('/doctor/appointment-reschedule/{appointment}', [DAppointmentController::class, 'rescheduleForm'])->name('doctor.appointment-reschedule');
+    Route::patch('/doctor/appointment-reschedule/{appointment}', [DAppointmentController::class, 'reschedule'])->name('doctor.appointment-reschedule-submit');
+
+
     
     
     /* Doctor-patients*/
     Route::get('/doctor/patients', [PatientController::class, 'index'])->name('doctor.patients');
     Route::get('/doctor/patient-show/{id}', [PatientController::class, 'show'])->name('doctor.patient-show');
+    
 
     /* Doctor-medical-records*/
     Route::get('/doctor/medical-records', [MedicalRecordController::class, 'index'])->name('doctor.medical-records');
@@ -92,6 +103,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctor/medical-records-show/{id}', [MedicalRecordController::class, 'show'])->name('doctor.medical-records-show');
     Route::get('/doctor/medical-records-edit/{id}', [MedicalRecordController::class, 'edit'])->name('doctor.medical-records-edit');
     Route::put('/doctor/medical-records-show/{id}', [MedicalRecordController::class, 'update'])->name('doctor.medical-records-update');
+    Route::delete('/doctor/medical-records/{id}', [MedicalRecordController::class, 'destroy'])->name('doctor.medical-records-destroy');
+
     
     // Doctor-prescriptions
     Route::get('/doctor/prescriptions', [PrescriptionController::class, 'index'])->name('doctor.prescriptions');
@@ -132,6 +145,8 @@ Route::middleware('auth')->group(function () {
 
     /* Patient-medications */
     Route::get('/patient/medications', [MedicationController::class, 'index'])->name('patient.medications');
+
+    
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');

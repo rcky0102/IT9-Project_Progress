@@ -147,17 +147,18 @@
                                         <i class="fas fa-ellipsis-h"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item">
-                                            <i class="fas fa-edit"></i> Edit Appointment
-                                        </a>
-                                        <form action="#" method="POST">
+                                    <a href="{{ route('doctor.appointment-edit', $appointment->id) }}" class="dropdown-item">
+                                        <i class="fas fa-edit"></i> Edit Appointment
+                                    </a>
+                                        <form action="{{ route('doctor.appointment-complete', $appointment->id) }}"  method="POST">
                                             @csrf @method('PATCH')
                                             <button type="submit" class="dropdown-item">
                                                 <i class="fas fa-check"></i> Mark as Completed
                                             </button>
                                         </form>
-                                        <form action="#" method="POST">
-                                            @csrf @method('PATCH')
+                                        <form action="{{ route('doctor.appointment-cancel', $appointment->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
                                             <button type="submit" class="dropdown-item">
                                                 <i class="fas fa-times"></i> Cancel Appointment
                                             </button>

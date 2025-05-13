@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RecordType extends Model
 {
-    protected $fillable = ['name', 'charge'];
+    protected $fillable = ['name', 'charge','custom_fields'];
+    protected $casts = [
+        'custom_fields' => 'array',
+    ];
 }
-

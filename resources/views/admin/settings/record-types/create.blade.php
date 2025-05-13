@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <a href="#" class="btn btn-outline">Cancel</a>
+                        <a href="{{ route('admin.settings.record-types.index') }}" class="btn btn-outline">Cancel</a>
                         <button type="submit" class="btn btn-primary">Create Record Type</button>
                     </div>
                 </form>
@@ -74,36 +74,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Dropdown functionality
-    const dropdownBtns = document.querySelectorAll('.dropdown .btn-icon, .dropdown .avatar-btn');
-
-    dropdownBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const menu = this.nextElementSibling;
-            menu.classList.toggle('show');
-            
-            // Close other dropdowns
-            dropdownBtns.forEach(otherBtn => {
-                if (otherBtn !== btn) {
-                    const otherMenu = otherBtn.nextElementSibling;
-                    if (otherMenu) {
-                        otherMenu.classList.remove('show');
-                    }
-                }
-            });
-        });
-    });
-
-    // Close dropdowns when clicking outside
-    window.addEventListener('click', function() {
-        document.querySelectorAll('.dropdown-menu').forEach(menu => {
-            menu.classList.remove('show');
-        });
-    });
+    let fieldCounter = 1;
 
     // Add custom field
-    let fieldCounter = 1;
     document.getElementById('add-field-btn').addEventListener('click', function() {
         const container = document.getElementById('custom-fields-container');
         const fieldRow = document.createElement('div');

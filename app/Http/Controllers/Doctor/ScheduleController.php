@@ -66,6 +66,27 @@ class ScheduleController extends Controller
     }
 
     return redirect()->route('doctor.schedules')->with('success', 'Availability created successfully.');
+}   
+public function edit($id)
+{
+    $availability = Availability::findOrFail($id);
+    return view('doctor.schedule-edit', compact('availability'));
+}
+
+// Update availability
+public function update(Request $request, $id)
+{
+    $availability = Availability::findOrFail($id);
+    $availability->update($request->all());
+    return redirect()->route('doctor.schedule-index')->with('success', 'Availability updated successfully');
+}
+
+// Delete availability
+public function destroy($id)
+{
+    $availability = Availability::findOrFail($id);
+    $availability->delete();
+    return redirect()->route('doctor.schedule-index')->with('success', 'Availability deleted successfully');
 }
 
 

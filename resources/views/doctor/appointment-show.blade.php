@@ -240,14 +240,19 @@
 
                 <!-- Action Buttons -->
                 <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; margin-bottom: 30px;">
-                    <button class="btn btn-outline">
+                <form action="{{ route('doctor.appointment-cancel', $appointment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-outline">
                         <i class="fas fa-times"></i>
                         Cancel Appointment
                     </button>
-                    <button class="btn btn-outline">
-                        <i class="fas fa-calendar"></i>
-                        Reschedule
-                    </button>
+                </form>
+                <a href="{{ route('doctor.appointment-reschedule', $appointment->id) }}" class="btn btn-outline">
+                    <i class="fas fa-calendar"></i>
+                    Reschedule
+                </a>
+
                     <button class="btn btn-outline">
                         <i class="fas fa-envelope"></i>
                         Send Reminder
