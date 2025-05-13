@@ -96,6 +96,10 @@
                         <i class="fas fa-chart-bar"></i>
                         <span>Reports</span>
                     </a>
+                    <a href="{{ route('admin.messages.index') }}" class="sidebar-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                    </a>
                     <a href="{{ route('admin.settings.departments.index') }}" class="sidebar-item {{ request()->routeIs('admin.settings.departments.*') ? 'active' : '' }}">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>

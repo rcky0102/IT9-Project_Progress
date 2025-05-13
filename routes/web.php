@@ -309,6 +309,16 @@ Route::middleware('auth')->group(function () {
 
 
 
+         // Messages
+        Route::get('/messages', function () {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return view('admin.messages.index');
+        })->name('messages.index');
+
+
+
 
 
         
