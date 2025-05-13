@@ -80,20 +80,21 @@
                         <i class="fas fa-file-medical"></i>
                         <span>Medical Records</span>
                     </a>
-                    <a href="{{ route('patient.medications') }}" class="sidebar-item">
+                    <a href="{{ route('patient.medications') }}" class="sidebar-item {{ request()->routeIs('patient.medications') ? 'active' : '' }}">
                         <i class="fas fa-pills"></i>
                         <span>Medications</span>
                     </a>
-                    <a href="{{ route('patient.payments') }}" class="sidebar-item">
+                    <a href="{{ route('patient.payments') }}" class="sidebar-item {{ request()->routeIs('patient.payments') ? 'active' : '' }}">
                         <i class="fas fa-credit-card"></i>
                         <span>Payments</span>
                     </a>
-                    <a href="{{ route('patient.messages') }}" class="sidebar-item">
+                    <a href="{{ route('patient.messages') }}" class="sidebar-item {{ request()->routeIs('patient.messages') ? 'active' : '' }}">
                         <i class="fas fa-envelope"></i>
                         <span>Messages</span>
                     </a>
                 </nav>
             </aside>
+
             
 
             @yield('content')

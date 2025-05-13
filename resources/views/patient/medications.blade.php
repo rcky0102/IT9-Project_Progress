@@ -74,49 +74,11 @@
             @endforeach
 
 
-            <div class="medication-card">
-                <div class="medication-header">
-                    <h4>Atorvastatin</h4>
-                    <span class="badge">Active</span>
-                </div>
-                <div class="medication-details">
-                    <div class="medication-info">
-                        <div class="info-item">
-                            <span class="info-label">Dosage:</span>
-                            <span class="info-value">20mg</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Frequency:</span>
-                            <span class="info-value">Once daily</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Purpose:</span>
-                            <span class="info-value">Cholesterol management</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Prescribed:</span>
-                            <span class="info-value">Mar 15, 2025</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Refills:</span>
-                            <span class="info-value">2 remaining</span>
-                        </div>
-                    </div>
-                    <div class="medication-instructions">
-                        <h5>Instructions</h5>
-                        <p>Take one tablet by mouth once daily in the evening. Take with food.</p>
-                    </div>
-                </div>
-                <div class="medication-actions">
-                    <button class="btn btn-sm btn-outline">Request Refill</button>
-                    <button class="btn btn-sm btn-outline">View Details</button>
-                </div>
-            </div>
 
         </div>
     </div>
 
-    <!-- Past Medications -->
+    {{-- <!-- Past Medications -->
     <div class="medications-section">
         <h3>Past Medications</h3>
         <div class="medications-grid">
@@ -196,7 +158,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     {{-- <!-- Medication Schedule -->
     <div class="medication-schedule">

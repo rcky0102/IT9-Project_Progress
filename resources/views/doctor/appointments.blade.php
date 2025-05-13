@@ -11,10 +11,10 @@
                         <h1>Appointments</h1>
                         <p class="text-muted">Manage your patient appointments</p>
                     </div>
-                    <button class="btn btn-primary">
+                    {{-- <button class="btn btn-primary">
                         <i class="fas fa-plus"></i>
                         New Appointment
-                    </button>
+                    </button> --}}
                 </div>
 
                 <!-- Filters -->
@@ -23,7 +23,7 @@
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search appointments...">
                     </div>
-                    <select class="filter-select">
+                    {{-- <select class="filter-select">
                         <option value="">All Status</option>
                         <option value="scheduled">Scheduled</option>
                         <option value="completed">Completed</option>
@@ -35,10 +35,10 @@
                         <option value="tomorrow">Tomorrow</option>
                         <option value="this-week">This Week</option>
                         <option value="next-week">Next Week</option>
-                    </select>
+                    </select> --}}
                 </div>
 
-                <!-- Calendar View -->
+                {{-- <!-- Calendar View -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Calendar View</h3>
@@ -102,7 +102,7 @@
                             <div class="calendar-cell disabled">1</div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Upcoming Appointments -->
                 <h3 class="section-title">Upcoming Appointments</h3>
@@ -142,7 +142,7 @@
 
                             <div class="appointment-actions">
                                 <a href="{{ route('doctor.appointment-show', $appointment->id) }}" class="btn btn-outline">View Details</a>
-                                <div class="dropdown">
+                                {{-- <div class="dropdown">
                                     <button class="btn-icon">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </button>
@@ -166,7 +166,7 @@
                                             <i class="fas fa-envelope"></i> Send Reminder
                                         </a>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     @endforeach

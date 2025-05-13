@@ -11,10 +11,10 @@
                         <h1>Patients</h1>
                         <p class="text-muted">Manage your patient database</p>
                     </div>
-                    <button class="btn btn-primary">
+                    {{-- <button class="btn btn-primary">
                         <i class="fas fa-plus"></i>
                         Add New Patient
-                    </button>
+                    </button> --}}
                 </div>
 
                 <!-- Filters -->
@@ -23,7 +23,7 @@
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search patients...">
                     </div>
-                    <select class="filter-select">
+                    {{-- <select class="filter-select">
                         <option value="">All Diagnoses</option>
                         <option value="hypertension">Hypertension</option>
                         <option value="diabetes">Diabetes</option>
@@ -34,7 +34,7 @@
                         <option value="">All Status</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
-                    </select>
+                    </select> --}}
                 </div>
 
                 <!-- Patient Stats -->
@@ -89,7 +89,6 @@
                                 <th>Age/Gender</th>
                                 <th>Last Visit</th>
                                 <th>Diagnosis</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -121,185 +120,19 @@
                                 </td>
                                 @endforeach
                                 <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="{{ route('doctor.patient-show', $patient->id) }}" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Profile
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-file-medical"></i> Medical Records
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-calendar-plus"></i> Schedule Appointment
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-prescription"></i> Prescribe Medication
-                                            </a>
-                                        </div>
+                                    <div class="appointment-actions">
+                                        <a href="{{ route('doctor.patient-show', $patient->id) }}" class="btn btn-outline">View Details</a>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
 
-                            <tr>
-                                <td>
-                                    <div class="patient-cell">
-                                        <div class="patient-avatar">
-                                            <span class="avatar-fallback">JB</span>
-                                        </div>
-                                        <div>James Brown</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="contact-cell">
-                                        <div>james.brown@example.com</div>
-                                        <div class="text-muted">+1 (555) 234-5678</div>
-                                    </div>
-                                </td>
-                                <td>58 / Male</td>
-                                <td>May 10, 2025</td>
-                                <td>
-                                    <span class="badge badge-outline">Diabetes</span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Profile
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-file-medical"></i> Medical Records
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-calendar-plus"></i> Schedule Appointment
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-prescription"></i> Prescribe Medication
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="patient-cell">
-                                        <div class="patient-avatar">
-                                            <span class="avatar-fallback">OM</span>
-                                        </div>
-                                        <div>Olivia Martinez</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="contact-cell">
-                                        <div>olivia.martinez@example.com</div>
-                                        <div class="text-muted">+1 (555) 345-6789</div>
-                                    </div>
-                                </td>
-                                <td>35 / Female</td>
-                                <td>May 5, 2025</td>
-                                <td>
-                                    <span class="badge badge-outline">Asthma</span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Profile
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-file-medical"></i> Medical Records
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-calendar-plus"></i> Schedule Appointment
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-prescription"></i> Prescribe Medication
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="patient-cell">
-                                        <div class="patient-avatar">
-                                            <span class="avatar-fallback">RJ</span>
-                                        </div>
-                                        <div>Robert Johnson</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="contact-cell">
-                                        <div>robert.johnson@example.com</div>
-                                        <div class="text-muted">+1 (555) 456-7890</div>
-                                    </div>
-                                </td>
-                                <td>62 / Male</td>
-                                <td>May 1, 2025</td>
-                                <td>
-                                    <span class="badge badge-outline">Arthritis</span>
-                                </td>
-                                <td>
-                                    <span class="badge badge-outline-blue">Active</span>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-eye"></i> View Profile
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit Patient
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-file-medical"></i> Medical Records
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-calendar-plus"></i> Schedule Appointment
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-prescription"></i> Prescribe Medication
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <div class="pagination">
+                {{-- <div class="pagination">
                     <button class="btn-icon pagination-btn"><i class="fas fa-chevron-left"></i></button>
                     <button class="pagination-btn active">1</button>
                     <button class="pagination-btn">2</button>
@@ -307,10 +140,8 @@
                     <span class="pagination-ellipsis">...</span>
                     <button class="pagination-btn">10</button>
                     <button class="btn-icon pagination-btn"><i class="fas fa-chevron-right"></i></button>
-                </div>
+                </div> --}}
             </main>
-        </div>
-    </div>
 
     <script>
         // Dropdown functionality

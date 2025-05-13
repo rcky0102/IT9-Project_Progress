@@ -13,10 +13,10 @@
                         <p class="text-muted">View and manage appointment information</p>
                     </div>
                     <div class="header-buttons">
-                        <button class="btn btn-outline">
+                        {{-- <button class="btn btn-outline">
                             <i class="fas fa-print"></i>
                             Print Details
-                        </button>
+                        </button> --}}
                         <a href="{{ route('doctor.appointment-edit', $appointment->id) }}" class="btn btn-primary">
                             <i class="fas fa-edit"></i>
                             Edit Appointment
@@ -82,9 +82,9 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title">Patient Information</h3>
-                        <a href="#" class="card-link">
+                        {{-- <a href="#" class="card-link">
                             View Full Profile <i class="fas fa-arrow-right"></i>
-                        </a>
+                        </a> --}}
                     </div>
                     <div class="record-details">
                         <div class="patient-cell" style="margin-bottom: 20px;">
@@ -142,7 +142,7 @@
                 </div>
 
 
-                <!-- Medical History -->
+                {{-- <!-- Medical History -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Medical History</h3>
@@ -236,10 +236,10 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Action Buttons -->
-                <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; margin-bottom: 30px;">
+                {{-- <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; margin-bottom: 30px;">
                     <button class="btn btn-outline">
                         <i class="fas fa-times"></i>
                         Cancel Appointment
@@ -256,10 +256,8 @@
                         <i class="fas fa-check"></i>
                         Check In Patient
                     </button>
-                </div>
+                </div> --}}
             </main>
-        </div>
-    </div>
 
     <script>
         // Dropdown functionality
