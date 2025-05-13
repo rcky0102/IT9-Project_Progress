@@ -61,7 +61,7 @@
                 </div>
 
                 <!-- Appointments Tabs -->
-                <div class="tabs">
+                {{-- <div class="tabs">
                     <div class="tab-header">
                         <div class="tabs-list">
                             <button class="tab-trigger active" data-tab="list-view">List View</button>
@@ -71,7 +71,7 @@
                             <i class="fas fa-filter"></i>
                             Filter
                         </button>
-                    </div>
+                    </div> --}}
 
                     <!-- List View Tab -->
                     <div id="list-view" class="tab-content active">

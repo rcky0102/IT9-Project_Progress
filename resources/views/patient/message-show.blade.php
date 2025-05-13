@@ -9,10 +9,13 @@
     <div class="page-header">
         <h1>
             <a href="{{ route('patient.messages') }}" class="btn btn-outline" style="margin-right: 15px;">
-                <i class="fas fa-arrow-left"></i> Back to Messages
+                <i class="fas fa-arrow-left"></i> 
             </a>
             Message Details
         </h1>
+        <a href="{{ route('patient.messages.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> New Message
+        </a>
     </div>
 
     <!-- Message Details Container -->
@@ -25,18 +28,18 @@
             <div class="doctor-info">
                 <div class="doctor-name">Dr. {{ $message->appointment->doctor->user->first_name }} {{ $message->appointment->doctor->user->last_name }}</div>
                 <div class="doctor-details">
-                    <span>Specialty: {{ $message->appointment->doctor->specialty }}</span>
-                    <span>Department: {{ $message->appointment->doctor->department }}</span>
+                    <span>Specialty: {{ $message->appointment->doctor->specialization->specialization_name }}</span>
+                    {{-- <span>Department: {{ $message->appointment->doctor->department }}</span> --}}
                 </div>
             </div>
-            <div class="doctor-actions">
+            {{-- <div class="doctor-actions">
                 <a href="#" class="btn btn-outline btn-sm">
                     <i class="fas fa-user-md"></i> View Profile
                 </a>
                 <a href="#" class="btn btn-outline btn-sm">
                     <i class="fas fa-calendar-plus"></i> Book Appointment
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Current Message -->
@@ -50,14 +53,14 @@
                         <span>{{ \Carbon\Carbon::parse($message->created_at)->format('M d, Y, h:i A') }}</span>
                     </div>
                 </div>
-                <div class="message-actions">
+                {{-- <div class="message-actions">
                     <button class="btn-icon" title="Reply" onclick="focusReplyBox()">
                         <i class="fas fa-reply"></i>
                     </button>
                     <button class="btn-icon" title="Print" onclick="window.print()">
                         <i class="fas fa-print"></i>
                     </button>
-                </div>
+                </div> --}}
             </div>
             <div class="message-body">
                 {{ $message->content }}
@@ -87,8 +90,10 @@
             @endforeach
         </div>
 
+        
+
         <!-- Common Questions -->
-        <div class="quick-reply-options">
+        {{-- <div class="quick-reply-options">
             <button class="quick-reply-btn" onclick="insertQuickReply('When will my test results be ready?')">
                 <i class="fas fa-flask"></i> Test Results
             </button>
@@ -101,10 +106,10 @@
             <button class="quick-reply-btn" onclick="insertQuickReply('I\'m experiencing new symptoms. Should I come in for a visit?')">
                 <i class="fas fa-stethoscope"></i> New Symptoms
             </button>
-        </div>
+        </div> --}}
 
         <!-- Reply Box -->
-        <div class="reply-box">
+        {{-- <div class="reply-box">
             <h4>Reply</h4>
             <form action="{{ route('patient.messages.reply', $message->id) }}" method="POST">
                 @csrf
@@ -115,11 +120,11 @@
                         <input type="file" id="attachment" name="attachment" style="display: none;">
                     </label>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Send
+                        <i class="fas fa-paper-plane"></i> Create Message
                     </button>
                 </div>
             </form>
-        </div>
+        </div> --}}
     </div>
 </main>
 
