@@ -13,36 +13,66 @@
         </a> --}}
     </div>
 
-    <!-- Payment Summary -->
-    <div class="payment-summary">
-        <div class="summary-card">
-            <div class="summary-icon">
-                <i class="fas fa-file-invoice-dollar"></i>
-            </div>
-            <div class="summary-details">
-                <h4>Outstanding Balance</h4>
-                <div class="summary-value">$120.00</div>
-            </div>
+@php
+    $totalOutstanding = $invoices->sum(function ($invoice) {
+        return $invoice->total_amount - $invoice->payments->sum('amount_paid');
+    });
+
+    $allPayments = $invoices->flatMap->payments;
+    $lastPayment = $allPayments->sortByDesc('paid_at')->first();
+
+    $hasUnpaid = $invoices->contains(fn($invoice) => $invoice->status !== 'paid');
+    $latestUnpaidInvoice = $invoices->where('status', '!=', 'paid')->sortByDesc('created_at')->first();
+@endphp
+
+<!-- Payment Summary -->
+<div class="payment-summary">
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="fas fa-file-invoice-dollar"></i>
         </div>
-        <div class="summary-card">
-            <div class="summary-icon">
-                <i class="fas fa-calendar-check"></i>
-            </div>
-            <div class="summary-details">
-                <h4>Next Payment Due</h4>
-                <div class="summary-value">Apr 15, 2025</div>
-            </div>
-        </div>
-        <div class="summary-card">
-            <div class="summary-icon">
-                <i class="fas fa-history"></i>
-            </div>
-            <div class="summary-details">
-                <h4>Last Payment</h4>
-                <div class="summary-value">$75.00 on Mar 10, 2025</div>
+        <div class="summary-details">
+            <h4>Outstanding Balance</h4>
+            <div class="summary-value">
+                ₱{{ number_format($totalOutstanding, 2) }}
             </div>
         </div>
     </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="summary-details">
+            <h4>Next Payment Due</h4>
+            <div class="summary-value">
+                @if($hasUnpaid && $latestUnpaidInvoice)
+                    {{ \Carbon\Carbon::parse($latestUnpaidInvoice->created_at)->addMonth()->format('M d, Y') }}
+                @else
+                    Fully Paid
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="fas fa-history"></i>
+        </div>
+        <div class="summary-details">
+            <h4>Last Payment</h4>
+            <div class="summary-value">
+                @if($lastPayment)
+                    ₱{{ number_format($lastPayment->amount_paid, 2) }} on
+                    {{ \Carbon\Carbon::parse($lastPayment->paid_at)->format('M d, Y') }}
+                @else
+                    No payments yet
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- Payment Filters -->
     <div class="filters-container">
