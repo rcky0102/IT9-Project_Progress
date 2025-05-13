@@ -4,9 +4,15 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BillingController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AAppointmentController;
+
+
+
 use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
@@ -214,19 +220,9 @@ Route::middleware('auth')->group(function () {
             return app()->make(DoctorController::class)->store($request);
         })->name('doctors.store');
         
-        Route::get('/doctors/{id}/edit', function ($id) {
-            if (Auth::user()->role !== 'admin') {
-                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
-            }
-            return app()->make(DoctorController::class)->edit($id);
-        })->name('doctors.edit');
+        Route::get('/doctors/{id}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
+        Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update');
         
-        Route::put('/doctors/{id}', function (Request $request, $id) {
-            if (Auth::user()->role !== 'admin') {
-                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
-            }
-            return app()->make(DoctorController::class)->update($request, $id);
-        })->name('doctors.update');
         
         Route::delete('/doctors/{id}', function ($id) {
             if (Auth::user()->role !== 'admin') {
@@ -239,11 +235,12 @@ Route::middleware('auth')->group(function () {
 
 
        // Users
-        Route::get('/users', function () {
+        Route::get('/users', function (UserController $controller) {
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
             }
-            return view('admin.users.index');
+
+            return $controller->index(); 
         })->name('users.index');
 
 
@@ -253,13 +250,18 @@ Route::middleware('auth')->group(function () {
 
         
         // Appointments management
-        Route::get('/appointments', function () {
+        Route::get('/appointments', function (AAppointmentController $controller) {
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
             }
-            return view('admin.appointments.index');
+
+            return $controller->index();
         })->name('appointments.index');
+
+
         
+
+
         // Services management
         Route::get('/services', function () {
             if (Auth::user()->role !== 'admin') {
@@ -355,18 +357,33 @@ Route::middleware('auth')->group(function () {
                 Route::get('/appointment_types', [AppointmentTypeController::class, 'index'])->name('appointment_types.index');;
                 Route::get('/appointment_types/create', [AppointmentTypeController::class, 'create'])->name('appointment_types.create');
                 Route::post('appointment_types', [AppointmentTypeController::class, 'store'])->name('appointment_types.store');
+                Route::get('/appointment_types/{id}/edit', [AppointmentTypeController::class, 'edit'])->name('appointment_types.edit');
+                Route::put('/appointment_types/{id}', [AppointmentTypeController::class, 'update'])->name('appointment_types.update');
+                Route::delete('/appointment_types/{id}', [AppointmentTypeController::class, 'destroy'])->name('appointment_types.destroy');
  
                 Route::get('/record-types', [RecordTypeController::class, 'index'])->name('record-types.index');;
                 Route::get('/record-types/create', [RecordTypeController::class, 'create'])->name('record-types.create');
                 Route::post('/record-types', [RecordTypeController::class, 'store'])->name('record-types.store');
+                Route::get('/record-types/{id}/edit', [RecordTypeController::class, 'edit'])->name('record-types.edit');
+                Route::put('/record-types/{id}', [RecordTypeController::class, 'update'])->name('record-types.update');
+                Route::delete('/record-types/{id}', [RecordTypeController::class, 'destroy'])->name('record-types.destroy');
+
 
                 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');;
                 Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
                 Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
+                Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+                Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+                Route::delete('/departments/{id}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
+
 
                 Route::get('/specializations', [SpecializationController::class, 'index'])->name('specializations.index');;
                 Route::get('/specializations/create', [SpecializationController::class, 'create'])->name('specializations.create');
                 Route::post('/specializations', [SpecializationController::class, 'store'])->name('specializations.store');
+                Route::get('specializations/{id}/edit', [SpecializationController::class, 'edit'])->name('specializations.edit');
+                Route::put('specializations/{id}', [SpecializationController::class, 'update'])->name('specializations.update');
+                Route::delete('specializations/{id}', [SpecializationController::class, 'destroy'])->name('specializations.destroy');
         
         });  
     });

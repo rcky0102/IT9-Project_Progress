@@ -22,11 +22,11 @@
                             <i class="fas fa-search"></i>
                             <input type="text" placeholder="Search appointment types...">
                         </div>
-                        <select class="filter-select">
+                        {{-- <select class="filter-select">
                             <option value="all">All Status</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
-                        </select>
+                        </select> --}}
                     </div>
 
                     <!-- Appointment Types Table -->
@@ -54,7 +54,7 @@
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn-icon edit-btn">
+                                                <a href="{{ route('admin.settings.appointment_types.edit', $appointmenttype->id) }}" class="btn-icon edit-btn">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <button class="btn-icon delete-btn" data-id="{{ $appointmenttype->id }}">
@@ -70,7 +70,7 @@
                     
 
                     <!-- Pagination -->
-                    <div class="pagination">
+                    {{-- <div class="pagination">
                         <button class="pagination-btn" disabled>
                             <i class="fas fa-chevron-left"></i>
                         </button>
@@ -80,7 +80,7 @@
                         <button class="pagination-btn">
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </main>
         </div>

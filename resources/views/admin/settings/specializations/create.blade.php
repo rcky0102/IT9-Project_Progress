@@ -97,7 +97,7 @@
                                 </div> --}}
 
                                 <div class="form-actions">
-                                    <a href="specializations-index.html" class="btn btn-outline">Cancel</a>
+                                    <a onclick="history.back()" class="btn btn-outline">Cancel</a>
                                     <button type="submit" class="btn btn-primary">Create Specialization</button>
                                 </div>
                             </form>

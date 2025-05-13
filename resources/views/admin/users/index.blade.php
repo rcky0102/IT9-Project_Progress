@@ -19,24 +19,24 @@
                 <h3 class="chart-title">Recent Users</h3>
                 <p class="text-muted">Manage all users in the system</p>
             </div>
-            <a href="#" class="btn btn-primary">
+            {{-- <a href="#" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Add New User
-            </a>
+            </a> --}}
         </div>
 
-        <div class="tabs">
+        {{-- <div class="tabs">
             <div class="tab active" data-tab="all">All Users</div>
             <div class="tab" data-tab="patients">Patients</div>
             <div class="tab" data-tab="doctors">Doctors</div>
             <div class="tab" data-tab="staff">Staff</div>
-        </div>
+        </div> --}}
 
         <div class="filters-container">
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="user-search" placeholder="Search users...">
             </div>
-            <select class="filter-select" id="role-filter">
+            {{-- <select class="filter-select" id="role-filter">
                 <option value="all">All Roles</option>
                 <option value="patient">Patients</option>
                 <option value="doctor">Doctors</option>
@@ -45,7 +45,7 @@
             </select>
             <button class="btn btn-outline" id="more-filters-btn">
                 <i class="fas fa-filter"></i> More Filters
-            </button>
+            </button> --}}
         </div>
 
         <div class="table-container">
@@ -57,105 +57,73 @@
                         <th>Role</th>
                         <th>Status</th>
                         <th>Joined</th>
-                        <th>Actions</th>
+                        {{-- <th>Actions</th> --}}
                     </tr>
                 </thead>
                 <tbody>
-                    <tr data-role="patient">
-                        <td>
-                            <div class="user-cell">
-                                <div class="user-avatar">
-                                    <span class="avatar-fallback">EW</span>
+                    @foreach($users as $user)
+                        @php
+                            $isPatient = $user->role === 'patient';
+                            $isDoctor = $user->role === 'doctor';
+                            $contact = $isPatient ? $user->patient->contact_number ?? '—' : ($isDoctor ? $user->doctor->contact_number ?? '—' : '—');
+                            $fullName = $user->first_name . ' ' . $user->middle_name . ' ' . $user->last_name;
+                        @endphp
+                        <tr data-role="{{ $user->role }}">
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">
+                                        <span class="avatar-fallback">{{ strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name, 0, 1)) }}</span>
+                                    </div>
+                                    <div>{{ $fullName }}</div>
                                 </div>
-                                <div>Emma Wilson</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="contact-cell">
-                                <div>emma.wilson@example.com</div>
-                                <div class="text-muted">+1 (555) 123-4567</div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge badge-outline">Patient</span>
-                        </td>
-                        <td>
-                            <span class="badge badge-success">Active</span>
-                        </td>
-                        <td>Mar 15, 2025</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn-icon dropdown-toggle">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-eye"></i> View Profile
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Send Message
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item text-danger">
-                                        <i class="fas fa-ban"></i> Deactivate
-                                    </a>
+                            </td>
+                            <td>
+                                <div class="contact-cell">
+                                    <div>{{ $user->email }}</div>
+                                    <div class="text-muted">{{ $contact }}</div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr data-role="doctor">
-                        <td>
-                            <div class="user-cell">
-                                <div class="user-avatar">
-                                    <span class="avatar-fallback">MC</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-outline">{{ ucfirst($user->role) }}</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-success">Active</span> {{-- You can replace this with real status logic --}}
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($user->created_at)->format('M d, Y') }}</td>
+                            {{-- <td>
+                                <div class="dropdown">
+                                    <button class="btn-icon dropdown-toggle">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-eye"></i> View Profile
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="#" class="dropdown-item">
+                                            <i class="fas fa-envelope"></i> Send Message
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <form action="#" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="fas fa-ban"></i> Deactivate
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div>Dr. Michael Chen</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="contact-cell">
-                                <div>michael.chen@example.com</div>
-                                <div class="text-muted">+1 (555) 234-5678</div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge badge-outline">Doctor</span>
-                        </td>
-                        <td>
-                            <span class="badge badge-success">Active</span>
-                        </td>
-                        <td>Jan 10, 2025</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn-icon dropdown-toggle">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-eye"></i> View Profile
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope"></i> Send Message
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item text-danger">
-                                        <i class="fas fa-ban"></i> Deactivate
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td> --}}
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
+
         </div>
 
-        <!-- Pagination -->
+        {{-- <!-- Pagination -->
         <div class="pagination-container">
             <div class="pagination-info">
                 Showing 1 to 2 of 2 entries
@@ -165,7 +133,7 @@
                 <button class="pagination-btn active">1</button>
                 <button class="pagination-btn">Next</button>
             </div>
-        </div>
+        </div> --}}
 
         <!-- More Filters Modal -->
         <div class="modal" id="more-filters-modal">

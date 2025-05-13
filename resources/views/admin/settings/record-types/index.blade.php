@@ -47,9 +47,11 @@
                             <td>
                                 <div class="action-buttons">
                                     <button class="btn-icon edit-btn" data-id="{{ $recordType->id }}">
-                                        <i class="fas fa-edit"></i>
+                                        <a href="{{ route('admin.settings.record-types.edit', $recordType->id) }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
                                     </button>
-                                    <button class="btn-icon delete-btn" data-id="{{ $recordType->id }}">
+                                    <button class="btn-icon delete-btn" data-id="{{ $recordType->id }}" data-name="{{ $recordType->name }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -62,7 +64,7 @@
 
 
         <!-- Pagination -->
-        <div class="pagination">
+        {{-- <div class="pagination">
             <button class="pagination-btn" disabled>
                 <i class="fas fa-chevron-left"></i>
             </button>
@@ -71,7 +73,7 @@
             <button class="pagination-btn">
                 <i class="fas fa-chevron-right"></i>
             </button>
-        </div>
+        </div> --}}
     </div>
 </main>
 </div>
@@ -99,6 +101,48 @@
 </div>
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteBtns = document.querySelectorAll('.delete-btn');
+    const modal = document.getElementById('delete-confirmation-modal');
+    const modalMessage = document.getElementById('delete-confirmation-message');
+    const confirmDeleteBtn = document.getElementById('confirm-delete');
+
+    let selectedRow = null;
+
+    deleteBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            selectedRow = this.closest('tr');
+
+            modal.classList.add('show');
+            modalMessage.textContent = `Are you sure you want to delete the "${name}" record type? This action cannot be undone.`;
+
+            confirmDeleteBtn.setAttribute('data-id', id);
+        });
+    });
+
+    document.querySelector('.close-modal').addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
+
+    document.getElementById('cancel-delete').addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
+
+    confirmDeleteBtn.addEventListener('click', function () {
+        if (selectedRow) {
+            selectedRow.remove();
+            selectedRow = null;
+        }
+
+        modal.classList.remove('show');
+
+        // 🔒 In real use: Send a delete request to the server via fetch or a form
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
 // Dropdown functionality
 const dropdownBtns = document.querySelectorAll('.dropdown .btn-icon, .dropdown .avatar-btn');

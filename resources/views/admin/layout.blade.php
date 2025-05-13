@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/admin-doctor.css')}}">
     <link rel="stylesheet" href="{{ asset('css/admin-doctor-create.css')}}">
     <link rel="stylesheet" href="{{ asset('css/patient-invoice-details.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/patient-styles.css')}}">
     <link rel="stylesheet" href="{{ asset('css/patient-payments.css')}}">
 </head>
 <body>
@@ -83,10 +84,6 @@
                     <a href="{{ route('admin.appointments.index') }}" class="sidebar-item {{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
-                    </a>
-                    <a href="{{ route('admin.services.index') }}" class="sidebar-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-medical"></i>
-                        <span>Services</span>
                     </a>
                     <a href="{{ route('admin.billing.index') }}" class="sidebar-item {{ request()->routeIs('admin.billings.*') ? 'active' : '' }}">
                         <i class="fas fa-credit-card"></i>

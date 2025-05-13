@@ -148,7 +148,7 @@
 
                                 <!-- Form Actions -->
                                 <div class="form-actions">
-                                    <a href="departments-index.html" class="btn btn-outline">Cancel</a>
+                                    <a onclick="history.back()" class="btn btn-outline">Cancel</a>
                                     <button type="submit" class="btn btn-primary">Create Department</button>
                                 </div>
                             </form>

@@ -44,13 +44,13 @@
                                         <td>{{ $department->department_name }}</td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn-icon edit-btn">
+                                                <a href="{{ route('admin.settings.departments.edit', $department->id) }}" class="btn-icon edit-btn">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="#" method="POST" style="display: inline;">
+                                                <form action="{{ route('admin.settings.departments.destroy', $department->id) }}" method="POST" style="display: inline;" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn-icon delete-btn" onclick="return confirm('Are you sure?')">
+                                                    <button type="button" class="btn-icon delete-btn" data-id="{{ $department->id }}">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
@@ -64,7 +64,7 @@
                     
 
                     <!-- Pagination -->
-                    <div class="pagination">
+                    {{-- <div class="pagination">
                         <button class="pagination-btn" disabled>
                             <i class="fas fa-chevron-left"></i>
                         </button>
@@ -74,7 +74,7 @@
                         <button class="pagination-btn">
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </main>
         </div>

@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <a href="#" class="btn btn-outline">Cancel</a>
+                        <a onclick="history.back()" class="btn btn-outline">Cancel</a>
                         <button type="submit" class="btn btn-primary">Create Record Type</button>
                     </div>
                 </form>

@@ -49,10 +49,13 @@
                                         <td>{{ $specialization->description }}</td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="#" class="btn-icon edit-btn">
+                                                <a href="{{ route('admin.settings.specializations.edit', $specialization->id) }}" class="btn-icon edit-btn">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button class="btn-icon delete-btn" data-id="{{ $specialization->id }}">
+                                                <button type="button"
+                                                    class="btn-icon delete-btn"
+                                                    data-id="{{ $specialization->id }}"
+                                                    data-name="{{ $specialization->specialization_name }}">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
@@ -65,7 +68,7 @@
                     
 
                     <!-- Pagination -->
-                    <div class="pagination">
+                    {{-- <div class="pagination">
                         <button class="pagination-btn" disabled>
                             <i class="fas fa-chevron-left"></i>
                         </button>
@@ -75,7 +78,7 @@
                         <button class="pagination-btn">
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </main>
         </div>

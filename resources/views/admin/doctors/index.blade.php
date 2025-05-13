@@ -79,24 +79,19 @@
                                 <td>
                                     <span class="badge badge-success">Active</span>
                                 </td>
-                                <td>{{ $doctor->created_at->format('M d, Y') }}</td>
+                                <td>{{ $doctor->created_at->format('M d, Y') }}</td>              
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn-icon">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="{{ route('admin.doctors.edit', $doctor->id) }}" class="dropdown-item">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                            <form action="{{ route('admin.doctors.destroy', $doctor->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="dropdown-item text-danger">
-                                                    <i class="fas fa-trash"></i> Delete
-                                                </button>
-                                            </form>
-                                        </div>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('admin.doctors.edit', $doctor->id) }}" class="n-icon edit-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('admin.doctors.destroy', $doctor->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-icon delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

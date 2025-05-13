@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Doctor Account | Medical Clinic')
+@section('title', 'Create Doctor Account | Medical Clinic')
 
 @section('content')
         

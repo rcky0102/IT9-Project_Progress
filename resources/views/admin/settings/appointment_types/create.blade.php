@@ -36,20 +36,35 @@
                             
                                         <div class="form-col">
                                             <div class="form-group">
-                                                <label for="specialization_ids" class="required-field">Specializations</label>
-                                                <select id="specialization_ids" name="specialization_ids[]" class="form-control" multiple required>
+                                                <label class="required-field">Specializations</label>
+                                                <div>
                                                     @foreach($specializations as $specialization)
-                                                        <option value="{{ $specialization->id }}">{{ $specialization->specialization_name }}</option>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label d-flex align-items-center">
+                                                                <input 
+                                                                    type="checkbox" 
+                                                                    id="specialization_{{ $specialization->id }}" 
+                                                                    name="specialization_ids[]" 
+                                                                    value="{{ $specialization->id }}" 
+                                                                    class="form-check-input me-2"
+                                                                >
+                                                                {{ $specialization->specialization_name }}
+                                                            </label>
+                                                        </div>
                                                     @endforeach
-                                                </select>
-                                                <small class="form-text text-muted">Select one or more specializations related to this appointment type.</small>
+                                                </div>
+                                                <small class="form-text text-muted">
+                                                    Select one or more specializations related to this appointment type.
+                                                </small>
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             
                                 <div class="form-actions">
-                                    <a href="{{ route('admin.settings.appointment_types.index')}}" class="btn btn-outline">Cancel</a>
+                                    <a onclick="history.back()" class="btn btn-outline">Cancel</a>
                                     <button type="submit" class="btn btn-primary">Create Appointment Type</button>
                                 </div>
                             </form>

@@ -12,6 +12,22 @@
 </head>
 <body>
     <div class="app-container">
+
+        @if(session('success'))
+                <div id="flash-message" class="flash-message">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const flash = document.getElementById('flash-message');
+                    if (flash) {
+                        setTimeout(() => flash.remove(), 3500);
+                    }
+                });
+            </script>
+
         <!-- Header -->
         <header class="dashboard-header">
             <a href="{{ route('admin.dashboard') }}" class="logo">MediCare Clinic</a>
@@ -91,18 +107,6 @@
                     <h3>Settings</h3>
                 </div>
                 <nav class="settings-nav">
-                    <a href="#" class="settings-nav-item {{ request()->is('admin/settings/clinic') ? 'active' : '' }}">
-                        <i class="fas fa-clinic-medical"></i>
-                        <span>Clinic Information</span>
-                    </a>
-                    <a href="#" class="settings-nav-item {{ request()->is('admin/settings/permissions') ? 'active' : '' }}">
-                        <i class="fas fa-user-shield"></i>
-                        <span>User Permissions</span>
-                    </a>
-                    <a href="{{ route('admin.settings.appointment_types.index')}}" class="settings-nav-item {{ request()->routeIs('admin.settings.appointment_types.*') ? 'active' : '' }}">
-                        <i class="fas fa-list-alt"></i>
-                        <span>Appointment Types</span>
-                    </a>
                     <a href="{{ route('admin.settings.departments.index')}}" class="settings-nav-item {{ request()->routeIs('admin.settings.departments.*') ? 'active' : '' }}">
                         <i class="fas fa-building"></i>
                         <span>Doctor Departments</span>
@@ -111,25 +115,13 @@
                         <i class="fas fa-stethoscope"></i>
                         <span>Doctor Specializations</span>
                     </a>
+                    <a href="{{ route('admin.settings.appointment_types.index')}}" class="settings-nav-item {{ request()->routeIs('admin.settings.appointment_types.*') ? 'active' : '' }}">
+                        <i class="fas fa-list-alt"></i>
+                        <span>Appointment Types</span>
+                    </a>
                     <a href="{{ route('admin.settings.record-types.index')}}" class="settings-nav-item {{ request()->routeIs('admin.settings.record-types.*') ? 'active' : '' }}">
                         <i class="fas fa-file-medical-alt"></i>
                         <span>Record Types</span>
-                    </a>
-                    <a href="#" class="settings-nav-item {{ request()->is('admin/settings/email-templates') ? 'active' : '' }}">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email Templates</span>
-                    </a>
-                    <a href="#" class="settings-nav-item {{ request()->is('admin/settings/notifications') ? 'active' : '' }}">
-                        <i class="fas fa-bell"></i>
-                        <span>Notification Settings</span>
-                    </a>
-                    <a href="#" class="settings-nav-item {{ request()->is('admin/settings/security') ? 'active' : '' }}">
-                        <i class="fas fa-lock"></i>
-                        <span>Security Settings</span>
-                    </a>
-                    <a href="#" class="settings-nav-item {{ request()->is('admin/settings/backup') ? 'active' : '' }}">
-                        <i class="fas fa-database"></i>
-                        <span>Backup & Restore</span>
                     </a>
                 </nav>
             </aside>

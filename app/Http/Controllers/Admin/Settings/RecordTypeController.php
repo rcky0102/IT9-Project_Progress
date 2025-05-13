@@ -37,4 +37,36 @@ class RecordTypeController extends Controller
         return redirect()->route('admin.settings.record-types.index')
                          ->with('success', 'Record Type created successfully.');
     }
+
+    public function edit($id)
+    {
+        $recordType = RecordType::findOrFail($id);
+        return view('admin.settings.record-types.edit', compact('recordType'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'charge' => 'required|numeric|min:0',
+        ]);
+
+        $recordType = RecordType::findOrFail($id);
+        $recordType->update([
+            'name' => $request->name,
+            'charge' => $request->charge,
+        ]);
+
+        return redirect()->route('admin.settings.record-types.index')
+            ->with('success', 'Record Type updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $recordType = RecordType::findOrFail($id);
+        $recordType->delete();
+
+        return redirect()->route('admin.settings.record-types.index')
+            ->with('success', 'Record Type deleted successfully.');
+    }
 }
