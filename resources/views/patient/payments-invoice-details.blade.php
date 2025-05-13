@@ -8,7 +8,7 @@
     <div class="page-header no-print">
         <h1>Invoice Details</h1>
         <div class="header-actions">
-            <a href="payments.html" class="btn btn-outline">
+            <a href="{{ route('patient.payments') }}" class="btn btn-outline">
                 <i class="fas fa-arrow-left"></i> Back to Payments
             </a>
             <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-primary">
@@ -114,7 +114,6 @@
             <table class="services-table">
                 <thead>
                     <tr>
-                        <th>Appointment ID</th>
                         <th>Invoice #</th>
                         <th>Payment Method</th>
                         <th class="text-right">Amount Paid</th>
@@ -125,7 +124,7 @@
                 <tbody>
                     @forelse ($payments as $payment)
                         <tr>
-                            <td>{{ $payment->invoice && $payment->invoice->appointment ? $payment->invoice->appointment->id : 'N/A' }}</td> <!-- Appointment ID -->
+                            {{-- <td>{{ $payment->invoice && $payment->invoice->appointment ? $payment->invoice->appointment->id : 'N/A' }}</td> <!-- Appointment ID --> --}}
                             <td>{{ $payment->invoice ? $payment->invoice->invoice_number : 'N/A' }}</td>
                             <td>{{ $payment->paymentMethod ? $payment->paymentMethod->cardholder_name : 'N/A' }}</td>
                             <td class="text-right">₱{{ number_format($payment->amount_paid ?? 0, 2) }}</td>
@@ -144,20 +143,18 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
 
-        <!-- Action Buttons -->
-        <div class="action-buttons no-print">
-            {{-- <button class="btn btn-outline" onclick="window.print()">
-                <i class="fas fa-print"></i> Print Invoice
-            </button> --}}
-            <a href="{{ route('payments.download', $payment->id) }}" class="btn btn-outline">
-                <i class="fas fa-file-pdf"></i> Download Receipt
-            </a>
-            {{-- <a href="{{ route('patient.payments-paynow', ['invoiceId' => $invoice->id]) }}" class="btn btn-primary">
-                <i class="fas fa-credit-card"></i> Pay Now
-            </a> --}}
-        </div>
+            <!-- Action Buttons -->
+            <div class="action-buttons no-print">
+                <a href="{{ route('payments.downloadPDF', $payment->id) }}" class="btn btn-sm btn-primary">
+                    Download Receipt
+                </a>
+
+                {{-- <button class="btn btn-outline" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Invoice
+                </button> --}}
+            </div>
+
     </div>
 </main>
 

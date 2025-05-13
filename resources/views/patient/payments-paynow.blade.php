@@ -139,7 +139,7 @@
                 @endforelse
 
                 {{-- Cash option --}}
-                <div class="payment-method-card" id="cash-method">
+                {{-- <div class="payment-method-card" id="cash-method">
                     <input type="radio"
                            name="payment_method_id"
                            id="cash-payment"
@@ -156,7 +156,8 @@
                             </div>
                         </div>
                     </label>
-                </div>
+                </div> --}}
+                
             </div>
         </div>
 

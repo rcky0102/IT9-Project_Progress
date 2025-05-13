@@ -1,83 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Payment Receipt - Invoice #{{ $invoice->id ?? $payment->invoice_id }}</title>
+    <title>Receipt - Invoice #{{ $invoiceId }}</title>
     <style>
-        body { 
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 12px;
-        }
-        .header { 
-            text-align: center; 
-            margin-bottom: 20px; 
-        }
-        .details { 
-            margin: 30px 0; 
-        }
-        .table { 
-            width: 100%; 
-            border-collapse: collapse; 
-        }
-        .table th, .table td { 
-            border: 1px solid #ddd; 
-            padding: 8px; 
-        }
-        .table th { 
-            background-color: #f2f2f2; 
-        }
-        .text-right { 
-            text-align: right; 
-        }
-        .mb-4 { 
-            margin-bottom: 1.5rem; 
-        }
+        body { font-family: DejaVu Sans, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>PAYMENT RECEIPT</h2>
-        <p>Issued: {{ now()->format('F j, Y') }}</p>
-    </div>
+    <h2>Receipt for Invoice #{{ $invoiceId }}</h2>
 
-    <div class="details">
-        <table class="table mb-4">
-            <tr>
-                <th width="30%">Payment ID</th>
-                <td>{{ $payment->id ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <th>Invoice Number</th>
-                <td>{{ $invoice->invoice_number ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <th>Payment Date</th>
-                <td>{{ $payment->paid_at ? \Carbon\Carbon::parse($payment->paid_at)->format('F j, Y H:i') : 'N/A' }}</td>
-            </tr>
-            <tr>
-                <th>Payment Method</th>
-                <td>{{ $payment->paymentMethod->cardholder_name ?? 'N/A' }}</td>
-            </tr>
-        </table>
+    @if($patient)
+        <p><strong>Patient Name:</strong> {{ $patient->name }}</p>
+        <p><strong>Patient Email:</strong> {{ $patient->email }}</p>
+    @endif
 
-        <table class="table">
-            <thead>
+    <table>
+        <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>Amount</th>
+                <th>Paid At</th>
+                <th>Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($payments as $pay)
                 <tr>
-                    <th>Description</th>
-                    <th class="text-right">Amount</th>
+                    <td>{{ $pay->id }}</td>
+                    <td>{{ number_format($pay->amount_paid, 2) }}</td>
+                    <td>{{ \Carbon\Carbon::parse($pay->created_at)->format('F d, Y h:i A') }}</td>
+                    <td>{{ ucfirst($pay->paymentMethod->cardholder_name ?? 'N/A') }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Payment for Invoice #{{ $invoice->number ?? $payment->invoice_id ?? 'N/A' }}</td>
-                    <td class="text-right">${{ number_format($payment->amount_paid ?? 0, 2) }}</td>
-                </tr>
-                <tr>
-                    <th>Total Paid</th>
-                    <th class="text-right">${{ number_format($payment->amount_paid ?? 0, 2) }}</th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            @endforeach
+        </tbody>
+    </table>
+
+    <p><strong>Total Paid:</strong> ₱{{ number_format($payments->sum('amount_paid'), 2) }}</p>
 </body>
 </html>
