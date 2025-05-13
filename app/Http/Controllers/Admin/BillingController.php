@@ -9,22 +9,26 @@ use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Appointment;
 use App\Models\MedicalRecord;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BillingController extends Controller
 {
     public function index()
     {
+        $paymentMethods = PaymentMethod::all();
+
         $invoices = Invoice::with([
             'billable' => function ($morphTo) {
                 $morphTo->morphWith([
-                    Appointment::class => ['patient', 'doctor', 'appointmentType'],
-                    MedicalRecord::class => ['appointment.patient', 'appointment.doctor', 'appointment.appointmentType']
+                    Appointment::class => ['appointmentType', 'doctor', 'patient'],
+                    MedicalRecord::class => ['appointment.doctor', 'appointment.patient'],
                 ]);
             }
         ])->get();
 
-        return view('admin.billing.index', compact('invoices'));
+        return view('admin.billing.index', compact('paymentMethods', 'invoices'));
     }
+
 
     public function show($invoiceId)
     {
@@ -90,5 +94,24 @@ class BillingController extends Controller
         return redirect()
             ->route('admin.billing.show', ['invoiceId' => $invoice->id])
             ->with('success', 'Payment successfully processed!');
+    }
+
+    public function downloadPDF(Payment $payment)
+    {
+        // Get all payments that share the same invoice_id
+        $invoiceId = $payment->invoice_id;
+        $allPayments = Payment::where('invoice_id', $invoiceId)->get();
+
+        // Optional: Load patient info (if needed for the PDF)
+        $patient = $payment->patient;
+
+        // Load the PDF view
+        $pdf = Pdf::loadView('payments.pdf', [
+            'invoiceId' => $invoiceId,
+            'payments' => $allPayments,
+            'patient' => $patient,
+        ]);
+
+        return $pdf->download("receipt_invoice_{$invoiceId}.pdf");
     }
 }

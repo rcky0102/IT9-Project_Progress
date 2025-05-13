@@ -23,15 +23,15 @@ public function index()
     $invoices = Invoice::with([
         'billable' => function ($morphTo) {
             $morphTo->morphWith([
-                \App\Models\Appointment::class => ['appointmentType', 'doctor'],
-                \App\Models\MedicalRecord::class => ['appointment.doctor'],
+                Appointment::class => ['appointmentType', 'doctor'],
+                MedicalRecord::class => ['appointment.doctor'],
             ]);
         }
     ])
     ->where(function ($query) {
-        $query->whereHasMorph('billable', [\App\Models\Appointment::class], function ($q) {
+        $query->whereHasMorph('billable', [Appointment::class], function ($q) {
             $q->where('patient_id', Auth::user()->patient->id);
-        })->orWhereHasMorph('billable', [\App\Models\MedicalRecord::class], function ($q) {
+        })->orWhereHasMorph('billable', [MedicalRecord::class], function ($q) {
             $q->whereHas('appointment', function ($appointmentQuery) {
                 $appointmentQuery->where('patient_id', Auth::user()->patient->id);
             });
@@ -97,8 +97,8 @@ public function index()
         $invoice = Invoice::with([
             'billable' => function ($morphTo) {
                 $morphTo->morphWith([
-                    \App\Models\Appointment::class => ['appointmentType', 'doctor'],
-                    \App\Models\MedicalRecord::class => ['appointment' => function ($q) {
+                    Appointment::class => ['appointmentType', 'doctor'],
+                    MedicalRecord::class => ['appointment' => function ($q) {
                         $q->with('patient'); // Load the patient relation through the appointment
                     }],
                 ]);

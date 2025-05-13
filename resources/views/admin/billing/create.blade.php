@@ -7,8 +7,8 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Make a Payment</h1>
-        <a href="{{ route('admin.billing.index') }}" class="btn btn-outline">
-            <i class="fas fa-arrow-left"></i> Back to Payments
+        <a onclick="history.back()" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Back
         </a>
     </div>
 
@@ -95,7 +95,7 @@
 
                 <!-- Submit -->
                 <div class="form-actions">
-                    <a href="{{ route('admin.billing.index') }}" class="btn btn-outline">Cancel</a>
+                    <a onclick="history.back()" class="btn btn-outline">Cancel</a>
                     <button type="submit" class="btn btn-primary" id="submit-button">
                         <i class="fas fa-credit-card"></i> Complete Payment
                     </button>
