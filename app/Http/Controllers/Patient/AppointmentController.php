@@ -49,13 +49,33 @@ class AppointmentController extends Controller
         return view('patient.appointments', compact('appointments', 'appointmentsCount', 'pastAppointmentsCount', 'doctorCount', 'doctorNames'));
     }
 
+
+    
+       public function show($id)
+        {
+            $appointment = Appointment::with(['appointmentType', 'doctor.user']) 
+                ->where('id', $id)
+                ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+                ->firstOrFail();
+        
+            return view('patient.patient_crud.show', compact('appointment'));
+        }
+
     
 
     public function create()
     {
         $appointmentTypes = AppointmentType::with('specializations')->get();
-        return view('patient.patient_crud.create', compact('appointmentTypes'));
+
+        $doctorNames = Doctor::with('user')
+            ->get()
+            ->mapWithKeys(function ($doctor) {
+                return [$doctor->id => $doctor->user->first_name . ' ' . $doctor->user->middle_name . ' ' . $doctor->user->last_name];
+            });
+
+        return view('patient.patient_crud.create', compact('appointmentTypes', 'doctorNames'));
     }
+
 
     public function store(Request $request)
     {
@@ -97,23 +117,41 @@ class AppointmentController extends Controller
     }
     
 
-    public function getDoctorAvailability($doctorId)
-    {
+public function getDoctorAvailability($doctorId)
+{
+    try {
         $availabilities = Availability::where('doctor_id', $doctorId)->get();
-    
-        return response()->json($availabilities);
-    }
-    
 
-    public function show($id)
-    {
-        $appointment = Appointment::with(['appointmentType', 'doctor.user']) 
-            ->where('id', $id)
-            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
-            ->firstOrFail();
-    
-        return view('patient.patient_crud.show', compact('appointment'));
+        $confirmedAppointments = Appointment::where('doctor_id', $doctorId)
+            ->where('status', 'Confirmed')
+            ->with(['patient.user'])
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'availabilities' => $availabilities,
+            'confirmedAppointments' => $confirmedAppointments->map(function ($appointment) {
+                return [
+                    'date' => $appointment->appointment_date,
+                    'time' => $appointment->appointment_time,
+                    'end_time' => $appointment->appointment_end_time, 
+                    'patient_name' => $appointment->patient->user->first_name
+                        . ' ' . $appointment->patient->user->middle_name
+                        . ' ' . $appointment->patient->user->last_name,
+                ];
+            }),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to load availability or confirmed appointments.',
+            'error' => $e->getMessage(),
+        ], 500);
     }
+}
+
+
+
     
 
     public function edit($id)
@@ -168,16 +206,32 @@ class AppointmentController extends Controller
                         ->with('success', 'Appointment updated successfully!');
     }
 
-
-    public function destroy($id)
+    public function cancel($id)
     {
         $appointment = Appointment::where('id', $id)
-            ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+            ->where('patient_id', Auth::user()->patient->id)
             ->firstOrFail();
 
-        $appointment->delete();
+        // Update status to 'Cancelled' instead of deleting
+        $appointment->update([
+            'status' => 'Cancelled',
+            'cancelled_at' => now() // Optional: add cancellation timestamp if you have this column
+        ]);
 
         return redirect()->route('patient.appointments')
-                         ->with('success', 'Appointment cancelled successfully!');
+                        ->with('success', 'Appointment cancelled successfully!');
     }
+
+
+    // public function destroy($id)
+    // {
+    //     $appointment = Appointment::where('id', $id)
+    //         ->where('patient_id', Auth::user()->patient->id) // Use patient_id
+    //         ->firstOrFail();
+
+    //     $appointment->delete();
+
+    //     return redirect()->route('patient.appointments')
+    //                      ->with('success', 'Appointment cancelled successfully!');
+    // }
 }

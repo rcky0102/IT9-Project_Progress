@@ -73,7 +73,7 @@ class PMedicalRecordController extends Controller
             ->firstOrFail();
 
         return view('patient.medical-record-show', [
-            'appointment' => $medicalRecord->appointment, // For your view to work
+            'appointment' => $medicalRecord->appointment, 
             'medicalRecord' => $medicalRecord
         ]);
     }

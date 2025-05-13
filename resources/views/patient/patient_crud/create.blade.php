@@ -42,6 +42,7 @@
                               
                         </div>
 
+
                         
                     
                       <!-- Date Selection -->
@@ -176,21 +177,25 @@
     });
         });
 
-        document.getElementById('doctor').addEventListener('change', function () {
-        const doctorId = this.value;
-        const availabilityDiv = document.getElementById('doctor-availability');
-        availabilityDiv.innerHTML = 'Loading availability...';
+document.getElementById('doctor').addEventListener('change', function () {
+    const doctorId = this.value;
+    const availabilityDiv = document.getElementById('doctor-availability');
+    availabilityDiv.innerHTML = 'Loading availability and confirmed appointments...';
 
-        fetch(`/doctor/${doctorId}/availability`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.length === 0) {
-                    availabilityDiv.innerHTML = '<p class="text-red-600">No availability found for this doctor.</p>';
-                    return;
-                }
+    fetch(`/doctor/${doctorId}/availability`)
+        .then(response => response.json())
+        .then(data => {
+            if ((data.availabilities.length === 0) && (data.confirmedAppointments.length === 0)) {
+                availabilityDiv.innerHTML = '<p class="text-red-600">No availability or confirmed appointments found for this doctor.</p>';
+                return;
+            }
 
-                let html = '<h4 class="font-semibold mb-2">Availability:</h4><ul class="list-disc pl-6">';
-                data.forEach(slot => {
+            let html = '';
+
+            // Doctor's availability
+            if (data.availabilities.length > 0) {
+                html += '<h4 class="font-semibold mb-2">Availability:</h4><ul class="list-disc pl-6">';
+                data.availabilities.forEach(slot => {
                     html += `<li>
                         <strong>${slot.name}</strong> - ${slot.day}: 
                         ${formatTime(slot.start_time)} - ${formatTime(slot.end_time)} 
@@ -198,19 +203,43 @@
                     </li>`;
                 });
                 html += '</ul>';
-                availabilityDiv.innerHTML = html;
-            })
-            .catch(() => {
-                availabilityDiv.innerHTML = '<p class="text-red-600">Failed to load availability.</p>';
-            });
-    });
+            }
 
-    function formatTime(timeStr) {
-        const [hour, minute, second] = timeStr.split(':');
-        const date = new Date();
-        date.setHours(hour, minute);
-        return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    }
+            // Confirmed appointments - now showing both start and end times
+            if (data.confirmedAppointments.length > 0) {
+                html += '<h4 class="font-semibold mt-4 mb-2">Confirmed Appointments:</h4><ul class="list-disc pl-6">';
+                data.confirmedAppointments.forEach(appointment => {
+                    html += `<li>
+                        <strong>${appointment.date}</strong> 
+                        ${formatTime(appointment.time)} - ${formatTime(appointment.end_time)} 
+                    </li>`;
+                });
+                html += '</ul>';
+            }
+
+            availabilityDiv.innerHTML = html;
+        })
+        .catch(() => {
+            availabilityDiv.innerHTML = '<p class="text-red-600">Failed to load availability or confirmed appointments.</p>';
+        });
+});
+
+function formatTime(timeString) {
+    // Split the time string into hours and minutes
+    const [hours, minutes] = timeString.split(':').map(Number);
+    
+    // Create a date object with fixed date (timezone doesn't matter here)
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    
+    // Format as AM/PM without timezone conversion
+    return date.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true
+    });
+}
+
     </script>
 
 @endsection

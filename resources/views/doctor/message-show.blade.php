@@ -8,11 +8,14 @@
 <main class="main-content">
     <div class="page-header">
         <h1>
-            <a href="{{ route('doctor.messages') }}" class="btn btn-outline" style="margin-right: 15px;">
-                <i class="fas fa-arrow-left"></i> Back to Messages
+            <a onclick="history.back()" class="btn btn-outline" style="margin-right: 15px;">
+                <i class="fas fa-arrow-left"></i> 
             </a>
             Message Details
         </h1>
+        <a href="{{ route('doctor.message-create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> New Message
+        </a>
     </div>
 
     <!-- Message Details Container -->
@@ -26,18 +29,18 @@
                 <div class="patient-name">{{ $message->appointment->patient->user->first_name }} {{ $message->appointment->patient->user->last_name }}</div>
                 <div class="patient-details">
                     <span>Age: {{ $message->appointment->patient->age }}</span>
-                    <span>DOB: {{ $message->appointment->patient->date_of_birth }}</span>
-                    <span>MRN: {{ $message->appointment->patient->medical_record_number }}</span>
+                    <span>DOB: {{ $message->appointment->patient->birthdate }}</span>
+                    {{-- <span>MRN: {{ $message->appointment->patient->medical_record_number }}</span> --}}
                 </div>
             </div>
-            <div class="patient-actions">
+            {{-- <div class="patient-actions">
                 <a href="#" class="btn btn-outline btn-sm">
                     <i class="fas fa-user-injured"></i> View Profile
                 </a>
                 <a href="#" class="btn btn-outline btn-sm">
                     <i class="fas fa-file-medical"></i> Medical Records
                 </a>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Current Message -->
@@ -51,7 +54,7 @@
                         <span>{{ \Carbon\Carbon::parse($message->created_at)->format('M d, Y, h:i A') }}</span>
                     </div>
                 </div>
-                <div class="message-actions">
+                {{-- <div class="message-actions">
                     <button class="btn-icon" title="Reply" onclick="focusReplyBox()">
                         <i class="fas fa-reply"></i>
                     </button>
@@ -64,7 +67,7 @@
                     <button class="btn-icon" title="Delete" onclick="deleteMessage()">
                         <i class="fas fa-trash"></i>
                     </button>
-                </div>
+                </div> --}}
             </div>
             <div class="message-body">
                 {{ $message->content }}
@@ -95,7 +98,7 @@
         </div>
 
         <!-- Quick Reply Options -->
-        <div class="quick-reply-options">
+        {{-- <div class="quick-reply-options">
             <button class="quick-reply-btn" onclick="insertQuickReply('I\'ll review your results and get back to you shortly.')">
                 <i class="fas fa-check"></i> Will Review
             </button>
@@ -108,10 +111,10 @@
             <button class="quick-reply-btn" onclick="insertQuickReply('Please call our office at (555) 123-4567 for immediate assistance.')">
                 <i class="fas fa-phone"></i> Call Office
             </button>
-        </div>
+        </div> --}}
 
         <!-- Reply Box -->
-        <div class="reply-box">
+        {{-- <div class="reply-box">
             <h4>Reply</h4>
             <form action="{{ route('doctor.messages.reply', $message->id) }}" method="POST">
                 @csrf
@@ -126,7 +129,7 @@
                     </button>
                 </div>
             </form>
-        </div>
+        </div> --}}
     </div>
 </main>
 

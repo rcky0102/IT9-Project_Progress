@@ -85,10 +85,6 @@
                         <i class="fas fa-calendar"></i>
                         <span>Appointments</span>
                     </a>
-                    <a href="{{ route('admin.services.index') }}" class="sidebar-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-medical"></i>
-                        <span>Services</span>
-                    </a>
                     <a href="{{ route('admin.billing.index') }}" class="sidebar-item {{ request()->routeIs('admin.billings.*') ? 'active' : '' }}">
                         <i class="fas fa-credit-card"></i>
                         <span>Billing</span>
@@ -96,20 +92,11 @@
                     <a href="{{ route('admin.reports.index') }}" class="sidebar-item {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
                         <i class="fas fa-chart-bar"></i>
                         <span>Reports</span>
-                    </a>
                     <a href="{{ route('admin.settings.departments.index') }}" class="sidebar-item {{ request()->routeIs('admin.settings.departments.*') ? 'active' : '' }}">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
                 </nav>
-                
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="sidebar-item text-danger" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer;">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
             </aside>
 
 

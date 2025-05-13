@@ -23,7 +23,7 @@
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search prescriptions...">
                     </div>
-                    <select class="filter-select">
+                    {{-- <select class="filter-select">
                         <option value="">All Patients</option>
                         <option value="emma-wilson">Emma Wilson</option>
                         <option value="james-brown">James Brown</option>
@@ -35,7 +35,7 @@
                         <option value="active">Active</option>
                         <option value="completed">Completed</option>
                         <option value="expired">Expired</option>
-                    </select>
+                    </select> --}}
                 </div>
 
                 <!-- Prescription Stats -->
@@ -90,8 +90,8 @@
                                 <th>Dosage</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                {{-- <th>Status</th> --}}
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,7 +114,7 @@
                                 <td>{{ $prescription->dosage }} - {{ ucfirst(str_replace('-', ' ', $prescription->frequency)) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($prescription->start_date)->format('M d, Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($prescription->end_date)->format('M d, Y') }}</td>
-                                <td>
+                                {{-- <td>
                                     <span class="badge badge-outline-blue">Active</span>
                                 </td>
                                 <td>

@@ -8,20 +8,20 @@
 <main class="main-content">
     <div class="page-header">
         <h1>Medical Records</h1>
-        <button class="btn btn-outline">
+        {{-- <button class="btn btn-outline">
             <i class="fas fa-download"></i> Download All Records
-        </button>
+        </button> --}}
     </div>
 
     <!-- Medical Records Filters -->
     <div class="filters-container">
-        <div class="filters">
+        {{-- <div class="filters">
             <button class="filter-btn active">All</button>
             <button class="filter-btn">Consultations</button>
             <button class="filter-btn">Lab Results</button>
             <button class="filter-btn">Imaging</button>
             <button class="filter-btn">Procedures</button>
-        </div>
+        </div> --}}
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search records...">
             <button class="search-btn"><i class="fas fa-search"></i></button>
@@ -44,13 +44,13 @@
                                     </div>
                                     <div class="timeline-content">
                                         <div class="timeline-header">
-                                            <h4>{{ optional($medicalRecord->recordType)->name }}</h4>
+                                            {{-- <h4>{{ optional($medicalRecord->recordType)->name }}</h4> --}}
                                             <span class="badge {{ Str::slug(optional($medicalRecord->recordType)->name, '-') }}">{{ optional($medicalRecord->recordType)->name }}</span>
                                         </div>
 
-                                        <div class="timeline-header">
+                                        {{-- <div class="timeline-header">
                                             <h5>Diagnosis : {{ $medicalRecord->diagnosis }}</h5>
-                                        </div>
+                                        </div> --}}
                                             
                                         <div class="timeline-details">
                                             <p>{{ $medicalRecord->notes }}</p> <!-- Existing notes section -->
@@ -60,7 +60,7 @@
                                         </div>
                                         <div class="timeline-actions">
                                             <a href="{{ route('patient.medical-record-show', $medicalRecord->id) }}" class="btn btn-sm btn-outline">View Details</a>
-                                            <a href="#" class="btn btn-sm btn-outline">Download PDF</a>
+                                            {{-- <a href="#" class="btn btn-sm btn-outline">Download PDF</a> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -68,84 +68,7 @@
                         </div>
                     </div>
                 @endforeach
-
-        <div class="timeline-year">
-            <h3>2024</h3>
-            <div class="timeline-items">
-                <div class="timeline-item">
-                    <div class="timeline-date">
-                        <div class="timeline-date-day">12</div>
-                        <div class="timeline-date-month">Dec</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h4>Chest X-Ray</h4>
-                            <span class="badge imaging">Imaging</span>
-                        </div>
-                        <div class="timeline-details">
-                            <p>Routine chest X-ray. No abnormalities detected. Lungs clear. Heart size normal.</p>
-                            <div class="timeline-meta">
-                                <span><i class="fas fa-x-ray"></i> Radiology Department</span>
-                                <span><i class="fas fa-user-md"></i> Dr. Robert Williams</span>
-                            </div>
-                        </div>
-                        <div class="timeline-actions">
-                            <button class="btn btn-sm btn-outline">View Images</button>
-                            <button class="btn btn-sm btn-outline">Download Report</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">
-                        <div class="timeline-date-day">05</div>
-                        <div class="timeline-date-month">Oct</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h4>Annual Physical</h4>
-                            <span class="badge consultation">Consultation</span>
-                        </div>
-                        <div class="timeline-details">
-                            <p>Comprehensive annual physical examination. All vital signs normal. Recommended lifestyle modifications for optimal health.</p>
-                            <div class="timeline-meta">
-                                <span><i class="fas fa-user-md"></i> Dr. Sarah Johnson</span>
-                                <span><i class="fas fa-clinic-medical"></i> Main Clinic</span>
-                            </div>
-                        </div>
-                        <div class="timeline-actions">
-                            <button class="btn btn-sm btn-outline">View Details</button>
-                            <button class="btn btn-sm btn-outline">Download PDF</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-date">
-                        <div class="timeline-date-day">18</div>
-                        <div class="timeline-date-month">Jul</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h4>Minor Surgical Procedure</h4>
-                            <span class="badge procedure">Procedure</span>
-                        </div>
-                        <div class="timeline-details">
-                            <p>Removal of skin lesion on right forearm. Procedure completed successfully. Biopsy results benign.</p>
-                            <div class="timeline-meta">
-                                <span><i class="fas fa-user-md"></i> Dr. Emily Rodriguez</span>
-                                <span><i class="fas fa-clinic-medical"></i> Surgical Center</span>
-                            </div>
-                        </div>
-                        <div class="timeline-actions">
-                            <button class="btn btn-sm btn-outline">View Details</button>
-                            <button class="btn btn-sm btn-outline">Download PDF</button>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
 
 <!-- Health Summary -->
 <div class="health-summary">

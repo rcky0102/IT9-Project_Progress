@@ -11,10 +11,10 @@
                         <h1>Appointments</h1>
                         <p class="text-muted">Manage your patient appointments</p>
                     </div>
-                    <button class="btn btn-primary">
+                    <!-- <button class="btn btn-primary">
                         <i class="fas fa-plus"></i>
                         New Appointment
-                    </button>
+                    </button> -->
                 </div>
 
                 <!-- Filters -->

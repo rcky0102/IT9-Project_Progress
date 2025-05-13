@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BillingController;
+use App\Http\Controllers\Admin\AAppointmentController;
 use App\Http\Controllers\Admin\Settings\AppointmentTypeController;
 use App\Http\Controllers\Admin\Settings\DepartmentController;
 use App\Http\Controllers\Admin\Settings\SpecializationController;
@@ -150,19 +151,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/patient/appointments/show/{id}', [AppointmentController::class, 'show'])->name('patient.patient_crud.show');
     Route::get('/patient/patient_crud/{id}/edit', [AppointmentController::class, 'edit'])->name('patient.patient_crud.edit');
     Route::put('/patient/appointments/show/{id}', [AppointmentController::class, 'update'])->name('patient.patient_crud.update');
-    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    // Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+    Route::patch('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
 
     /* Patient-medications */
     Route::get('/patient/medications', [MedicationController::class, 'index'])->name('patient.medications');
-
-    
+    Route::get('/patient/medication-show/{id}', [MedicationController::class, 'show'])->name('patient.medication-show');
 
     /* Patient-medical-records */
     Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
     Route::get('/patient/medical-record-show/{id}', [PMedicalRecordController::class, 'show'])->name('patient.medical-record-show');
 
-    /* Patient-medical-records */
-    Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
+    // /* Patient-medical-records */
+    // Route::get('/patient/medical-records', [PMedicalRecordController::class, 'index'])->name('patient.medical-records');
+    // Route::get('/patient/medication-show/{id}', [PrescriptionController::class, 'show'])->name('patient.medication-show');
 
     /* Patient-payments */
     Route::get('/patient/payments', [PaymentController::class, 'index'])->name('patient.payments');
@@ -172,8 +174,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/patient/payments-invoice-details/{invoiceId}', [PaymentController::class, 'storePayment'])->name('patient.payments-paynow-store');
     Route::get('/patient/payment-methods/create', [PaymentController::class, 'createPaymentMethod'])->name('patient.payment-methods');
     Route::post('/patient/payment-methods', [PaymentController::class, 'storePaymentMethod'])->name('patient.payment-methods-store');
+    Route::get('/payments/{payment}/receipt', [PaymentController::class, 'downloadPDF'])->name('payments.downloadPDF');
 
-    /* Patient-messages */
+
+
+
+    /* Patient-messages */ 
     Route::get('/patient/messages', [MessageController::class, 'index'])->name('patient.messages');
     Route::get('/patient/messages/create', [MessageController::class, 'create'])->name('patient.messages.create');
     Route::post('/patient/messages', [MessageController::class, 'store'])->name('patient.messages.store');
@@ -191,6 +197,11 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.dashboard');
         })->name('dashboard');
+
+        // Appointments management
+        Route::put('/appointments/{appointment}/status', [AAppointmentController::class, 'updateStatus'])->name('admin.appointments.updateStatus');
+        Route::get('/admin/appointments', [AAppointmentController::class, 'index'])->name('admin.appointments.index');
+
 
         // Users management
         Route::get('/users', function () {
@@ -318,6 +329,16 @@ Route::middleware('auth')->group(function () {
             }
             return view('admin.reports.index');
         })->name('reports.index');
+
+
+
+         // Messages
+        Route::get('/messages', function () {
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+            }
+            return view('admin.messages.index');
+        })->name('messages.index');
 
 
 

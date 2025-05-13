@@ -20,7 +20,6 @@ class Payment extends Model
     protected $dates = ['paid_at'];
 
 
-    // Relationships
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);

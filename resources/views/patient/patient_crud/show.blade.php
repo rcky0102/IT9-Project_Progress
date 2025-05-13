@@ -29,12 +29,16 @@
                             <a href="{{ route('patient.appointments') }}" class="btn-icon-sm">
                                 <i class="fas fa-arrow-left"></i>
                             </a>
+
+                            {{-- <a href="{{ route('patient.appointments') }}" class="btn btn-outline">
+                                <i class="fas fa-arrow-left"></i> Back to Payments
+                            </a> --}}
                             <h1>Appointment Details</h1>
                         </div>
-                        <a href="{{ route('patient.patient_crud.edit', $appointment->id) }}" class="btn btn-primary">
+                        {{-- <a href="{{ route('patient.patient_crud.edit', $appointment->id) }}" class="btn btn-primary">
                             <i class="fas fa-edit"></i>
                             Edit Appointment
-                        </a>
+                        </a> --}}
                     </div>
                     <p>View the details of your scheduled appointment.</p>
                 </div>
@@ -101,12 +105,12 @@
                             </div>
                         </div>
                 
-                        <div class="mt-8 flex gap-4">
+                        {{-- <div class="mt-8 flex gap-4">
                             <button class="btn btn-outline">
                                 <i class="fas fa-calendar-plus"></i>
                                 Add to Calendar
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 

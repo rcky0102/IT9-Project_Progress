@@ -28,8 +28,8 @@
             <p class="text-muted">View the details of the prescription</p>
         </div>
         <div class="header-buttons">
-            <a href="{{ route('doctor.prescriptions') }}" class="btn btn-outline">
-                <i class="fas fa-arrow-left"></i> Back to Prescriptions
+            <a onclick="history.back()" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Back
             </a>
             <a href="{{ route('doctor.prescription-edit', $prescription->id) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> Edit Prescription

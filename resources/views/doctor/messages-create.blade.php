@@ -8,8 +8,8 @@
             <main class="main-content">
                 <div class="page-header">
                     <h1>
-                        <a href="messages.html" class="btn btn-outline" style="margin-right: 15px;">
-                            <i class="fas fa-arrow-left"></i> Back to Messages
+                        <a onclick="history.back()" class="btn btn-outline" style="margin-right: 15px;">
+                            <i class="fas fa-arrow-left"></i> 
                         </a>
                         Compose New Message
                     </h1>

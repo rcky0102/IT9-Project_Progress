@@ -9,7 +9,7 @@
     <div class="page-header">
         <h1>
             <a href="{{ route('patient.messages') }}" class="btn btn-outline" style="margin-right: 15px;">
-                <i class="fas fa-arrow-left"></i> Back to Messages
+                <i class="fas fa-arrow-left"></i> 
             </a>
             Compose New Message
         </h1>

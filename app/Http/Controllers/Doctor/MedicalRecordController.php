@@ -11,14 +11,28 @@ use Illuminate\Support\Facades\Auth;
 
 class MedicalRecordController extends Controller
 {
-    public function index()
+   public function index(Request $request)
     {
         $doctor = Auth::user()->doctor;
+        $search = $request->input('search');
 
         $medicalRecords = MedicalRecord::with('appointment.patient.user', 'recordType')
             ->whereHas('appointment', function ($query) use ($doctor) {
                 $query->where('doctor_id', $doctor->id);
             })
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('appointment.patient.user', function ($q2) use ($search) {
+                            $q2->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('recordType', function ($q2) use ($search) {
+                            $q2->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhere('diagnosis', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
             ->get();
 
         return view('doctor.medical-records', compact('medicalRecords'));

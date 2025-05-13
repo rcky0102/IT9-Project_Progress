@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class Appointment extends Model
@@ -13,12 +14,13 @@ class Appointment extends Model
         'doctor_id',
         'appointment_date',
         'appointment_time',
+        'appointment_end_time',
         'reason',
         'notes',
         'status',
     ];
 
-    protected $dates = ['appointment_date', 'appointment_time'];
+    protected $dates = ['appointment_date', 'appointment_time', 'appointment_end_time'];
 
     public function patient()
     {
@@ -52,39 +54,46 @@ class Appointment extends Model
 
     protected static function booted()
     {
-        // Automatically create an invoice when an appointment is created
-        static::created(function ($appointment) {
-            $appointment->loadMissing('appointmentType', 'doctor');  // Eager load the necessary relationships
+        static::updated(function ($appointment) {
+            // Only proceed if status changed and is now "confirmed"
+            if ($appointment->isDirty('status') && strtolower($appointment->status) === 'confirmed') {
 
-            // Retrieve the charge for the appointment type (if any)
-            $charge = $appointment->appointmentType->charge ?? 0;
-            $invoiceNumber = 'INV-' . str_pad($appointment->id, 6, '0', STR_PAD_LEFT);
+                // Log status change
+                Log::info("Appointment #{$appointment->id} updated to confirmed");
 
-            // Create an invoice
-            $appointment->invoice()->create([
-                'invoice_number' => $invoiceNumber,
-                'total_amount' => $charge,
-                'status' => 'unpaid',
-                'due_date' => now()->addDays(7),
-            ]);
+                // Prevent duplicate invoices
+                if (!$appointment->invoice) {
+                    $appointment->loadMissing('appointmentType', 'doctor', 'patient');
 
-            // Auto-generate message to doctor
-            $doctorName = $appointment->doctor->full_name ?? 'Doctor';
-            $patientName = $appointment->patient->full_name ?? 'Patient';
-            $date = Carbon::parse($appointment->appointment_date)->format('F d, Y');
-            $time = Carbon::parse($appointment->appointment_time)->format('h:i A');
+                    $charge = $appointment->appointmentType->charge ?? 0;
+                    $invoiceNumber = 'INV-' . str_pad($appointment->id, 6, '0', STR_PAD_LEFT);
 
-            $subject = 'New Appointment Scheduled';
-            $content = "Hello Dr. {$doctorName},\n\n"
-                . "You have a new appointment with {$patientName} on {$date} at {$time}.\n"
-                . "Reason: {$appointment->reason}";
+                    // Create invoice
+                    $appointment->invoice()->create([
+                        'invoice_number' => $invoiceNumber,
+                        'total_amount' => $charge,
+                        'status' => 'unpaid',
+                        'due_date' => now()->addDays(7),
+                    ]);
 
-            // Create a system message to the doctor
-            $appointment->messages()->create([
-                'subject' => $subject,
-                'content' => $content,
-                'sender_type' => 'system',
-            ]);
+                    // Generate system message
+                    $doctorName = $appointment->doctor->full_name ?? 'Doctor';
+                    $patientName = $appointment->patient->full_name ?? 'Patient';
+                    $date = Carbon::parse($appointment->appointment_date)->format('F d, Y');
+                    $time = Carbon::parse($appointment->appointment_time)->format('h:i A');
+
+                    $subject = 'New Appointment Confirmed';
+                    $content = "Hello Dr. {$doctorName},\n\n"
+                             . "You have a confirmed appointment with {$patientName} on {$date} at {$time}.\n"
+                             . "Reason: {$appointment->reason}";
+
+                    $appointment->messages()->create([
+                        'subject' => $subject,
+                        'content' => $content,
+                        'sender_type' => 'system',
+                    ]);
+                }
+            }
         });
     }
 }

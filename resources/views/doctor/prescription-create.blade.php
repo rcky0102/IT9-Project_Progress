@@ -67,7 +67,7 @@
             </div>
     
             <div class="form-actions">
-                <a href="{{ route('doctor.prescriptions') }}" class="btn btn-outline">Cancel</a>
+                <a onclick="history.back()" class="btn btn-outline">Cancel</a>
                 <button type="submit" class="btn btn-primary">Save Prescription</button>
             </div>
         </div>

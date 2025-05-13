@@ -96,10 +96,9 @@ public function destroy($id)
     $availability->delete();
 
     return redirect()->route('doctor.schedules')->with('success', 'Availability deleted successfully.');
-}
-
 
     
 
 
+}
 }
