@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BillingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AAppointmentController;
+use App\Http\Controllers\Admin\AMessageController;
+
 
 use App\Http\Controllers\Patient\PatientProfileController;
 
@@ -179,6 +181,38 @@ Route::middleware('auth')->group(function () {
     
     // Admin routes
     Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+
+
+
+        // Messages management
+    Route::get('/messages', function (AMessageController $controller) {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+        }
+        return $controller->index();
+    })->name('admin.messages.index');
+
+    Route::get('/messages/create', function (AMessageController $controller) {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+        }
+        return $controller->create();
+    })->name('messages.create');
+
+    Route::post('/messages', function (AMessageController $controller) {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+        }
+        return $controller->store(Request::capture());
+    })->name('messages.store');
+
+    Route::get('/messages/{message}', function (AMessageController $controller, $message) {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
+        }
+        return $controller->show($message);
+    })->name('messages.show');
+
 
         // Admin dashboard
         Route::get('/dashboard', function () {
