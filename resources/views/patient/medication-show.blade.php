@@ -26,7 +26,7 @@
     <div class="welcome-card">
         <div class="flex-between">
             <div class="flex-center">
-                <a href="{{ route('patient.appointments') }}" class="btn-icon-sm">
+                <a onclick="history.back()" class="btn-icon-sm">
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 <h1>Appointment Details</h1>
@@ -39,44 +39,67 @@
         <div class="p-6">
             
             <!-- Prescription Information Section -->
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold mb-4 text-primary">Prescription Information</h3>
 
-                    @if($prescription)
-                        <div class="card mb-4">
-                            <div class="p-4">
-                                <div class="details-list">
-                                    <div class="detail-block">
-                                        <p class="font-medium">Medication</p>
-                                        <p class="text-light">{{ $prescription->medication }}</p>
-                                    </div>
-                                    <div class="detail-block">
-                                        <p class="font-medium">Dosage</p>
-                                        <p class="text-light">{{ $prescription->dosage }}</p>
-                                    </div>
-                                    <div class="detail-block">
-                                        <p class="font-medium">Frequency</p>
-                                        <p class="text-light">{{ $prescription->frequency }}</p>
-                                    </div>
-                                    <div class="detail-block">
-                                        <p class="font-medium">Duration</p>
-                                        <p class="text-light">
-                                            {{ \Carbon\Carbon::parse($prescription->start_date)->format('F d, Y') }} 
-                                            to 
-                                            {{ \Carbon\Carbon::parse($prescription->end_date)->format('F d, Y') }}
-                                        </p>
-                                    </div>
-                                    <div class="detail-block">
-                                        <p class="font-medium">Instructions</p>
-                                        <p class="text-light">{{ $prescription->instructions ?? 'No additional instructions' }}</p>
-                                    </div>
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-4 text-primary">Prescription Information</h3>
+
+            @if($prescription)
+                <div class="card mb-4">
+                    <div class="p-4">
+                        <div class="details-list space-y-4">
+
+                            <div class="detail-block flex items-start gap-2">
+                                <i class="fas fa-pills text-primary mt-1 w-5"></i>
+                                <div>
+                                    <p class="font-medium">Medication</p>
+                                    <p class="text-light">{{ $prescription->medication }}</p>
                                 </div>
                             </div>
+
+                            <div class="detail-block flex items-start gap-2">
+                                <i class="fas fa-weight text-primary mt-1 w-5"></i>
+                                <div>
+                                    <p class="font-medium">Dosage</p>
+                                    <p class="text-light">{{ $prescription->dosage }}</p>
+                                </div>
+                            </div>
+
+                            <div class="detail-block flex items-start gap-2">
+                                <i class="fas fa-sync-alt text-primary mt-1 w-5"></i>
+                                <div>
+                                    <p class="font-medium">Frequency</p>
+                                    <p class="text-light">{{ $prescription->frequency }}</p>
+                                </div>
+                            </div>
+
+                            <div class="detail-block flex items-start gap-2">
+                                <i class="fas fa-calendar-alt text-primary mt-1 w-5"></i>
+                                <div>
+                                    <p class="font-medium">Duration</p>
+                                    <p class="text-light">
+                                        {{ \Carbon\Carbon::parse($prescription->start_date)->format('F d, Y') }} 
+                                        to 
+                                        {{ \Carbon\Carbon::parse($prescription->end_date)->format('F d, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="detail-block flex items-start gap-2">
+                                <i class="fas fa-notes-medical text-primary mt-1 w-5"></i>
+                                <div>
+                                    <p class="font-medium">Instructions</p>
+                                    <p class="text-light">{{ $prescription->instructions ?? 'No additional instructions' }}</p>
+                                </div>
+                            </div>
+
                         </div>
-                    @else
-                        <p class="text-light">Prescription not found.</p>
-                    @endif
+                    </div>
                 </div>
+            @else
+                <p class="text-light">Prescription not found.</p>
+            @endif
+        </div>
+
 
         </div>
     </div>

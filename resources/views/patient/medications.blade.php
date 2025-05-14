@@ -48,10 +48,10 @@
                                 <span class="info-label">Frequency:</span>
                                 <span class="info-value">{{ ucfirst(str_replace('-', ' ', $prescription->frequency)) }}</span>
                             </div>
-                            <div class="info-item">
+                            {{-- <div class="info-item">
                                 <span class="info-label">Purpose:</span>
-                                <span class="info-value">N/A</span> {{-- You can add a purpose column if needed --}}
-                            </div>
+                                <span class="info-value">N/A</span> 
+                            </div> --}}
                             <div class="info-item">
                                 <span class="info-label">Prescribed:</span>
                                 <span class="info-value">{{ \Carbon\Carbon::parse($prescription->start_date)->format('M d, Y') }}</span>
